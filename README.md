@@ -17,10 +17,6 @@ Favor alterar este README para adicionar os links correspondentes para os seguin
 
 **Repositório de Backend (pode ser utilizado o modelo pronto fornecido pela cubos basta inserir as credencias do arquivo .env.exemple em um novo arquivo chamado .env, mas caso queira criar um do zero, deve seguir o readme do projeto)**: https://github.com/cubos-academy/desafio-front-modulo4-next-parteBack-v3-resolucao
 
-**Repositório de Frontend**: 
-
-**URL da aplicação funcionando**: 
-
 ---
 
 
