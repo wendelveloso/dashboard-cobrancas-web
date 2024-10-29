@@ -5,6 +5,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { SignUpContextProvider } from "./context/SignUpContext.jsx";
 import { MenuSideBarColorProvider } from "./context/MenuSideBarColorContext.jsx";
 import App from "./App.jsx";
+import Home from "./pages/Home/Home.jsx";
+import Charge from "./pages/Charge/Charge.jsx";
+import Client from "./pages/Client/Client.jsx";
+import Navbar from "./components/Navbar/Navbar.jsx";
 import Login from "./pages/Login/Login.jsx";
 import SignUp from "./pages/SignUp/SignUp.jsx";
 import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
@@ -32,6 +36,33 @@ const router = createBrowserRouter([
           <UnPrivateRoutes>
             <SignUp />
           </UnPrivateRoutes>
+        ),
+      },
+      {
+        path: "/home",
+        element: (
+          <>
+            <Navbar />
+            <Home />
+          </>
+        ),
+      },
+      {
+        path: "/clientes",
+        element: (
+          <>
+            <Navbar />
+            <Client />
+          </>
+        ),
+      },
+      {
+        path: "/cobrancas",
+        element: (
+          <>
+            <Navbar />
+            <Charge />
+          </>
         ),
       },
     ],

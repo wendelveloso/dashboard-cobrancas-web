@@ -1,0 +1,44 @@
+.navbar__container {
+  width: 108px;
+  max-width: 108px;
+  height: 100vh;
+  flex-shrink: 0;
+  background-color: #f0f0f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 70px;
+  position: fixed;
+  z-index: 2;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mark {
+  width: 2px;
+  height: 82px;
+  background-color: #da0175;
+  margin-left: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  left: 98px;
+  position: fixed;
+  margin-bottom: 15px;
+}
+.correctionTop {
+  top: 35px;
+}
+
+.mark.active,
+.mark1.active {
+  opacity: 1;
+}
+
+.logoHome {
+  margin-top: 45px;
+}
