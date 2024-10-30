@@ -10,6 +10,14 @@ import iconPaperYellow from "../../assets/icon-paper-yellow.svg";
 import iconArrowDownGreen from "../../assets/icon-arrow-down-green.svg";
 import iconClientRed from "../../assets/icon-client-red.svg";
 import iconClientGreen from "../../assets/icon-client-green.svg";
+import iconClient from "../../assets/icon-client.svg";
+import iconTools from "../../assets/icon-tools.svg";
+import iconGlass from "../../assets/icon-magnifying-glass.svg";
+import iconTopDown from "../../assets/arrow-top-down.svg";
+import iconChargePlus from "../../assets/icon-page-charge.svg";
+import iconPaper from "../../assets/icon-paper-charge.svg";
+import iconDelete from "../../assets/icon-delete.svg";
+import iconEdit from "../../assets/icon-edit.svg";
 
 export {
   iconChargeBlack,
@@ -24,4 +32,12 @@ export {
   iconArrowDownGreen,
   iconClientRed,
   iconClientGreen,
+  iconClient,
+  iconGlass,
+  iconTools,
+  iconChargePlus,
+  iconTopDown,
+  iconPaper,
+  iconDelete,
+  iconEdit
 };

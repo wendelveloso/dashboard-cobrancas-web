@@ -7,23 +7,13 @@ import {
   iconClientGreen,
   iconClientRed,
 } from "../../components/Icons/icons";
-import { getItem } from "../../utils/storage";
-import { formatUserName } from "../../utils/nameUser";
+import Header from "../../components/Header/Header";
 // import { NavLink } from "react-router-dom";
 
 export default function Home() {
-  const fullName = getItem("userName");
-  const { nameFormated, initials } = formatUserName(fullName);
   return (
     <div className="page__container">
-      <header className="header__container">
-        <h1>Resumo das cobranças</h1>
-        <div className="header__options">
-          <span className="icon_user">{initials}</span>
-          <p>{nameFormated}</p>
-          <img src={iconArrowDownGreen} alt="icon-arrow-down-green" />
-        </div>
-      </header>
+      <Header title="Resumo das cobranças" titleStyle="header__title--home" />
       <main className="main__container">
         <section className="total__values">
           <div className="total__paid">
@@ -67,22 +57,22 @@ export default function Home() {
             </div>
             <div className="details__info_container">
               <div className="details__info">
-                <p>Sara Silva</p>
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info2">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info3">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info4">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
@@ -101,22 +91,22 @@ export default function Home() {
             </div>
             <div className="details__info_container">
               <div className="details__info">
-                <p>Sara Silva</p>
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info2">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info3">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info4">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
@@ -135,24 +125,24 @@ export default function Home() {
             </div>
             <div className="details__info_container">
               <div className="details__info">
-                <p>Sara Silva</p>
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info2">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info3">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
-              <div className="details__info4">
-                <p>Sara Silva</p>
+              <div className="details__info">
+                <p className="home__name_size">Lara Brito</p>
                 <p>223456787</p>
-                <p>R$ 1000,00</p>
+                <p>R$ 900,00</p>
               </div>
             </div>
             <a href="#">Ver todos</a>
@@ -172,22 +162,22 @@ export default function Home() {
             </div>
             <div className="client__header_container">
               <div className="client__info">
-                <p>Sara Silva</p>
+                <p className="home__name_size-bottom">Wendel Moreira</p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
-              <div className="client__info2">
-                <p>Sara Silva</p>
+              <div className="client__info">
+                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
-              <div className="client__info3">
-                <p>Sara Silva</p>
+              <div className="client__info">
+                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
-              <div className="client__info4">
-                <p>Sara Silva</p>
+              <div className="client__info">
+                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
@@ -207,22 +197,22 @@ export default function Home() {
             </div>
             <div className="client__header_container">
               <div className="client__info">
-                <p>Sara Silva</p>
+                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
-              <div className="client__info2">
-                <p>Sara Silva</p>
+              <div className="client__info">
+                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
-              <div className="client__info3">
-                <p>Sara Silva</p>
+              <div className="client__info">
+                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
-              <div className="client__info4">
-                <p>Sara Silva</p>
+              <div className="client__info">
+                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>

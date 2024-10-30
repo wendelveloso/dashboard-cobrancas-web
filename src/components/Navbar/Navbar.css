@@ -34,8 +34,7 @@
   top: 35px;
 }
 
-.mark.active,
-.mark1.active {
+.active {
   opacity: 1;
 }
 
