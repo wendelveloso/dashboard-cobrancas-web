@@ -18,6 +18,10 @@ import iconChargePlus from "../../assets/icon-page-charge.svg";
 import iconPaper from "../../assets/icon-paper-charge.svg";
 import iconDelete from "../../assets/icon-delete.svg";
 import iconEdit from "../../assets/icon-edit.svg";
+import iconExit from "../../assets/icon-exit.svg";
+import iconClose from "../../assets/close.svg";
+import iconEyes from "../../assets/EyeHiddenPass.png";
+
 
 export {
   iconChargeBlack,
@@ -39,5 +43,8 @@ export {
   iconTopDown,
   iconPaper,
   iconDelete,
-  iconEdit
+  iconEdit,
+  iconExit,
+  iconClose,
+  iconEyes
 };

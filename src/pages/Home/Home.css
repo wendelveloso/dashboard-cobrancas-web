@@ -121,7 +121,7 @@
   border-bottom: solid 1px #eff0f6;
   gap: 49px;
 }
-.details__header_info p:nth-of-type(2){
+.details__header_info p:nth-of-type(2) {
   padding-left: 17px;
 }
 
@@ -142,7 +142,6 @@
   flex-direction: column;
   gap: 10px;
 }
-
 
 .details__info {
   display: flex;
@@ -240,11 +239,9 @@
   gap: 80px;
 }
 
-.client__header_info p:nth-of-type(2){
-padding-left: 99px;
+.client__header_info p:nth-of-type(2) {
+  padding-left: 99px;
 }
-
-
 
 .client__info {
   display: flex;

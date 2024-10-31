@@ -3,12 +3,15 @@ import {
   iconPaperBrown,
   iconPaperGreen,
   iconPaperYellow,
-  iconArrowDownGreen,
   iconClientGreen,
   iconClientRed,
+  iconClose,
+  iconEyes,
 } from "../../components/Icons/icons";
 import Header from "../../components/Header/Header";
+import ModalEditUser from "../../components/ModalEditUser/ModalEditUser";
 // import { NavLink } from "react-router-dom";
+// import { useState } from 'react';
 
 export default function Home() {
   return (
@@ -57,22 +60,30 @@ export default function Home() {
             </div>
             <div className="details__info_container">
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
@@ -91,22 +102,30 @@ export default function Home() {
             </div>
             <div className="details__info_container">
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
@@ -125,17 +144,23 @@ export default function Home() {
             </div>
             <div className="details__info_container">
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
@@ -167,17 +192,23 @@ export default function Home() {
                 <p>041.477.456-56</p>
               </div>
               <div className="client__info">
-                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size-bottom">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
               <div className="client__info">
-                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size-bottom">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
               <div className="client__info">
-                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size-bottom">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
@@ -197,22 +228,30 @@ export default function Home() {
             </div>
             <div className="client__header_container">
               <div className="client__info">
-                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size-bottom">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
               <div className="client__info">
-                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size-bottom">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
               <div className="client__info">
-                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size-bottom">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>
               <div className="client__info">
-                <p className="home__name_size-bottom">Wendel Moreira Velosodddfffggggg</p>
+                <p className="home__name_size-bottom">
+                  Wendel Moreira Velosodddfffggggg
+                </p>
                 <p>223456787</p>
                 <p>041.477.456-56</p>
               </div>

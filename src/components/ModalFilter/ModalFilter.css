@@ -1,0 +1,152 @@
+.filter__container {
+  position: absolute;
+  width: 330px;
+  height: 381px;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  padding: 8px 15px;
+  gap: 16px;
+  border-radius: 30px;
+  right: 385px;
+  top: 225px;
+  filter: drop-shadow(0px 4px 42px rgba(0, 0, 0, 0.3));
+  display: flex;
+  z-index: 1;
+}
+.visible {
+  display: flex;
+}
+
+.polygon {
+  width: 25.648px;
+  height: 14.401px;
+  position: absolute;
+  background-color: #fff;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  left: 270px;
+  top: -14px;
+}
+
+.filter__container form {
+  width: 330px;
+  height: 381px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.btnSubmit {
+  display: flex;
+  width: 265px;
+  height: 38px;
+  padding: 2px 0px 3px 0px;
+  justify-content: center;
+  align-items: center;
+  background-color: #da0175;
+  color: #f8f8f9;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 10px;
+  border: none;
+  margin-top: 10px;
+}
+.btnClean {
+  display: flex;
+  width: 265px;
+  height: 38px;
+  padding: 2px 0px 3px 0px;
+  justify-content: center;
+  align-items: center;
+  color: #0e8750;
+  background-color: #f8f8f9;
+  border: 1px solid #d0d5dd;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 10px;
+}
+
+.label__radio {
+  display: flex;
+  width: 263px;
+  height: 48px;
+  padding: 12px 16px;
+  gap: 10px;
+  border-radius: 10px;
+  background: #f0f0f5;
+  flex-direction: row;
+  align-items: center;
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+input[type="date"] {
+  width: 263px;
+  height: 48px;
+  padding: 10px 14px;
+  flex-direction: column;
+  border-radius: 8px;
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid #0e8750;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+}
+
+input[type="date"]:focus {
+  outline: none;
+}
+
+.label__date {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  margin-right: 220px;
+}
+
+.label__status {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  margin-top: 20px;
+  margin-right: 210px;
+}
+
+.label__radio input[type="radio"] {
+  display: none;
+}
+
+.label__radio .checkmark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #c8c8d7;
+  border: none;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.label__radio input[type="radio"]:checked + .checkmark {
+  background-color: #0e8750;
+}

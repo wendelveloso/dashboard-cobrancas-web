@@ -1,0 +1,135 @@
+.modal__container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background-color: #ea13134d !important;
+  position: fixed;
+  z-index: 1;
+  backdrop-filter: blur(2px);
+}
+
+.modal__box {
+  display: flex;
+  width: 491px;
+  height: 654px;
+  flex-shrink: 0;
+  border-radius: 30px;
+  background: #fff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  transition: opacity 0.3s ease;
+}
+.modal__box.closing {
+  opacity: 0; /* Transição para opacidade zero */
+}
+
+
+.input__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+}
+.modal__box h3 {
+  color: #343447;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  margin: 0px 0px 10px 0px;
+}
+.modal__box form {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal__box p {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+}
+
+.modal__box a {
+  color: #da0175;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
+  text-decoration-line: underline;
+}
+
+.modal__box input {
+  width: 100%;
+  color: #667085;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  display: flex;
+  padding: 10px 35px 10px 14px;
+  height: 44px;
+  width: 368px;
+}
+input::placeholder {
+  color: #667085;
+}
+.modal__box label {
+  display: flex;
+  width: 368px;
+  color: #344054;
+}
+
+.btn__submit {
+  display: flex;
+  width: 160px;
+  height: 33px;
+  border-radius: 10px;
+  padding: 4px 40px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  color: #f8f8f9;
+  background-color: #da0175;
+  border: none;
+  margin-top: 15px;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.icon_close {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: #fff;
+  margin-left: 400px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.eye-icon {
+  position: absolute;
+  right: 10px; /* Ajuste a posição conforme necessário */
+  top: 37px;
+  cursor: pointer; /* Mostra que o ícone é clicável */
+}
