@@ -195,8 +195,6 @@
 .icon_container {
   display: flex;
   gap: 30px;
-  /* padding-right: 60px; */
-  /* padding-left: 10px; */
 }
 
 .charges__desc_size {

@@ -1,0 +1,289 @@
+.modal__container-register {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  background-color: #919a964d;
+  position: fixed;
+  z-index: 1;
+  backdrop-filter: blur(2px);
+}
+.modal__box-register .input__desc-register {
+  padding-bottom: 60px;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  resize: none;
+  padding-bottom: 60px;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  resize: none;
+}
+
+.modal__box-register {
+  display: flex;
+  width: 600px;
+  height: 754px;
+  border-radius: 30px;
+  background: #fff;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  transition: opacity 0.3s ease;
+}
+.modal__box.closing {
+  opacity: 0; /* Transição para opacidade zero */
+}
+.header__container-register {
+  display: flex;
+  width: 600px;
+  margin: 52px 0px 0px 110px;
+  gap: 10px;
+}
+.icon_close-register {
+  position: absolute;
+  border: none;
+  background-color: #fff;
+  margin-left: 140px;
+  cursor: pointer;
+  right: 700px;
+  top: 110px;
+}
+
+.input__container-register {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  padding: 0px 12px 12px 16px;
+  flex-direction: column;
+  gap: 8px;
+}
+.modal__box-register h3 {
+  color: #343447;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 130%;
+  /* margin: 0px 0px 10px 0px; */
+}
+.modal__box-register form {
+  display: flex;
+  width: 520px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal__box-register p {
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+}
+
+.modal__box-register a {
+  color: #da0175;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
+  text-decoration-line: underline;
+}
+.label__radio-register-charge {
+  display: flex;
+  width: 263px;
+  height: 48px;
+  padding: 12px 16px;
+  gap: 10px;
+  border-radius: 10px;
+  background: #f0f0f5;
+  flex-direction: row;
+  align-items: center;
+  color: #3f3f55;
+  font-family: Nunito;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+.label__radio-register-charge .checkmark {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: #c8c8d7;
+  border: none;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+.label__radio-register-charge input[type="radio"] {
+  display: none;
+}
+.label__radio-register-charge input[type="radio"]:checked + .checkmark {
+  background-color: #0e8750;
+}
+
+.modal__box-register input {
+  width: 100%;
+  color: #667085;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  display: flex;
+  padding: 10px 35px 10px 14px;
+}
+.modal__box-register textarea {
+  width: 100%;
+  color: #667085;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  display: flex;
+  padding: 10px 35px 10px 14px;
+  resize: none;
+  overflow-wrap: break-word;
+  /* overflow: hidden; */
+}
+.input__desc-register::-webkit-scrollbar {
+  width: 4px; /* Largura da barra de rolagem */
+  background-color: #f0f0f0; /* Cor de fundo da barra de rolagem */
+}
+
+.input__desc-register::-webkit-scrollbar-thumb {
+  background-color: #667085;; /* Cor da parte deslizante da barra */
+  border-radius: 4px; /* Bordas arredondadas para o "thumb" */
+}
+
+.input__desc-register::-webkit-scrollbar-thumb:hover {
+  background-color: #667085;; /* Cor do "thumb" ao passar o mouse */
+}
+.input__desc-register {
+  height: 100px;
+  /* color: #667085; */
+}
+
+.select__container-register {
+  /* width: 100%; */
+  width: 485px;
+  color: #667085;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  display: flex;
+  margin: 10px 35px 10px 14px;
+  height: 44px;
+}
+.input__container-register-extra {
+  /* position: relative; */
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+}
+.input__container-register-extra:last-child {
+  margin-right: 0;
+}
+.input__container-register-extra-wrapper {
+  display: flex;
+  padding: 0px 12px 12px 16px;
+  gap: 29px;
+}
+
+.modal__box-register label {
+  display: flex;
+  width: 100%;
+  color: #344054;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #667085;
+}
+.btn__submit-register {
+  display: flex;
+  width: 231.5px;
+  height: 34px;
+  border-radius: 10px;
+  padding: 4px 40px;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  color: #f8f8f9;
+  background-color: #da0175;
+  border: none;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.btn__clean-register {
+  display: flex;
+  width: 231.5px;
+  height: 34px;
+  padding: 2px 0px 3px 0px;
+  justify-content: center;
+  align-items: center;
+  color: #0e8750;
+  background-color: #f8f8f9;
+  border: 1px solid #d0d5dd;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 10px;
+}
+
+.btn_group-register {
+  display: flex;
+  gap: 23px;
+  margin-top: 50px;
+  /* width: 100%; */
+}
+
+.icon_close {
+  display: flex;
+  border: none;
+  background-color: #fff;
+  margin-left: 400px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.eye-icon {
+  position: absolute;
+  right: 10px; /* Ajuste a posição conforme necessário */
+  top: 37px;
+  cursor: pointer; /* Mostra que o ícone é clicável */
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

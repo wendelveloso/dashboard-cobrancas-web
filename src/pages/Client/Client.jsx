@@ -9,18 +9,12 @@ import {
 import Header from "../../components/Header/Header";
 import { useState, useRef, useEffect } from "react";
 import ModalFilter from "../../components/ModalFilter/ModalFilter";
-// import { NavLink } from "react-router-dom";
+import { useModal } from "../../utils/useModal";
+import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 
-const client = [
-  {
-    status: "Em dia",
-  },
-  {
-    status: "Inadimplente",
-  },
-];
+const client = [{ status: "Em dia" }, { status: "Inadimplente" }];
 
-export default function Home() {
+export default function Client({ title }) {
   const getStatusClass = (status) => {
     switch (status) {
       case "Inadimplente":
@@ -32,33 +26,25 @@ export default function Home() {
     }
   };
 
-  const modalRef = useRef(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const handleClickOutside = (event) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      closeModal();
-    }
-  };
-
-  const handleToggleModal = () => {
-    setModalOpen((prev) => !prev);
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const {
+    modalRef,
+    modalTooltsOpen,
+    modalSecondOpen,
+    handleToggleToolsModal,
+    handleToggleSecondModal,
+    onClose,
+  } = useModal();
 
   return (
     <>
-        {modalOpen && <ModalFilter ref={modalRef} onClose={closeModal} />}
+      {modalTooltsOpen && <ModalFilter modalRef={modalRef} onClick={onClose} />}
+      {modalSecondOpen && (
+        <ModalChargeGeneric
+          title="Cadastro de Cobrança"
+          modalRef={modalRef}
+          onClick={handleToggleSecondModal} 
+        />
+      )}
       <div className="page__container">
         <Header title="Clientes" titleStyle="header__title--client" />
         <main className="main__container_client">
@@ -72,8 +58,8 @@ export default function Home() {
               <img
                 src={iconTools}
                 alt="icon-tools"
-                className="icon-tools"
-                onClick={handleToggleModal}
+                className="icon-tools btn-zoom"
+                onClick={handleToggleToolsModal}
               />
               <div className="search-container">
                 <input type="search" placeholder="Pesquisa" />
@@ -110,7 +96,12 @@ export default function Home() {
                 <p className={getStatusClass(client[1].status)}>
                   {client[1].status}
                 </p>
-                <img src={iconChargePlus} alt="icon-page-charge-plus" />
+                <img
+                  className="btn-zoom"
+                  src={iconChargePlus}
+                  alt="icon-page-charge-plus"
+                  onClick={handleToggleSecondModal}
+                />
               </div>
               <div className="clients__info">
                 <p className="client__name_size">

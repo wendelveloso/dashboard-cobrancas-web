@@ -1,18 +1,10 @@
-import "./ModalFilter.css";
+import "./ModalFilterCharge.css";
 import { useState, useRef, useEffect } from "react";
 import { iconClose, iconEyes } from "../../components/Icons/icons";
 
-export default function ModalFilter({ modalRef }) {
-  const [optionsOn, setOptionsOn] = useState(false);
+export default function ModalFilterCharge({ modalRef }) {
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedOption, setSelectedOption] = useState("");
-  
-  // const toggleOptionsDisplay = () => {
-  //   setOptionsOn(!optionsOn);
-  // };
-  // const handleOptionChange = (event) => {
-  //   setSelectedOption(event.target.value);
-  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -30,13 +22,13 @@ export default function ModalFilter({ modalRef }) {
         <label className="label__radio">
           <input type="radio" name="option" value="1" />
           <span class="checkmark"></span>
-          Inadimplentes
+          Pendentes
         </label>
 
         <label className="label__radio">
           <input type="radio" name="option" value="1" />
           <span class="checkmark"></span>
-          Em Dia
+          Pagas
         </label>
         <label className="label__date" htmlFor="date">
           Data

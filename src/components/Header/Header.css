@@ -61,7 +61,20 @@
   line-height: 24px; /* 150% */
   margin: 45px 0px 0px 40px;
 }
+.header__subtitle {
+  color:#747488;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  margin-top: 45.3px;
+}
+.header__first-group{
+  display: flex;
+  gap: 20px;
 
+}
 .user__options {
   position: absolute;
   width: 92px;
@@ -92,7 +105,7 @@
   cursor: pointer;
 }
 
-.polygon {
+.polygon__header {
   width: 19px;
   height: 8.25px;
   flex-shrink: 0;

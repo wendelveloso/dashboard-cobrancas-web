@@ -11,7 +11,7 @@
 
 // export default function Header({ title, titleStyle }) {
 //   const [optionsOn, setOptionsOn] = useState(false);
-//   const [modalOpen, setModalOpen] = useState(false);
+//   const [modalOpen, setModalTooltsOpen] = useState(false);
 //   const fullName = getItem("userName");
 //   const { nameFormated, initials } = formatUserName(fullName);
 
@@ -24,11 +24,11 @@
 
 //   const openModal = () => {
 //     setOptionsOn(false);
-//     setModalOpen(true);
+//     setModalTooltsOpen(true);
 //   };
 
 //   const closeModal = () => {
-//     setModalOpen(false);
+//     setModalTooltsOpen(false);
 //   };
 
 //   const handleClickOutside = (event) => {
@@ -87,9 +87,9 @@ import ModalEditUser from "../ModalEditUser/ModalEditUser";
 import ModalGeneric from "../ModalGeneric/ModalGeneric";
 import ModalEditUserGeneric from "../ModalEditUserGeneric/ModalEditUserGeneric";
 
-export default function Header({ title, titleStyle }) {
+export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
   const [optionsOn, setOptionsOn] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalTooltsOpen] = useState(false);
   const fullName = getItem("userName");
   const { nameFormated, initials } = formatUserName(fullName);
 
@@ -102,11 +102,11 @@ export default function Header({ title, titleStyle }) {
 
   const openModal = () => {
     setOptionsOn(false);
-    setModalOpen(true);
+    setModalTooltsOpen(true);
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    setModalTooltsOpen(false);
   };
 
   useEffect(() => {
@@ -130,15 +130,19 @@ export default function Header({ title, titleStyle }) {
     <>
       {/* {modalOpen && <ModalEditUser modalRef={modalRef} onClose={closeModal} />} */}
       {modalOpen && (
-        <ModalGeneric isTwoButton={true} onClose={closeModal} modalRef={modalRef}>
-          {/* <ModalEditUserGeneric /> */}
-          <form action="">
-            <h3>TEST</h3>
-          </form>
+        <ModalGeneric
+          isTwoButton={true}
+          onClose={closeModal}
+          modalRef={modalRef}
+        >
+          <ModalEditUserGeneric />
         </ModalGeneric>
       )}
       <header className="header__container">
-        <h1 className={`header__title ${titleStyle}`}>{title}</h1>
+        <div className="header__first-group">
+          <h1 className={`${titleStyle}`}>{title}</h1>
+          <p className={`${titleStyle2}`}>{subTitle}</p>
+        </div>
         <div className="header__options">
           <span className="icon_user">{initials}</span>
           <div className="user__name" onClick={toggleOptionsDisplay}>
@@ -150,7 +154,7 @@ export default function Header({ title, titleStyle }) {
           className={`user__options ${optionsOn ? "visible" : ""}`}
           ref={optionsRef}
         >
-          <div className="polygon"></div>
+          <div className="polygon__header "></div>
           <img src={iconEdit} alt="icon-edit" onClick={openModal} />
           <img src={iconExit} alt="icon-exit" />
         </div>

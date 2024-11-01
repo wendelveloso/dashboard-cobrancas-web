@@ -49,6 +49,40 @@ export default function Home() {
         </section>
         <section className="details__values">
           <div className="details__expired">
+            <div className="details__header">
+              <h3>Cobranças Pagas</h3>
+              <p className="details_p-green">10</p>
+            </div>
+            <div className="details__header_info">
+              <p>Cliente</p>
+              <p>ID da cob.</p>
+              <p>Valor</p>
+            </div>
+            <div className="details__info_container">
+              <div className="details__info">
+                <p>Wendel Moreira Velosodddfffggggg</p>
+                <p>223456787</p>
+                <p>R$ 1000,00</p>
+              </div>
+              <div className="details__info">
+                <p>Wendel Moreira Velosodddfffggggg</p>
+                <p>223456787</p>
+                <p>R$ 1000,00</p>
+              </div>
+              <div className="details__info">
+                <p>Wendel Moreira Velosodddfffggggg</p>
+                <p>223456787</p>
+                <p>R$ 1000,00</p>
+              </div>
+              <div className="details__info ">
+                <p>Lara Brito</p>
+                <p>223456787</p>
+                <p>R$ 900,00</p>
+              </div>
+            </div>
+            <a href="#">Ver todos</a>
+          </div>
+          <div className="details__expired">
             <div className="details__header ">
               <h3>Cobranças Vencidas</h3>
               <p className="details_p-red">08</p>
@@ -60,30 +94,22 @@ export default function Home() {
             </div>
             <div className="details__info_container">
               <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
+                <p>Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
+                <p>Wendel Moreira Velosodddfffggggg</p>
+                <p>223456787</p>
+                <p>R$ 100,00</p>
+              </div>
+              <div className="details__info">
+                <p>Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>223456787</p>
-                <p>R$ 1000,00</p>
-              </div>
-              <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
+                <p>Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
@@ -102,72 +128,24 @@ export default function Home() {
             </div>
             <div className="details__info_container">
               <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
+                <p>Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
+                <p>Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
+                <p>Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
-                <p>R$ 1000,00</p>
+                <p className="home__name_size">R$ 1000,00</p>
               </div>
               <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
+                <p>Wendel Moreira Velosodddfffggggg</p>
                 <p>223456787</p>
                 <p>R$ 1000,00</p>
-              </div>
-            </div>
-            <a href="#">Ver todos</a>
-          </div>
-          <div className="details__expired">
-            <div className="details__header">
-              <h3>Cobranças Pagas</h3>
-              <p className="details_p-green">10</p>
-            </div>
-            <div className="details__header_info">
-              <p>Cliente</p>
-              <p>ID da cob.</p>
-              <p>Valor</p>
-            </div>
-            <div className="details__info_container">
-              <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>223456787</p>
-                <p>R$ 1000,00</p>
-              </div>
-              <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>223456787</p>
-                <p>R$ 1000,00</p>
-              </div>
-              <div className="details__info">
-                <p className="home__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>223456787</p>
-                <p>R$ 1000,00</p>
-              </div>
-              <div className="details__info">
-                <p className="home__name_size">Lara Brito</p>
-                <p>223456787</p>
-                <p>R$ 900,00</p>
               </div>
             </div>
             <a href="#">Ver todos</a>

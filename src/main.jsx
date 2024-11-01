@@ -8,6 +8,7 @@ import App from "./App.jsx";
 import Home from "./pages/Home/Home.jsx";
 import Charge from "./pages/Charge/Charge.jsx";
 import Client from "./pages/Client/Client.jsx";
+import ClientDetails from "./pages/ClientDetails/ClientDetails.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Login from "./pages/Login/Login.jsx";
 import SignUp from "./pages/SignUp/SignUp.jsx";
@@ -53,6 +54,15 @@ const router = createBrowserRouter([
           <>
             <Navbar />
             <Client />
+          </>
+        ),
+      },
+      {
+        path: "/clientes/detalhes",
+        element: (
+          <>
+            <Navbar />
+            <ClientDetails />
           </>
         ),
       },
