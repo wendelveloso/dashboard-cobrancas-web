@@ -62,7 +62,6 @@ export default function ModalGeneric({
   onClose,
   modalRef,
   children,
-  isTwoButton=false,
 }) {
   return (
     <div className="modal__container">
@@ -71,16 +70,6 @@ export default function ModalGeneric({
           <img src={iconClose} alt="Fechar" />
         </button>
         {children}
-        {isTwoButton ? (
-          <div>
-            <button>aplicar</button>
-            <button>cancelar</button>
-          </div>
-        ) : (
-          <div>
-            <button>aplicar</button>
-          </div>
-        )}
       </div>
     </div>
   );

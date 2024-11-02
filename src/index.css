@@ -45,7 +45,10 @@ input:focus,
 textarea:focus {
   outline: 1px solid #0e8750;
 }
-
+input::placeholder,
+textarea::placeholder {
+  color: #667085;
+}
 #close-btn {
   position: absolute;
 

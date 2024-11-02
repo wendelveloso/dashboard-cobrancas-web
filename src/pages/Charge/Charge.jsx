@@ -9,9 +9,9 @@ import {
 } from "../../components/Icons/icons";
 import Header from "../../components/Header/Header";
 import { useModal } from "../../utils/useModal";
-import ModalFilter from "../../components/ModalFilter/ModalFilter";
 import ModalFilterCharge from "../../components/ModalFilterCharge/ModalFilterCharge";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
+import ModalDetailsCharge from "../../components/ModalDetailsCharge/ModalDetailsCharge";
 // import { NavLink } from "react-router-dom";
 
 const client = [
@@ -39,15 +39,34 @@ export default function Charge({ title }) {
         return "";
     }
   };
-  const { modalRef, modalTooltsOpen, handleToggleSecondModal, handleToggleToolsModal, modalSecondOpen } = useModal();
+  const {
+    modalToolsRef,
+    modalRef,
+    modalTooltsOpen,
+    handleToggleSecondModal,
+    handleToggleToolsModal,
+    modalSecondOpen,
+    onClose,
+    handleToggleClientModal,
+    modalClientRef,
+    modalClientOpen,
+  } = useModal();
   return (
     <>
-      {modalTooltsOpen && <ModalFilterCharge modalRef={modalRef} />}
+      {modalTooltsOpen && <ModalFilterCharge modalRef={modalToolsRef} />}
       {modalSecondOpen && (
         <ModalChargeGeneric
           title="Edição de Cobrança"
           modalRef={modalRef}
-          onClick={handleToggleSecondModal} 
+          onClose={onClose}
+          handleToggleSecondModal={handleToggleSecondModal}
+        />
+      )}
+      {modalClientOpen && (
+        <ModalDetailsCharge
+          modalRef={modalClientRef}
+          onClose={onClose}
+          handleToggleClientModal={handleToggleClientModal}
         />
       )}
       <div className="page__container">
@@ -64,6 +83,7 @@ export default function Charge({ title }) {
                 alt="icon-tools"
                 class="icon-tools btn-zoom"
                 onClick={handleToggleToolsModal}
+                ref={modalToolsRef}
               />
               <div class="search-container">
                 <input type="search" placeholder="Pesquisa" />
@@ -100,11 +120,22 @@ export default function Charge({ title }) {
                   ipsum...{" "}
                 </p>
                 <div className="icon_container">
-                  <img onClick={handleToggleSecondModal} className="btn-zoom" src={iconEdit} alt="icon-delete" />
+                  <img
+                    onClick={handleToggleSecondModal}
+                    className="btn-zoom"
+                    src={iconEdit}
+                    alt="icon-delete"
+                  />
                   <img className="btn-zoom" src={iconDelete} alt="icon-edit" />
                 </div>
               </div>
-              <div className="charges__info">
+              <div
+                className="charges__info"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleToggleClientModal();
+                }}
+              >
                 <p className="charges__name_size">
                   Wendel Moreira Velosodddfffggggg
                 </p>

@@ -1,4 +1,4 @@
-.modal__container-register {
+.modal__container-client {
   display: flex;
   width: 100vw;
   height: 100vh;
@@ -10,7 +10,7 @@
   z-index: 3;
   backdrop-filter: blur(2px);
 }
-.modal__box-register .input__desc-register {
+.modal__box-client .input__desc-client {
   padding-bottom: 60px;
   max-width: 100%;
   overflow-wrap: break-word;
@@ -21,10 +21,10 @@
   resize: none;
 }
 
-.modal__box-register {
+.modal__box-client {
   display: flex;
   width: 600px;
-  height: 754px;
+  height: 762px;
   border-radius: 30px;
   background: #fff;
   flex-direction: column;
@@ -36,13 +36,13 @@
 .modal__box.closing {
   opacity: 0; /* Transição para opacidade zero */
 }
-.header__container-register {
+.header__container-client {
   display: flex;
   width: 600px;
   margin: 52px 0px 0px 110px;
   gap: 10px;
 }
-.icon_close-register {
+.icon_close-client {
   position: absolute;
   border: none;
   background-color: #fff;
@@ -52,18 +52,18 @@
   top: 110px;
 }
 
-.input__container-register {
+.input__container-client {
   position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 5px;
   width: 100%;
-  padding: 0px 12px 12px 16px;
+  padding: 0px 12px 8px 16px;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
-.modal__box-register h3 {
+.modal__box-client h3 {
   color: #343447;
   text-align: center;
   font-family: Montserrat;
@@ -73,14 +73,14 @@
   line-height: 130%;
   /* margin: 0px 0px 10px 0px; */
 }
-.modal__box-register form {
+.modal__box-client form {
   display: flex;
   width: 520px;
   flex-direction: column;
   align-items: center;
 }
 
-.modal__box-register p {
+.modal__box-client p {
   color: #3f3f55;
   font-family: Nunito;
   font-size: 18px;
@@ -89,7 +89,7 @@
   line-height: 130%;
 }
 
-.modal__box-register a {
+.modal__box-client a {
   color: #da0175;
   font-family: Nunito;
   font-size: 18px;
@@ -98,7 +98,7 @@
   line-height: 130%;
   text-decoration-line: underline;
 }
-.label__radio-register-charge {
+.label__radio-client-charge {
   display: flex;
   width: 263px;
   height: 48px;
@@ -115,7 +115,7 @@
   font-weight: 400;
   line-height: 24px;
 }
-.label__radio-register-charge .checkmark {
+.label__radio-client-charge .checkmark {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -124,14 +124,14 @@
   border-radius: 4px;
   margin-right: 8px;
 }
-.label__radio-register-charge input[type="radio"] {
+.label__radio-client-charge input[type="radio"] {
   display: none;
 }
-.label__radio-register-charge input[type="radio"]:checked + .checkmark {
+.label__radio-client-charge input[type="radio"]:checked + .checkmark {
   background-color: #0e8750;
 }
 
-.modal__box-register input {
+.modal__box-client input {
   width: 100%;
   color: #667085;
   font-family: Inter;
@@ -144,9 +144,9 @@
   background: #fff;
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   display: flex;
-  padding: 10px 35px 10px 14px;
+  padding: 8px 16px;
 }
-.modal__box-register textarea {
+.modal__box-client textarea {
   width: 100%;
   color: #667085;
   font-family: Inter;
@@ -164,25 +164,28 @@
   overflow-wrap: break-word;
   /* overflow: hidden; */
 }
-.input__desc-register::-webkit-scrollbar {
+.input__desc-client::-webkit-scrollbar {
   width: 4px; 
-  background-color: #f0f0f0; 
+  background-color: #f0f0f0; /
 }
 
-.input__desc-register::-webkit-scrollbar-thumb {
-  background-color: #667085;; 
+.input__desc-client::-webkit-scrollbar-thumb {
+  background-color: #667085; 
   border-radius: 4px; 
 }
 
-.input__desc-register::-webkit-scrollbar-thumb:hover {
-  background-color: #667085;; 
+.input__desc-client::-webkit-scrollbar-thumb:hover {
+  background-color: #667085; 
 }
-.input__desc-register {
+.input__desc-client {
   height: 100px;
-  /* color: #667085; */
+ 
+}
+.input__city{
+  width: 410px;
 }
 
-.select__container-register {
+.select__container-client {
   /* width: 100%; */
   width: 485px;
   color: #667085;
@@ -199,32 +202,33 @@
   margin: 10px 35px 10px 14px;
   height: 44px;
 }
-.input__container-register-extra {
+.input__container-client-extra {
   /* position: relative; */
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 5px;
 }
-.input__container-register-extra:last-child {
+.input__container-client-extra:last-child {
   margin-right: 0;
 }
-.input__container-register-extra-wrapper {
+.input__container-client-extra-wrapper {
   display: flex;
   padding: 0px 12px 12px 16px;
   gap: 29px;
 }
 
-.modal__box-register label {
+.modal__box-client label {
   display: flex;
   width: 100%;
   color: #344054;
+  font-size: 14px;
 }
 input::placeholder,
 textarea::placeholder {
   color: #667085;
 }
-.btn__submit-register {
+.btn__submit-client {
   display: flex;
   width: 231.5px;
   height: 34px;
@@ -242,7 +246,7 @@ textarea::placeholder {
   font-weight: 400;
   line-height: normal;
 }
-.btn__clean-register {
+.btn__clean-client {
   display: flex;
   width: 231.5px;
   height: 34px;
@@ -260,7 +264,7 @@ textarea::placeholder {
   border-radius: 10px;
 }
 
-.btn_group-register {
+.btn_group-client {
   display: flex;
   gap: 23px;
   margin-top: 50px;

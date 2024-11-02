@@ -11,6 +11,9 @@ import {
 import Header from "../../components/Header/Header";
 import { useState, useRef, useEffect } from "react";
 import ModalFilter from "../../components/ModalFilter/ModalFilter";
+import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
+import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientGeneric";
+import { useModal } from "../../utils/useModal";
 
 const client = [
   {
@@ -24,7 +27,7 @@ const client = [
   },
 ];
 
-export default function ClientDetails() {
+export default function ClientDetails({ title }) {
   const getStatusClass = (status) => {
     switch (status) {
       case "Vencida":
@@ -38,30 +41,46 @@ export default function ClientDetails() {
     }
   };
 
-  const modalRef = useRef(null);
-  const [modalOpen, setModalTooltsOpen] = useState(false);
-
-  const handleToggleToolsModal = () => {
-    setModalTooltsOpen((prev) => !prev);
-  };
-
-  const handleClickOutside = (event) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
-      setModalTooltsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const {
+    modalToolsRef,
+    modalRef,
+    modalClientRef,
+    modalTooltsOpen,
+    modalSecondOpen,
+    modalClientOpen,
+    handleToggleToolsModal,
+    handleToggleSecondModal,
+    handleToggleClientModal,
+    onClose,
+  } = useModal();
 
   const clientName = "Sara Lage Silva";
   return (
     <>
-      {modalOpen && <ModalFilter modalRef={modalRef} />}
+      {modalSecondOpen && (
+        <ModalChargeGeneric
+          title="Cadastro de Cobrança"
+          modalRef={modalRef}
+          onClose={onClose}
+          handleToggleSecondModal={handleToggleSecondModal}
+        />
+      )}
+      {modalTooltsOpen && (
+        <ModalChargeGeneric
+          title="Edição de Cobrança"
+          modalRef={modalToolsRef}
+          onClose={onClose}
+          handleToggleSecondModal={handleToggleToolsModal}
+        />
+      )}
+      {modalClientOpen && (
+        <ModalClientGeneric
+          title="Editar Cliente"
+          modalRef={modalClientRef}
+          onClose={onClose}
+          handleToggleClientModal={handleToggleClientModal}
+        />
+      )}
       <div className="page__container">
         <Header
           title="Clientes"
@@ -79,7 +98,9 @@ export default function ClientDetails() {
           <div className="clients_container-data">
             <div className="first__header-data">
               <h3>Dados do cliente</h3>
-              <button className="btn-data">Editar Cliente</button>
+              <button onClick={handleToggleClientModal} className="btn-data">
+                Editar Cliente
+              </button>
             </div>
             <div className="clients__header_info-data">
               <div className="clients__header_data">
@@ -115,7 +136,9 @@ export default function ClientDetails() {
           <div className="clients_container-details">
             <div className="first__header-details">
               <h3>Cobranças do Cliente</h3>
-              <button className="btn-details">+ Nova cobrança</button>
+              <button onClick={handleToggleSecondModal} className="btn-details">
+                + Nova cobrança
+              </button>
             </div>
             <div className="clients__header_info-details">
               <div className="ID_order-details">
@@ -131,7 +154,7 @@ export default function ClientDetails() {
               <p>Descrição</p>
             </div>
             <div className="clients__info_container-details">
-              <div className="clients__info-details">
+              <div className="clients__info-details" >
                 <p className="client__name_size-details">248563147</p>
                 <p>26/01/2021</p>
                 <p className="client__name_size-details">R$ 500,00</p>
@@ -145,8 +168,8 @@ export default function ClientDetails() {
                   Expedita doloremque adipisci aut quisquam facilis.
                 </p>
                 <div className="icon_container-details">
-                  <img className="btn-zoom" src={iconEdit} alt="icon-delete" />
-                  <img className="btn-zoom" src={iconDelete} alt="icon-edit" />
+                  <img className="btn-zoom" src={iconEdit} alt="icon-edit" onClick={handleToggleToolsModal}/>
+                  <img className="btn-zoom" src={iconDelete} alt="icon-delete" />
                 </div>
               </div>
             </div>

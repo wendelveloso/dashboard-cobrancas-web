@@ -16,12 +16,12 @@ export default function ModalEditUserGeneric() {
           <input type="email" placeholder="Digite seu e-mail" />
         </div>
         <div className="input__container">
-          <label htmlFor="password">Senha*</label>
+          <label htmlFor="password">Nova senha</label>
           <input type="password" placeholder="Digite sua senha" />
           <img src={iconEyes} alt="icon-eyes" className="eye-icon" />
         </div>
         <div className="input__container">
-          <label htmlFor="repeat-password">Repita a senha*</label>
+          <label htmlFor="repeat-password">Confirmar a Senha*</label>
           <input type="password" placeholder="Repita sua senha" />
           <img src={iconEyes} alt="icon-eyes" className="eye-icon" />
         </div>

@@ -2,11 +2,16 @@ import React from "react";
 import "./ModalChargeGeneric.css";
 import { iconClose, iconEyes, iconPaper } from "../Icons/icons";
 
-export default function ModalChargeGeneric({ onClose, modalRef, title }) {
+export default function ModalChargeGeneric({
+  handleToggleSecondModal,
+  modalRef,
+  onClose,
+  title,
+}) {
   return (
     <div className="modal__container-register">
-      <div ref={modalRef} className="modal__box-register">
-        <button className="icon_close-register" onClick={onClose}>
+      <div className="modal__box-register" ref={modalRef}>
+        <button className="icon_close-register" onClick={handleToggleSecondModal}>
           <img src={iconClose} alt="Fechar" />
         </button>
         <div className="header__container-register">
@@ -21,17 +26,10 @@ export default function ModalChargeGeneric({ onClose, modalRef, title }) {
           <div className="input__container-register">
             <label htmlFor="text">Descrição*</label>
             <textarea
-              class="input__desc-register"
-              rows="4"
-              placeholder="Digite seu texto aqui..."
-            ></textarea>
-
-            {/* <input
               className="input__desc-register"
-              type="text"
+              rows="4"
               placeholder="Digite a descrição"
-              wrap="soft"
-            /> */}
+            ></textarea>
           </div>
           <div className="input__container-register-extra-wrapper">
             <div className="input__container-register-extra">
@@ -44,20 +42,20 @@ export default function ModalChargeGeneric({ onClose, modalRef, title }) {
             </div>
           </div>
           <div className="input__container-register">
-            <label for="opcoes">Status*</label>
+            <label htmlFor="opcoes">Status*</label>
             <label className="label__radio-register-charge">
               <input type="radio" name="option" value="1" />
-              <span class="checkmark"></span>
+              <span className="checkmark"></span>
               Cobrança Paga
             </label>
             <label className="label__radio-register-charge">
-              <input type="radio" name="option" value="1" />
-              <span class="checkmark"></span>
+              <input type="radio" name="option" value="2" />
+              <span className="checkmark"></span>
               Cobrança Pendente
             </label>
             <label className="label__radio-register-charge">
-              <input type="radio" name="option" value="1" />
-              <span class="checkmark"></span>
+              <input type="radio" name="option" value="3" />
+              <span className="checkmark"></span>
               Cobrança Vencida
             </label>
           </div>
