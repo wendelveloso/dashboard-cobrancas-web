@@ -7,7 +7,7 @@
   flex-shrink: 0;
   background-color: #919a964d;
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   backdrop-filter: blur(2px);
 }
 
@@ -21,11 +21,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 20px;
+  gap: 10px;
   transition: opacity 0.3s ease;
-}
-.modal__box.closing {
-  opacity: 0; /* Transição para opacidade zero */
 }
 
 
@@ -129,7 +126,23 @@ input::placeholder {
 }
 .eye-icon {
   position: absolute;
-  right: 10px; /* Ajuste a posição conforme necessário */
+  right: 10px; 
   top: 37px;
-  cursor: pointer; /* Mostra que o ícone é clicável */
+  cursor: pointer;
+}
+
+.modal__box p.error-message {
+  color: #e70000;
+  font-family: Nunito;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.error-border{
+  outline: 1px solid #E70000;
 }

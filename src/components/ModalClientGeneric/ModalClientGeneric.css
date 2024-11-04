@@ -267,8 +267,8 @@ textarea::placeholder {
 .btn_group-client {
   display: flex;
   gap: 23px;
-  margin-top: 50px;
-  /* width: 100%; */
+  margin-top: 590px;
+  position: absolute;
 }
 
 .icon_close {
@@ -290,4 +290,25 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.modal__box-client p.error-message {
+  color: #e70000;
+  font-family: Nunito;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  margin-left: 30px;
+}
+
+.error-border{
+  outline: 1px solid #E70000;
+}
+
+.input__container-client-extra-wrapper p.error-message {
+  margin-left: 0; 
 }

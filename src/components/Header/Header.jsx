@@ -8,8 +8,6 @@ import { getItem } from "../../utils/storage";
 import { formatUserName } from "../../utils/nameUser";
 import { useState, useRef, useEffect } from "react";
 import ModalEditUser from "../ModalEditUser/ModalEditUser";
-import ModalGeneric from "../ModalGeneric/ModalGeneric";
-import ModalEditUserGeneric from "../ModalEditUserGeneric/ModalEditUserGeneric";
 
 export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
   const [optionsOn, setOptionsOn] = useState(false);
@@ -52,15 +50,7 @@ export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
 
   return (
     <>
-      {/* {modalOpen && <ModalEditUser modalRef={modalRef} onClose={closeModal} />} */}
-      {modalOpen && (
-        <ModalGeneric
-          onClose={closeModal}
-          modalRef={modalRef}
-        >
-          <ModalEditUserGeneric />
-        </ModalGeneric>
-      )}
+      {modalOpen && <ModalEditUser modalRef={modalRef} onClose={closeModal} />}
       <header className="header__container">
         <div className="header__first-group">
           <h1 className={`${titleStyle}`}>{title}</h1>
