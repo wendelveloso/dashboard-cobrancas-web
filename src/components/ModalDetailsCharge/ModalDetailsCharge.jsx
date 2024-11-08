@@ -1,18 +1,9 @@
 import React from "react";
 import "./ModalDetailsCharge.css";
 import { iconClose, iconEyes, iconPaper } from "../Icons/icons";
+import { formatarValor, formatarData } from "../../utils/formatting";
 
-const client = [
-  {
-    status: "Paga",
-  },
-  {
-    status: "Vencida",
-  },
-  {
-    status: "Pendente",
-  },
-];
+
 const getStatusClass = (status) => {
   switch (status) {
     case "Vencida":
@@ -30,6 +21,7 @@ export default function ModalDetailsCharge({
   modalClientRef,
   onClose,
   title,
+  cobranca,
 }) {
   return (
     <div className="modal__container-details-charge">
@@ -47,37 +39,33 @@ export default function ModalDetailsCharge({
         <div className="container__details-charge-info">
           <div className="details-charge-info">
             <p>Nome</p>
-            <p>Sara Lage Silva</p>
+            <p>{cobranca.nome}</p>
           </div>
           <div className="details-charge-info">
             <p>Descrição</p>
-            <p className="details-desc">
-              Lorem ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem
-              ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem IpsumLorem
-        IpsumLorem 
-            </p>
+            <p className="details-desc">{cobranca.descricao}</p>
           </div>
           <div className="container__details-charge-info-extra">
             <div className="details-charge-info-dif">
               <div className="container1-details">
                 <p>Vencimento</p>
-                <p>10/12/2021</p>
+                <p>{formatarData(cobranca.data_venc)}</p>
               </div>
               <div className="container2-details">
                 <p>ID cobranças</p>
-                <p>248563147</p>
+                <p>{cobranca.id_cob}</p>
               </div>
             </div>
             <div className="details-charge-info-dif">
               <div className="container1-details">
                 <p>Valor</p>
-                <p>R$ 300,00</p>
+                <p>R$ {formatarValor(cobranca.valor)}</p>
               </div>
               <div className="container2-details">
                 <p>Status</p>
-                <p className={getStatusClass(client[0].status)}>
-                  {client[0].status}
-                </p>
+                <span className={getStatusClass(cobranca.status)}>
+                  {cobranca.status}
+                </span>
               </div>
             </div>
           </div>

@@ -1,30 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export const useModal = () => {
   const [modalTooltsOpen, setModalTooltsOpen] = useState(false);
   const [modalSecondOpen, setModalSecondOpen] = useState(false);
   const [modalClientOpen, setModalClientOpen] = useState(false);
-
-  const modalRef = useRef(null);
-  const modalToolsRef = useRef(null);
-  const modalClientRef = useRef(null);
-
-  const handleToggleToolsModal = () => {
-    setModalTooltsOpen((prev) => !prev);
-  };
-
-  const handleToggleSecondModal = () => {
-    setModalSecondOpen((prev) => !prev);
-  };
-  const handleToggleClientModal = () => {
-    setModalClientOpen((prev) => !prev);
-  };
-
-  const onClose = () => {
-    setModalTooltsOpen(false);
-    setModalSecondOpen(false);
-    setModalClientOpen(false);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -49,6 +28,26 @@ export const useModal = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+  const modalRef = useRef(null);
+  const modalToolsRef = useRef(null);
+  const modalClientRef = useRef(null);
+
+  const handleToggleToolsModal = () => {
+    setModalTooltsOpen((prev) => !prev);
+  };
+
+  const handleToggleSecondModal = () => {
+    setModalSecondOpen((prev) => !prev);
+  };
+  const handleToggleClientModal = () => {
+    setModalClientOpen((prev) => !prev);
+  };
+
+  const onClose = () => {
+    setModalTooltsOpen(false);
+    setModalSecondOpen(false);
+    setModalClientOpen(false);
+  };
 
   return {
     modalRef,

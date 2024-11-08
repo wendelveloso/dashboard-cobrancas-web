@@ -3,7 +3,7 @@ import VerticalStepperGreenLine from "../../assets/VerticalStepperGreenLine.png"
 import VerticalStepperGreenBall from "../../assets/VerticalStepperGreenBall.png";
 import VerticalStepperGrayBall from "../../assets/VerticalStepperGrayBall.png";
 import VerticalStepperCheckedBox from "../../assets/VerticalStepperCheckedBall.png";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useSignUpContext } from "../../context/SignUpContext";
 
 export default function VerticalStepper() {

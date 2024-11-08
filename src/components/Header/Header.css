@@ -22,7 +22,6 @@
 
 .header__options {
   display: flex;
-  width: 150.656px;
   justify-content: flex-end;
   align-items: center;
   gap: 16px;
@@ -114,5 +113,10 @@
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   left: 10px;
   top: -8px;
+}
+
+.user__options img:hover {
+  background-color: #f0f0f5b2;
+  border-radius: 5px;
 }
 

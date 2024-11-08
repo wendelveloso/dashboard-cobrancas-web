@@ -1,21 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
+import "./ModalEditUser.css";
+import userSchema from "../../validations/userSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import "./ModalEditUser.css";
+import api from "../../services/api.js";
 import { iconClose, iconEyes } from "../../components/Icons/icons";
-import userSchema from "../../validations/userSchema";
 
-export default function ModalEditUser({ onClose, modalRef }) {
+export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
+    reset,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(userSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Dados enviados:", data);
+  const onSubmit = async (data) => {
+    delete data.repetirSenha;
+    console.log(data);
+    try {
+      const response = await api.patch("/updateUser", data);
+
+      onAddUser(response.data);
+      reset();
+      onClose();
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 400) {
+          const mensagemErro = error.response.data.mensagem;
+          console.log(error.response);
+          if (mensagemErro.includes("Email")) {
+            setError("email", { type: "manual", message: mensagemErro });
+          }
+
+          if (mensagemErro.includes("CPF")) {
+            setError("cpf", { type: "manual", message: mensagemErro });
+          }
+          if (mensagemErro.includes("@")) {
+            setError("senha", { type: "manual", message: mensagemErro });
+          }
+        }
+      } else {
+        setError("form", {
+          type: "manual",
+          message: "Erro inesperado. Tente novamente mais tarde.",
+        });
+      }
+    }
   };
 
   return (
@@ -24,19 +59,19 @@ export default function ModalEditUser({ onClose, modalRef }) {
         <button className="icon_close" onClick={onClose}>
           <img src={iconClose} alt="Fechar" />
         </button>
-        <h3>Edite seus dados</h3>
+        <h3>Edite seu cadastro</h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input__container">
-            <label htmlFor="name">Nome*</label>
+            <label htmlFor="nome">Nome*</label>
             <input
               type="text"
               placeholder="Digite seu nome"
-              {...register("name")}
-              className={errors.name ? "error-border" : ""}
+              {...register("nome")}
+              className={errors.nome ? "error-border" : ""}
             />
-          {errors.name && (
-            <p className="error-message">{errors.name.message}</p>
-          )}
+            {errors.nome && (
+              <p className="error-message">{errors.nome.message}</p>
+            )}
           </div>
           <div className="input__container">
             <label htmlFor="email">E-mail*</label>
@@ -46,46 +81,68 @@ export default function ModalEditUser({ onClose, modalRef }) {
               {...register("email")}
               className={errors.email ? "error-border" : ""}
             />
-          {errors.email && (
-            <p className="error-message">{errors.email.message}</p>
-          )}
+            {errors.email && (
+              <p className="error-message">{errors.email.message}</p>
+            )}
           </div>
-
+          <div className="input__container-user-extra-wrapper">
+            <div className="input__container-user-extra">
+              <label htmlFor="number">CPF</label>
+              <input
+                type="number"
+                {...register("cpf")}
+                placeholder="Digite seu CPF"
+                className={errors.cpf ? "error-border" : ""}
+              />
+              {errors.cpf && (
+                <p className="error-message">{errors.cpf.message}</p>
+              )}
+            </div>
+            <div className="input__container-user-extra">
+              <label htmlFor="telefone">Telefone</label>
+              <input
+                type="text"
+                {...register("telefone")}
+                placeholder="Digite seu Telefone"
+                className={errors.telefone ? "error-border" : ""}
+              />
+              {errors.telefone && (
+                <p className="error-message">{errors.telefone.message}</p>
+              )}
+            </div>
+          </div>
           <div className="input__container">
-            <label htmlFor="password">Senha*</label>
+            <label htmlFor="senha">Nova Senha*</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Digite sua senha"
-              {...register("password")}
-              className={errors.password ? "error-border" : ""}
+              {...register("senha")}
+              className={errors.senha ? "error-border" : ""}
             />
-            <img src={iconEyes} alt="icon-eyes" className="eye-icon" />
-            {errors.password && (
-              <p className="error-message">{errors.password.message}</p>
+            <img onClick={() => setShowPassword(!showPassword)} src={iconEyes} alt="icon-eyes" className="eye-icon" />
+            {errors.senha && (
+              <p className="error-message">{errors.senha.message}</p>
             )}
           </div>
 
           <div className="input__container">
-            <label htmlFor="repeat-password">Repita a senha*</label>
+            <label htmlFor="repetirSenha">Confirmar Senha*</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Repita sua senha"
-              {...register("repeatPassword")}
-              className={errors.repeatPassword ? "error-border" : ""}
+              {...register("repetirSenha")}
+              className={errors.repetirSenha ? "error-border" : ""}
             />
-            <img src={iconEyes} alt="icon-eyes" className="eye-icon" />
-            {errors.repeatPassword && (
-              <p className="error-message">{errors.repeatPassword.message}</p>
+            <img onClick={() => setShowPassword(!showPassword)} src={iconEyes} alt="icon-eyes" className="eye-icon" />
+            {errors.repetirSenha && (
+              <p className="error-message">{errors.repetirSenha.message}</p>
             )}
           </div>
 
           <button className="btn__submit" type="submit">
-            Continuar
+            Aplicar
           </button>
         </form>
-        <p>
-          Já possui uma conta? Faça seu <a href="">Login</a>
-        </p>
       </div>
     </div>
   );

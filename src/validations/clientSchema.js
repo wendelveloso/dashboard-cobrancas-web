@@ -2,7 +2,7 @@ import * as Yup from "yup";
 
 
 const clientSchema = Yup.object().shape({
-    name: Yup.string()
+    nome: Yup.string()
       .required("Nome é obrigatório")
       .min(3, "Nome deve ter pelo menos 3 caracteres"),
     email: Yup.string()

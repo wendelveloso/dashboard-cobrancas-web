@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import "./ClientDetails.css";
 import {
   iconTools,
@@ -9,38 +10,19 @@ import {
   iconDelete,
 } from "../../components/Icons/icons";
 import Header from "../../components/Header/Header";
-import { useState, useRef, useEffect } from "react";
 import ModalFilter from "../../components/ModalFilter/ModalFilter";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientGeneric";
 import { useModal } from "../../utils/useModal";
+import api from "../../services/api";
+import { useParams } from "react-router-dom";
+import { formatarValor, formatarCPF, formatarData } from "../../utils/formatting"
 
-const client = [
-  {
-    status: "Paga",
-  },
-  {
-    status: "Vencida",
-  },
-  {
-    status: "Pendente",
-  },
-];
-
-export default function ClientDetails({ title }) {
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "Vencida":
-        return "status-vencida";
-      case "Pendente":
-        return "status-pendente";
-      case "Paga":
-        return "status-paga";
-      default:
-        return "";
-    }
-  };
-
+export default function ClientDetails() {
+  const [carregando, setCarregando] = useState(true);
+  const [cliente, setCliente] = useState(null);
+  const [cobranca, setCobranca] = useState(null);
+  const { clientId } = useParams();
   const {
     modalToolsRef,
     modalRef,
@@ -54,7 +36,39 @@ export default function ClientDetails({ title }) {
     onClose,
   } = useModal();
 
-  const clientName = "Sara Lage Silva";
+  useEffect(() => {
+    const buscarDetalhesCliente = async () => {
+      try {
+        const response = await api.get(`/clientDetails/${clientId}`);
+        setCliente(response.data.client);
+        setCobranca(response.data.charges);
+      } catch (error) {
+        console.error("Erro ao buscar detalhes do cliente:", error);
+      } finally {
+        setCarregando(false);
+      }
+    };
+
+    buscarDetalhesCliente();
+  }, [clientId]);
+
+  if (carregando) return <p>Carregando detalhes do cliente...</p>;
+
+  
+
+  const getStatusClass = (status) => {
+    switch (status) {
+      case "Vencida":
+        return "status-vencida";
+      case "Pendente":
+        return "status-pendente";
+      case "Paga":
+        return "status-paga";
+      default:
+        return "";
+    }
+  };
+
   return (
     <>
       {modalSecondOpen && (
@@ -92,7 +106,7 @@ export default function ClientDetails({ title }) {
           <div className="list__clients-details">
             <div className="container1">
               <img src={iconClient} alt="icon-client" />
-              <h2>{clientName}</h2>
+              <h2>{cliente.nome}</h2>
             </div>
           </div>
           <div className="clients_container-data">
@@ -109,9 +123,9 @@ export default function ClientDetails({ title }) {
                 <p>CPF</p>
               </div>
               <div className="clients__data">
-                <p>sarasilva@gmail.com</p>
-                <p>71 9 9462 8654</p>
-                <p>054 365 255 87</p>
+                <p>{cliente.email}</p>
+                <p>{cliente.telefone}</p>
+                <p>{cliente.cpf}</p>
               </div>
             </div>
             <div className="clients__header_info-data2">
@@ -124,12 +138,12 @@ export default function ClientDetails({ title }) {
                 <p>UF</p>
               </div>
               <div className="clients__data2">
-                <p>Rua das Cornélias, nº 512</p>
-                <p>Oliveiras</p>
-                <p>Ap: 502</p>
-                <p>031 654 524 04</p>
-                <p>Salvador</p>
-                <p>BA</p>
+                <p>{cliente.endereco}</p>
+                <p>{cliente.bairro}</p>
+                <p>{cliente.complemento}</p>
+                <p>{cliente.cep}</p>
+                <p>{cliente.cidade}</p>
+                <p>{cliente.uf}</p>
               </div>
             </div>
           </div>
@@ -154,64 +168,35 @@ export default function ClientDetails({ title }) {
               <p>Descrição</p>
             </div>
             <div className="clients__info_container-details">
-              <div className="clients__info-details" >
-                <p className="client__name_size-details">248563147</p>
-                <p>26/01/2021</p>
-                <p className="client__name_size-details">R$ 500,00</p>
-                <p className={getStatusClass(client[1].status)}>
-                  {client[1].status}
-                </p>
-                <p className="clients__desc_size-details">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Corrupti optio quibusdam, veniam provident similique deserunt
-                  possimus quos quidem nisi assumenda culpa eius voluptas harum!
-                  Expedita doloremque adipisci aut quisquam facilis.
-                </p>
-                <div className="icon_container-details">
-                  <img className="btn-zoom" src={iconEdit} alt="icon-edit" onClick={handleToggleToolsModal}/>
-                  <img className="btn-zoom" src={iconDelete} alt="icon-delete" />
+              {cobranca.map((cobranca, index) => (
+                <div key={cobranca.id_cob} className="clients__info-details">
+                  <p className="client__name_size-details">{cobranca.id_cob}</p>
+                  <p>{formatarData(cobranca.data_venc)}</p>
+                  <p className="client__name_size-details">
+                    R$ {formatarValor(cobranca.valor)}
+                  </p>
+                  <p className={getStatusClass(cobranca.status)}>
+                    {cobranca.status}
+                  </p>
+                  <p className="clients__desc_size-details">
+                    {cobranca.descricao}
+                  </p>
+                  <div className="icon_container-details">
+                    <img
+                      className="btn-zoom"
+                      src={iconEdit}
+                      alt="icon-edit"
+                      onClick={() => handleToggleToolsModal(cobranca.id_cob)}
+                    />
+                    <img
+                      className="btn-zoom"
+                      src={iconDelete}
+                      alt="icon-delete"
+                      onClick={() => handleDeleteCobranca(cobranca.id_cob)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="clients__info_container-details">
-              <div className="clients__info-details">
-                <p className="client__name_size-details">248563147</p>
-                <p>26/01/2021</p>
-                <p className="client__name_size-details">R$ 5000,00</p>
-                <p className={getStatusClass(client[2].status)}>
-                  {client[2].status}
-                </p>
-                <p className="clients__desc_size-details">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Corrupti optio quibusdam, veniam provident similique deserunt
-                  possimus quos quidem nisi assumenda culpa eius voluptas harum!
-                  Expedita doloremque adipisci aut quisquam facilis.
-                </p>
-                <div className="icon_container-details">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-            </div>
-            <div className="clients__info_container-details">
-              <div className="clients__info-details">
-                <p className="client__name_size-details">248563147</p>
-                <p>26/01/2021</p>
-                <p className="client__name_size-details">R$ 500,00</p>
-                <p className={getStatusClass(client[0].status)}>
-                  {client[0].status}
-                </p>
-                <p className="clients__desc_size-details">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Corrupti optio quibusdam, veniam provident similique deserunt
-                  possimus quos quidem nisi assumenda culpa eius voluptas harum!
-                  Expedita doloremque adipisci aut quisquam facilis.
-                </p>
-                <div className="icon_container-details">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </main>

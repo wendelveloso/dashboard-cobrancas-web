@@ -5,6 +5,8 @@ import {
   iconClient,
   iconTopDown,
   iconChargePlus,
+  emptySearch,
+  polygon
 } from "../../components/Icons/icons";
 import Header from "../../components/Header/Header";
 import ModalFilter from "../../components/ModalFilter/ModalFilter";
@@ -12,10 +14,74 @@ import { useModal } from "../../utils/useModal";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientGeneric";
 import { NavLink } from "react-router-dom";
+import api from "../../services/api";
+import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { formatarCPF, formatarTelefone } from "../../utils/formatting";
 
-const client = [{ status: "Em dia" }, { status: "Inadimplente" }];
+export default function Client() {
+  const { register, handleSubmit, watch } = useForm();
+  const [clients, setClients] = useState([]);
+  const [allClients, setAllClients] = useState([]);
+  const [filteredClients, setFilteredClients] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const clientsPerPage = 9;
 
-export default function Client({ title }) {
+  const fetchClients = async (searchTerm = "") => {
+    try {
+      const response = await api.get("/searchClients", {
+        params: {
+          searchTerm,
+          orderBy: "nome",
+          typeOrderBy: "asc",
+        },
+      });
+      setClients(response.data);
+      setFilteredClients(response.data);
+
+      if (!searchTerm) setAllClients(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar clientes:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  const searchTerm = watch("searchTerm");
+  useEffect(() => {
+    if (searchTerm) {
+      fetchClients(searchTerm);
+    } else {
+      setClients(allClients);
+    }
+  }, [searchTerm]);
+
+  const handleAddClient = (newClient) => {
+    setClients((prevClients) => [newClient, ...prevClients]);
+    setAllClients((prevAllClients) => [newClient, ...prevAllClients]);
+  };
+
+  const handleFilterClients = (status) => {
+    if (status) {
+      setFilteredClients(clients.filter(client => client.status === status));
+    } else {
+      setFilteredClients(clients);
+    }
+  };
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const startIndex = (currentPage - 1) * clientsPerPage;
+  const currentClients = filteredClients.slice(startIndex, startIndex + clientsPerPage);
+
   const getStatusClass = (status) => {
     switch (status) {
       case "Inadimplente":
@@ -43,7 +109,7 @@ export default function Client({ title }) {
   return (
     <>
       {modalTooltsOpen && (
-        <ModalFilter modalRef={modalToolsRef} onClose={onClose} />
+        <ModalFilter modalRef={modalToolsRef} onApplyFilter={handleFilterClients} onClose={onClose} />
       )}
       {modalSecondOpen && (
         <ModalChargeGeneric
@@ -59,6 +125,7 @@ export default function Client({ title }) {
           modalRef={modalClientRef}
           onClose={onClose}
           handleToggleClientModal={handleToggleClientModal}
+          onAddClient={handleAddClient}
         />
       )}
       <div className="page__container">
@@ -80,7 +147,11 @@ export default function Client({ title }) {
                 onClick={handleToggleToolsModal}
               />
               <div className="search-container">
-                <input type="search" placeholder="Pesquisa" />
+                <input
+                  type="search"
+                  placeholder="Pesquisa"
+                  {...register("searchTerm")}
+                />
                 <img
                   src={iconGlass}
                   alt="Ícone de busca"
@@ -102,30 +173,52 @@ export default function Client({ title }) {
               <p>Criar Cobrança</p>
             </div>
             <div className="clients__info_container">
-              {client.map((cliente, index) => (
-                <NavLink
-                  key={index}
-                  to="/clientes/detalhes"
-                  className="clients__info"
-                >
-                  <p className="client__name_size">Nome do Cliente</p>
-                  <p>054 365 255 87</p>
-                  <p className="client__email_size">email@exemplo.com</p>
-                  <p>71 9 9462 8654</p>
-                  <p className={getStatusClass(cliente.status)}>
-                    {cliente.status}
-                  </p>
-                  <img
-                    className="btn-zoom"
-                    src={iconChargePlus}
-                    alt="icon-page-charge-plus"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleToggleSecondModal();
-                    }}
-                  />
-                </NavLink>
-              ))}
+              {currentClients.length > 0 ? (
+                currentClients.map((cliente, index) => (
+                  <NavLink
+                    key={index}
+                    to={`/clientes/detalhes/${cliente.id}`}
+                    className="clients__info"
+                  >
+                    <p className="client__name_size">{cliente.nome}</p>
+                    <p>{formatarCPF(cliente.cpf)}</p>
+                    <p className="client__email_size">{cliente.email}</p>
+                    <p>{formatarTelefone(cliente.telefone)}</p>
+                    <p className={getStatusClass(cliente.status)}>
+                      {cliente.status}
+                    </p>
+                    <img
+                      className="btn-zoom"
+                      src={iconChargePlus}
+                      alt="icon-page-charge-plus"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleToggleSecondModal();
+                      }}
+                    />
+                  </NavLink>
+                ))
+              ) : (
+                <img className="img_empty-search" src={emptySearch} alt="" />
+              )}
+            </div>
+            <div className="pagination-buttons">
+              <img
+                onClick={prevPage}
+                className={`polygon1 ${currentPage === 1 ? "disabled" : ""}`}
+                src={polygon}
+                alt="previous-page"
+              />
+              <img
+                onClick={nextPage}
+                className={`polygon2 ${
+                  startIndex + currentClients >= clients.length
+                    ? "disabled"
+                    : ""
+                }`}
+                src={polygon}
+                alt="next-page"
+              />
             </div>
           </div>
         </main>

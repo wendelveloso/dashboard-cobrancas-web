@@ -4,25 +4,56 @@ import { iconClose, iconEyes, iconPaper } from "../Icons/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
 import chargeSchema from "../../validations/chargeSchema";
+import api from "../../services/api";
+
 
 export default function ModalChargeGeneric({
   handleToggleSecondModal,
   modalRef,
   onClose,
   title,
+  onAddCharge,
 }) {
   const {
-    control,
     register,
     handleSubmit,
+    reset,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(chargeSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Dados do formulário:", data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await api.post("/addCharge", data);
+
+      onAddCharge(response.data);
+      reset();
+      onClose();
+      
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 400) {
+          const mensagemErro = error.response.data.mensagem;
+          if (mensagemErro.includes("e-mail")) {
+            setError("email", { type: "manual", message: mensagemErro });
+          }
+
+          if (mensagemErro.includes("CPF")) {
+            setError("cpf", { type: "manual", message: mensagemErro });
+          }
+        }
+      } else {
+        setError("form", {
+          type: "manual",
+          message: "Erro inesperado. Tente novamente mais tarde.",
+        });
+      }
+    }
   };
+
+  
   return (
     <div className="modal__container-register">
       <div className="modal__box-register" ref={modalRef}>
@@ -43,16 +74,18 @@ export default function ModalChargeGeneric({
               type="text"
               {...register("name")}
               placeholder="Digite seu nome"
-              className={errors.name ? 'error-border' : ''}
+              className={errors.name ? "error-border" : ""}
             />
             {errors.name && (
               <p className="error-message">{errors.name.message}</p>
             )}
           </div>
-          <div className = "input__container-register" >
+          <div className="input__container-register">
             <label htmlFor="text">Descrição*</label>
             <textarea
-              className={`input__container-register ${errors.descricao ? 'error-border' : ''}`}
+              className={`input__desc-register ${
+                errors.descricao ? "error-border" : ""
+              }`}
               rows="4"
               {...register("descricao")}
               placeholder="Digite a descrição"
@@ -68,7 +101,7 @@ export default function ModalChargeGeneric({
                 type="date"
                 {...register("vencimento")}
                 placeholder="Digite o valor"
-                className={errors.vencimento ? 'error-border' : ''}
+                className={errors.vencimento ? "error-border" : ""}
               />
               {errors.vencimento && (
                 <p className="error-message">{errors.vencimento.message}</p>
@@ -80,7 +113,7 @@ export default function ModalChargeGeneric({
                 type="number"
                 {...register("valor")}
                 placeholder="Digite o valor"
-                className={errors.valor ? 'error-border' : ''}
+                className={errors.valor ? "error-border" : ""}
               />
               {errors.valor && (
                 <p className="error-message">{errors.valor.message}</p>
@@ -101,7 +134,13 @@ export default function ModalChargeGeneric({
             </label>
           </div>
           <div className="btn_group-register">
-            <button className="btn__clean-register" onClick={onClose}>
+            <button
+              className="btn__clean-register"
+              onClick={(event) => {
+                event.preventDefault();
+                onClose();
+              }}
+            >
               Cancelar
             </button>
             <button className="btn__submit-register" type="submit">

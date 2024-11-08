@@ -21,7 +21,8 @@ import iconEdit from "../../assets/icon-edit.svg";
 import iconExit from "../../assets/icon-exit.svg";
 import iconClose from "../../assets/close.svg";
 import iconEyes from "../../assets/EyeHiddenPass.png";
-// import iconEyes from "../../assets/icon-paper-charge.png";
+import emptySearch from "../../assets/group-empty-search.svg";
+import polygon from "../../assets/polygon.svg";
 
 
 export {
@@ -47,5 +48,7 @@ export {
   iconEdit,
   iconExit,
   iconClose,
-  iconEyes
+  iconEyes,
+  emptySearch,
+  polygon
 };

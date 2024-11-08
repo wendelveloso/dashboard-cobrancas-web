@@ -32,6 +32,8 @@
   justify-content: flex-start;
   gap: 20px;
   transition: opacity 0.3s ease;
+  height: auto;
+  padding-bottom: 50px;
 }
 .modal__box.closing {
   opacity: 0; /* Transição para opacidade zero */
@@ -267,8 +269,8 @@ textarea::placeholder {
 .btn_group-client {
   display: flex;
   gap: 23px;
-  margin-top: 590px;
-  position: absolute;
+  margin-top: 30px;
+
 }
 
 .icon_close {

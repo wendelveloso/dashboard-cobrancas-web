@@ -120,12 +120,12 @@
 .status-vencida {
   border-radius: 8px;
   color: #971d1d;
-  background: #ffefef !important;
+  background: #ffefef ;
   display: flex;
   padding: 0px 8px;
   justify-content: center;
   align-items: center;
-  font-weight: 600;
+  font-weight: 400;
   height: 19px;
   width: 100px;
   font-size: 14px;
@@ -133,7 +133,7 @@
 .status-pendente {
   border-radius: 8px;
   color: #c5a605;
-  background: #fcf6dc !important;
+  background: #fcf6dc;
   display: flex;
   padding: 0px 8px;
   justify-content: center;
@@ -146,7 +146,7 @@
 
 .status-paga {
   border-radius: 8px;
-  color: #1fa7af !important;
+  color: #1fa7af ;
   background: #eef6f6;
   display: flex;
   padding: 0px 8px;
@@ -154,6 +154,6 @@
   align-items: center;
   width: 100px;
   height: 19px;
-  font-weight: 600;
-  font-size: 14px!important;
+  /* font-weight: 600; */
+  font-size: 14px;
 }

@@ -2,25 +2,53 @@ import React from "react";
 import "./ModalClientGeneric.css";
 import { iconClose, iconClient } from "../Icons/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import clientSchema from "../../validations/clientSchema";
+import api from "../../services/api";
 
 export default function ModalClientGeneric({
   handleToggleClientModal,
   modalClientRef,
   onClose,
   title,
+  onAddClient,
 }) {
   const {
     register,
     handleSubmit,
+    reset,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(clientSchema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Dados do formulário:", data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await api.post("/registerClient", data);
+
+      onAddClient(response.data);
+      reset();
+      onClose();
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 400) {
+          const mensagemErro = error.response.data.mensagem;
+          if (mensagemErro.includes("e-mail")) {
+            setError("email", { type: "manual", message: mensagemErro });
+          }
+
+          if (mensagemErro.includes("cpf")) {
+            setError("cpf", { type: "manual", message: mensagemErro });
+          }
+        }
+      } else {
+        setError("form", {
+          type: "manual",
+          message: "Erro inesperado. Tente novamente mais tarde.",
+        });
+      }
+    }
   };
   return (
     <div className="modal__container-client">
@@ -34,49 +62,49 @@ export default function ModalClientGeneric({
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input__container-client">
-            <label htmlFor="name">Nome*</label>
+            <label htmlFor="nome">Nome*</label>
             <input
               type="text"
-              {...register("name")}
+              {...register("nome")}
               placeholder="Digite seu nome"
-              className={errors.name ? 'error-border' : ''}
+              className={errors.nome ? "error-border" : ""}
             />
           </div>
-            {errors.name && (
-              <p className="error-message">{errors.name.message}</p>
-            )}
+          {errors.nome && (
+            <p className="error-message">{errors.nome.message}</p>
+          )}
           <div className="input__container-client">
-            <label htmlFor="text">E-mail*</label>
+            <label htmlFor="email">E-mail*</label>
             <input
-              type="text"
+              type="email"
               {...register("email")}
               placeholder="Digite o e-mail"
-              className={errors.email ? 'error-border' : ''}
+              className={errors.email ? "error-border" : ""}
             />
           </div>
-            {errors.email && (
-              <p className="error-message">{errors.email.message}</p>
-            )}
+          {errors.email && (
+            <p className="error-message">{errors.email.message}</p>
+          )}
           <div className="input__container-client-extra-wrapper">
             <div className="input__container-client-extra">
-              <label htmlFor="number">CPF:*</label>
+              <label htmlFor="cpf">CPF:*</label>
               <input
                 type="text"
                 {...register("cpf")}
                 placeholder="Digite o CPF"
-                className={errors.cpf ? 'error-border' : ''}
-                />
-                {errors.cpf && (
-                  <p className="error-message">{errors.cpf.message}</p>
-                )}
+                className={errors.cpf ? "error-border" : ""}
+              />
+              {errors.cpf && (
+                <p className="error-message">{errors.cpf.message}</p>
+              )}
             </div>
             <div className="input__container-client-extra">
-              <label htmlFor="number">Telefone:*</label>
+              <label htmlFor="text">Telefone:*</label>
               <input
                 type="text"
                 {...register("telefone")}
                 placeholder="Digite o telefone"
-                className={errors.telefone ? 'error-border' : ''}
+                className={errors.telefone ? "error-border" : ""}
               />
               {errors.telefone && (
                 <p className="error-message">{errors.telefone.message}</p>

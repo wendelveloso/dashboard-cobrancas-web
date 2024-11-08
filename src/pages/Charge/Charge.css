@@ -133,19 +133,17 @@
   border-top: solid 1px #eff0f6;
   padding: 10px 0px 0px 30px;
   align-items: center;
-  gap: 80px;
+  gap: 77px;
   transition: font-weight 0.3s ease;
 
   cursor: pointer;
 }
-.charges__info:hover{
+.charges__info:hover {
   font-weight: 700;
-  
 }
 
-
 .charges__info p:nth-of-type(2) {
-  padding-left: 25px;
+  padding-left: 56px;
 }
 .charges__info p:nth-of-type(3) {
   padding-left: 30px;
@@ -205,17 +203,73 @@
 }
 
 .charges__desc_size {
-  max-width: 300px;
+  width: 340px;
   max-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .charges__name_size {
-  width: 165px;
-  min-width: 165px;
+  width: 135px;
+  min-width: 135px;
   max-height: 40px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.charges__valor_size {
+  width: 110px;
+  min-width: 65px;
+  max-height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.img_empty-search {
+  margin-left: 350px;
+  max-width: 800px;
+  /* display: flex; */
+}
+
+a:-webkit-any-link .harges__info_container {
+  color: #6e6e85;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.pagination-buttons {
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  cursor: grabbing;
+}
+.pagination-buttons img {
+  width: 20px;
+}
+.polygon1 {
+  transform: rotate(180deg);
+  left: 190px;
+  position: fixed;
+  transition: transform 0.3s ease;
+}
+.polygon2 {
+  right: 70px;
+  position: fixed;
+  transition: transform 0.3s ease;
+}
+
+.polygon2:hover {
+  transform: translateX(20%);
+}
+
+.polygon1:hover {
+  transform: rotate(180deg) translateX(20%);
+}
+
+.polygon2.disabled,
+.polygon1.disabled {
+  opacity: 0;
+  pointer-events: none; 
+  cursor: not-allowed;
 }

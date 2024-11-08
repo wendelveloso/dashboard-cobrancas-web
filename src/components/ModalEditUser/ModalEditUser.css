@@ -11,7 +11,9 @@
   backdrop-filter: blur(2px);
 }
 
+
 .modal__box {
+  /* width: 100%; */
   display: flex;
   width: 491px;
   height: 654px;
@@ -23,15 +25,55 @@
   justify-content: flex-start;
   gap: 10px;
   transition: opacity 0.3s ease;
+  height: auto;
+  padding-bottom: 40px;
 }
 
 
+.input__container-user-extra-wrapper {
+  display: flex;
+  padding: 0px 20px 0px 20px;
+  /* width: 100%; */
+  gap: 20px;
+}
+
+.input__container-user-extra:last-child {
+  margin-right: 0;
+}
+.input__container-user-extra {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 5px;
+  display: flex;
+  /* width: 100%; */
+}
+
+.input__container-user-extra-wrapper input {
+  /* width: 100%; */
+  color: #667085;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  border-radius: 8px;
+  border: 1px solid #d0d5dd;
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+  display: flex;
+  padding: 10px 35px 10px 14px;
+  height: 44px;
+  max-width: 200px;
+  /* gap: 5px; */
+}
 .input__container {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   gap: 5px;
+  width: 100%;
+  padding: 0px 20px 0px 20px;
 }
 .modal__box h3 {
   color: #343447;
@@ -43,6 +85,7 @@
   line-height: 130%;
   margin: 0px 0px 10px 0px;
 }
+
 .modal__box form {
   display: flex;
   gap: 20px;
@@ -69,7 +112,7 @@
   text-decoration-line: underline;
 }
 
-.modal__box input {
+.input__container input {
   width: 100%;
   color: #667085;
   font-family: Inter;
@@ -84,14 +127,13 @@
   display: flex;
   padding: 10px 35px 10px 14px;
   height: 44px;
-  width: 368px;
+  /* width: 368px; */
 }
 input::placeholder {
   color: #667085;
 }
 .modal__box label {
-  display: flex;
-  width: 368px;
+  width: 100%;
   color: #344054;
 }
 
@@ -126,7 +168,7 @@ input::placeholder {
 }
 .eye-icon {
   position: absolute;
-  right: 10px; 
+  left: 400px;
   top: 37px;
   cursor: pointer;
 }
@@ -140,9 +182,9 @@ input::placeholder {
   line-height: normal;
   display: flex;
   justify-content: flex-start;
-  width: 100%;
+  width: 350px;
 }
 
-.error-border{
-  outline: 1px solid #E70000;
+.error-border {
+  outline: 1px solid #e70000;
 }

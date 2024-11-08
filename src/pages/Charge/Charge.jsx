@@ -6,39 +6,32 @@ import {
   iconPaper,
   iconDelete,
   iconEdit,
+  emptySearch,
+  polygon,
 } from "../../components/Icons/icons";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Header from "../../components/Header/Header";
 import { useModal } from "../../utils/useModal";
 import ModalFilterCharge from "../../components/ModalFilterCharge/ModalFilterCharge";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalDetailsCharge from "../../components/ModalDetailsCharge/ModalDetailsCharge";
-// import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import api from "../../services/api";
+import { useForm } from "react-hook-form";
+import { formatarValor, formatarData } from "../../utils/formatting";
+import { NavLink } from "react-router-dom";
+import LoadingModal from "../../components/ModalLoading/ModalLoading";
 
-const client = [
-  {
-    status: "Paga",
-  },
-  {
-    status: "Vencida",
-  },
-  {
-    status: "Pendente",
-  },
-];
+export default function Charge() {
+  // const [carregando, setCarregando] = useState(true);
+  const { register, watch } = useForm();
+  const [charges, setCharges] = useState([]);
+  const [allCharges, setAllCharges] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCharge, setSelectedCharge] = useState(null);
 
-export default function Charge({ title }) {
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "Vencida":
-        return "status-vencida";
-      case "Pendente":
-        return "status-pendente";
-      case "Paga":
-        return "status-paga";
-      default:
-        return "";
-    }
-  };
+  const chargesPerPage = 9;
   const {
     modalToolsRef,
     modalRef,
@@ -51,6 +44,88 @@ export default function Charge({ title }) {
     modalClientRef,
     modalClientOpen,
   } = useModal();
+
+  const handleDelete = async (idCharge) => {
+    try {
+      const confirmDelete = window.confirm(
+        "Tem certeza que deseja excluir esta cobrança?"
+      );
+
+      if (confirmDelete) {
+        await api.delete(`/deleteCharge/${idCharge}`);
+        toast.success("Cobrança excluída com sucesso!", {
+          position: "bottom-right",
+          hideProgressBar: true,
+          autoClose: 3000,
+          hideProgressBar: true,
+          style: {
+            backgroundColor: "#C3D4FE",
+            color: "#243F80",
+            width: "354px",
+          },
+        });
+      }
+    } catch (error) {
+      toast.error("Esta cobrança não pode ser excluída!", {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: true,
+        style: {
+          backgroundColor: "#F2D6D0",
+          color: "#AE1100",
+          width: "354px",
+        },
+      });
+    }
+  };
+
+  const fetchCharges = async (searchTerm = "") => {
+    try {
+      const response = await api.get("/searchCharges", {
+        params: {
+          searchTerm,
+        },
+      });
+      setCharges(response.data);
+      if (!searchTerm) setAllCharges(response.data);
+    } catch (error) {
+      console.error("Erro ao buscar cobranças:", error);
+    }
+  };
+
+
+
+
+
+  const searchTerm = watch("searchTerm");
+  useEffect(() => {
+    fetchCharges();
+  }, []);
+
+  useEffect(() => {
+    if (searchTerm) {
+      fetchCharges(searchTerm);
+    } else {
+      setCharges(allCharges);
+    }
+  }, [searchTerm]);
+
+  const handleOpenDetailsModal = (cobranca) => {
+    setSelectedCharge(cobranca);
+    handleToggleClientModal();
+  };
+
+  const nextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const startIndex = (currentPage - 1) * chargesPerPage;
+  const currentCharges = charges.slice(startIndex, startIndex + chargesPerPage);
+
   return (
     <>
       {modalTooltsOpen && <ModalFilterCharge modalRef={modalToolsRef} />}
@@ -62,8 +137,9 @@ export default function Charge({ title }) {
           handleToggleSecondModal={handleToggleSecondModal}
         />
       )}
-      {modalClientOpen && (
+      {modalClientOpen && selectedCharge && (
         <ModalDetailsCharge
+          cobranca={selectedCharge}
           modalRef={modalClientRef}
           onClose={onClose}
           handleToggleClientModal={handleToggleClientModal}
@@ -81,13 +157,21 @@ export default function Charge({ title }) {
               <img
                 src={iconTools}
                 alt="icon-tools"
-                class="icon-tools btn-zoom"
+                className="icon-tools btn-zoom"
                 onClick={handleToggleToolsModal}
                 ref={modalToolsRef}
               />
-              <div class="search-container">
-                <input type="search" placeholder="Pesquisa" />
-                <img src={iconGlass} alt="Ícone de busca" class="icon-glass" />
+              <div className="search-container">
+                <input
+                  type="search"
+                  placeholder="Pesquisa"
+                  {...register("searchTerm")}
+                />
+                <img
+                  src={iconGlass}
+                  alt="Ícone de busca"
+                  className="icon-glass"
+                />
               </div>
             </div>
           </div>
@@ -107,190 +191,71 @@ export default function Charge({ title }) {
               <p>Descrição</p>
             </div>
             <div className="charges__info_container">
-              <div className="charges__info">
-                <p className="charges__name_size">Sara Silva</p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[0].status)}>
-                  {client[0].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...{" "}
-                </p>
-                <div className="icon_container">
-                  <img
-                    onClick={handleToggleSecondModal}
-                    className="btn-zoom"
-                    src={iconEdit}
-                    alt="icon-delete"
-                  />
-                  <img className="btn-zoom" src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-              <div
-                className="charges__info"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleToggleClientModal();
-                }}
-              >
-                <p className="charges__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[1].status)}>
-                  {client[1].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...
-                </p>
-                <div className="icon_container">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-              <div className="charges__info">
-                <p className="charges__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[2].status)}>
-                  {client[2].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...
-                </p>
-                <div className="icon_container">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-              <div className="charges__info">
-                <p className="charges__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[0].status)}>
-                  {client[0].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...{" "}
-                </p>
-                <div className="icon_container">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-              <div className="charges__info">
-                <p className="charges__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[1].status)}>
-                  {client[1].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...{" "}
-                </p>
-                <div className="icon_container">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-              <div className="charges__info">
-                <p className="charges__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[2].status)}>
-                  {client[2].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...
-                </p>
-                <div className="icon_container">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-              <div className="charges__info">
-                <p className="charges__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[1].status)}>
-                  {client[1].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...{" "}
-                </p>
-                <div className="icon_container">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-              <div className="charges__info">
-                <p className="charges__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[0].status)}>
-                  {client[0].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...{" "}
-                </p>
-                <div className="icon_container">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
-              <div className="charges__info">
-                <p className="charges__name_size">
-                  Wendel Moreira Velosodddfffggggg
-                </p>
-                <p>248563147</p>
-                <p>R$ 500,00</p>
-                <p>26/01/2021</p>
-                <p className={getStatusClass(client[1].status)}>
-                  {client[1].status}
-                </p>
-                <p className="charges__desc_size">
-                  ipsum lorem ipsum lorem lorem ipsumlorem ipsumlorem ipsumlorem
-                  ipsum...
-                </p>
-                <div className="icon_container">
-                  <img src={iconEdit} alt="icon-delete" />
-                  <img src={iconDelete} alt="icon-edit" />
-                </div>
-              </div>
+              {currentCharges.length > 0 ? (
+                currentCharges.map((cobranca, index) => (
+                  <div
+                    key={index}
+                    className="charges__info"
+                    onClick={() => handleOpenDetailsModal(cobranca)}
+                  >
+                    <p className="charges__name_size">{cobranca.nome}</p>
+                    <p className="charges__name_size">{cobranca.id_cob}</p>
+                    <p className="charges__valor_size">
+                      R$ {formatarValor(cobranca.valor)}
+                    </p>
+                    <p>{formatarData(cobranca.data_venc)}</p>
+                    <p className={`status-${cobranca.status.toLowerCase()}`}>
+                      {cobranca.status}
+                    </p>
+                    <p className="charges__desc_size">{cobranca.descricao}</p>
+                    <div className="icon_container">
+                      <img
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleToggleSecondModal();
+                        }}
+                        className="btn-zoom"
+                        src={iconEdit}
+                        alt="icon-edit"
+                      />
+                      <img
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(cobranca.id_cob);
+                        }}
+                        className="btn-zoom"
+                        src={iconDelete}
+                        alt="icon-delete"
+                      />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <img className="img_empty-search" src={emptySearch} alt="" />
+              )}
+            </div>
+            <div className="pagination-buttons">
+              <img
+                onClick={prevPage}
+                className={`polygon1 ${currentPage === 1 ? "disabled" : ""}`}
+                src={polygon}
+                alt="previous-page"
+              />
+              <img
+                onClick={nextPage}
+                className={`polygon2 ${
+                  startIndex + chargesPerPage >= charges.length
+                    ? "disabled"
+                    : ""
+                }`}
+                src={polygon}
+                alt="next-page"
+              />
             </div>
           </div>
         </main>
       </div>
+      <ToastContainer />
     </>
   );
 }

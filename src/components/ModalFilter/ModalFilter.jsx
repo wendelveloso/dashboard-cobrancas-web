@@ -1,24 +1,23 @@
 import "./ModalFilter.css";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { iconClose, iconEyes } from "../../components/Icons/icons";
 
-export default function ModalFilter({ modalRef }) {
-  const [optionsOn, setOptionsOn] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
+export default function ModalFilter({ modalRef, onClose }) {
   const [selectedOption, setSelectedOption] = useState("");
-  
-  // const toggleOptionsDisplay = () => {
-  //   setOptionsOn(!optionsOn);
-  // };
-  // const handleOptionChange = (event) => {
-  //   setSelectedOption(event.target.value);
-  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    onClose();
   };
-  const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const handleClear = () => {
+    setSelectedOption("");
+    onApplyFilter(null);
+    onClose();
   };
 
   return (
@@ -28,29 +27,34 @@ export default function ModalFilter({ modalRef }) {
         <p className="label__status">Status</p>
 
         <label className="label__radio">
-          <input type="radio" name="option" value="1" />
-          <span class="checkmark"></span>
+          <input
+            type="radio"
+            name="option"
+            value="Inadimplente"
+            checked={selectedOption === "Inadimplente"}
+            onChange={handleOptionChange}
+          />
+          <span className="checkmark"></span>
           Inadimplentes
         </label>
 
         <label className="label__radio">
-          <input type="radio" name="option" value="1" />
-          <span class="checkmark"></span>
-          Em Dia
+          <input
+            type="radio"
+            name="option"
+            value="Em dia"
+            checked={selectedOption === "Em dia"}
+            onChange={handleOptionChange}
+          />
+          <span className="checkmark"></span>
+          Em dia
         </label>
-        <label className="label__date" htmlFor="date">
-          Data
-        </label>
-        <input
-          type="date"
-          id="date"
-          value={selectedDate}
-          onChange={handleDateChange}
-        />
         <button className="btnSubmit" type="submit" disabled={!selectedOption}>
           Aplicar
         </button>
-        <button className="btnClean">Limpar</button>
+        <button className="btnClean" onClick={handleClear}>
+          Limpar
+        </button>
       </form>
     </div>
   );
