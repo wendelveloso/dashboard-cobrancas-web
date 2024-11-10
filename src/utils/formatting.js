@@ -32,10 +32,17 @@ function formatarTelefone(numero) {
         return numero;
     }
 }
+function formatarCEP(cep) {
+  return cep
+    .replace(/\D/g, "") 
+    .replace(/^(\d{5})(\d)/, "$1-$2")
+    .substring(0, 9); 
+}
 
 export {
   formatarValor,
   formatarCPF,
   formatarData,
-  formatarTelefone
+  formatarTelefone,
+  formatarCEP
 };

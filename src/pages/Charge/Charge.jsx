@@ -9,7 +9,7 @@ import {
   emptySearch,
   polygon,
 } from "../../components/Icons/icons";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../../components/Header/Header";
 import { useModal } from "../../utils/useModal";
@@ -20,22 +20,21 @@ import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import { useForm } from "react-hook-form";
 import { formatarValor, formatarData } from "../../utils/formatting";
-import { NavLink } from "react-router-dom";
-import LoadingModal from "../../components/ModalLoading/ModalLoading";
+import { exibirErro, exibirSucesso } from "../../utils/toast";
 
 export default function Charge() {
-  // const [carregando, setCarregando] = useState(true);
   const { register, watch } = useForm();
   const [charges, setCharges] = useState([]);
   const [allCharges, setAllCharges] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCharge, setSelectedCharge] = useState(null);
+  const [filteredCharges, setFilteredCharges] = useState([]);
 
   const chargesPerPage = 9;
   const {
     modalToolsRef,
     modalRef,
-    modalTooltsOpen,
+    modalToolsOpen,
     handleToggleSecondModal,
     handleToggleToolsModal,
     modalSecondOpen,
@@ -53,29 +52,11 @@ export default function Charge() {
 
       if (confirmDelete) {
         await api.delete(`/deleteCharge/${idCharge}`);
-        toast.success("Cobrança excluída com sucesso!", {
-          position: "bottom-right",
-          hideProgressBar: true,
-          autoClose: 3000,
-          hideProgressBar: true,
-          style: {
-            backgroundColor: "#C3D4FE",
-            color: "#243F80",
-            width: "354px",
-          },
-        });
+        exibirSucesso("Cobrança excluída com sucesso!");
+        fetchCharges();
       }
     } catch (error) {
-      toast.error("Esta cobrança não pode ser excluída!", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        style: {
-          backgroundColor: "#F2D6D0",
-          color: "#AE1100",
-          width: "354px",
-        },
-      });
+      exibirErro("Esta cobrança não pode ser excluída!");
     }
   };
 
@@ -87,15 +68,12 @@ export default function Charge() {
         },
       });
       setCharges(response.data);
+      setFilteredCharges(response.data);
       if (!searchTerm) setAllCharges(response.data);
     } catch (error) {
       console.error("Erro ao buscar cobranças:", error);
     }
   };
-
-
-
-
 
   const searchTerm = watch("searchTerm");
   useEffect(() => {
@@ -114,6 +92,16 @@ export default function Charge() {
     setSelectedCharge(cobranca);
     handleToggleClientModal();
   };
+  const handleFilterCharges = (status) => {
+    if (status) {
+      setFilteredCharges(
+        charges.filter((charges) => charges.status === status)
+      );
+    } else {
+      setFilteredCharges(charges);
+    }
+    setCurrentPage(1);
+  };
 
   const nextPage = () => {
     setCurrentPage((prev) => prev + 1);
@@ -124,11 +112,20 @@ export default function Charge() {
   };
 
   const startIndex = (currentPage - 1) * chargesPerPage;
-  const currentCharges = charges.slice(startIndex, startIndex + chargesPerPage);
+  const currentCharges = filteredCharges.slice(
+    startIndex,
+    startIndex + chargesPerPage
+  );
 
   return (
     <>
-      {modalTooltsOpen && <ModalFilterCharge modalRef={modalToolsRef} />}
+      {modalToolsOpen && (
+        <ModalFilterCharge
+          onClose={onClose}
+          onApplyFilter={handleFilterCharges}
+          modalToolsRef={modalToolsRef}
+        />
+      )}
       {modalSecondOpen && (
         <ModalChargeGeneric
           title="Edição de Cobrança"
@@ -140,7 +137,7 @@ export default function Charge() {
       {modalClientOpen && selectedCharge && (
         <ModalDetailsCharge
           cobranca={selectedCharge}
-          modalRef={modalClientRef}
+          modalClientRef={modalClientRef}
           onClose={onClose}
           handleToggleClientModal={handleToggleClientModal}
         />
@@ -159,7 +156,7 @@ export default function Charge() {
                 alt="icon-tools"
                 className="icon-tools btn-zoom"
                 onClick={handleToggleToolsModal}
-                ref={modalToolsRef}
+                modalClientRef={modalToolsRef}
               />
               <div className="search-container">
                 <input

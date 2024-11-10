@@ -5,11 +5,13 @@ const userSchema = Yup.object().shape({
   email: Yup.string()
     .required("Este campo deve ser preenchido")
     .email("E-mail inválido"),
+  telefone: Yup.string().optional(),
+  cpf: Yup.string().optional(),
   senha: Yup.string()
-    .required("Este campo deve ser preenchido")
+    .optional()
     .min(6, "A senha deve ter no mínimo 6 caracteres"),
   repetirSenha: Yup.string()
-    .required("Este campo deve ser preenchido")
+    .optional()
     .oneOf([Yup.ref("senha"), null], "As senhas devem ser iguais"),
 });
 

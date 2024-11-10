@@ -1,12 +1,13 @@
 import "./ModalFilter.css";
 import { useState } from "react";
-import { iconClose, iconEyes } from "../../components/Icons/icons";
 
-export default function ModalFilter({ modalRef, onClose }) {
+
+export default function ModalFilter({ modalRef, onClose, onApplyFilter }) {
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    onApplyFilter(selectedOption);
     onClose();
   };
 

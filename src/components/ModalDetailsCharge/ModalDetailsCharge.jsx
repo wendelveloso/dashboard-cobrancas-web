@@ -1,6 +1,6 @@
 import React from "react";
 import "./ModalDetailsCharge.css";
-import { iconClose, iconEyes, iconPaper } from "../Icons/icons";
+import { iconClose, iconPaper } from "../Icons/icons";
 import { formatarValor, formatarData } from "../../utils/formatting";
 
 
@@ -19,8 +19,6 @@ const getStatusClass = (status) => {
 export default function ModalDetailsCharge({
   handleToggleClientModal,
   modalClientRef,
-  onClose,
-  title,
   cobranca,
 }) {
   return (

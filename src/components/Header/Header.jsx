@@ -6,72 +6,47 @@ import {
 } from "../../components/Icons/icons";
 import { getItem } from "../../utils/storage";
 import { formatUserName } from "../../utils/nameUser";
-import { useState, useRef, useEffect } from "react";
-import ModalEditUser from "../ModalEditUser/ModalEditUser";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { clear } from "../../utils/storage";
+import { useModal } from "../../utils/useModal"; 
+import ModalEditUser from "../ModalEditUser/ModalEditUser";
 
 export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
-  const [optionsOn, setOptionsOn] = useState(false);
-  const [modalOpen, setModalTooltsOpen] = useState(false);
-  const [fullName, setFullName] = useState(getItem("userName"));
+  const [fullName, setFullName] = useState("");
   const { nameFormated, initials } = formatUserName(fullName);
+  const [optionsOn, setOptionsOn] = useState(false);
 
-  const optionsRef = useRef(null);
-  const modalRef = useRef(null);
-
-  const handleAddUser = (newUser) => {
-    setClients((prevUser) => [newUser, ...prevUser]);
-    setAllClients((prevAllUser) => [newUser, ...prevAllUser]);
-  };
-
-  const toggleOptionsDisplay = () => {
-    setOptionsOn(!optionsOn);
-  };
+  useEffect(() => {
+    const storedName = getItem("userName");
+    if (storedName) {
+      setFullName(storedName);
+    }
+  }, []);
+  const {
+    modalRef,
+    modalSecondOpen,
+    handleToggleSecondModal,
+    onClose,
+  } = useModal();
 
   const navigate = useNavigate();
+
   const handleLogout = () => {
     clear();
     navigate("/");
   };
-
-  const openModal = () => {
-    setOptionsOn(false);
-    setModalTooltsOpen(true);
+  const toggleOptionsDisplay = () => {
+    setOptionsOn(!optionsOn);
   };
 
-  const closeModal = () => {
-    setModalTooltsOpen(false);
-  };
-  useEffect(() => {
-    const updatedName = getItem("userName"); 
-    setFullName(updatedName); 
-  }, [modalOpen]); 
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        closeModal();
-      }
-
-      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
-        setOptionsOn(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <>
-      {modalOpen && (
+      {modalSecondOpen && (
         <ModalEditUser
-          onAddUser={handleAddUser}
           modalRef={modalRef}
-          onClose={closeModal}
+          onClose={onClose}
         />
       )}
       <header className="header__container">
@@ -86,15 +61,20 @@ export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
             <img src={iconArrowDownGreen} alt="icon-arrow-down-green" />
           </div>
         </div>
-        <div
-          className={`user__options ${optionsOn ? "visible" : ""}`}
-          ref={optionsRef}
-        >
-          <div className="polygon__header "></div>
-          <img src={iconEdit} alt="icon-edit" onClick={openModal} />
+        <div className={`user__options ${optionsOn ? "visible" : ""}`}>
+          <div className="polygon__header"></div>
+          <img
+            src={iconEdit}
+            alt="icon-edit"
+            onClick={() => {
+              handleToggleSecondModal();
+              toggleOptionsDisplay();
+            }}
+          />
           <img src={iconExit} alt="icon-exit" onClick={handleLogout} />
         </div>
       </header>
     </>
   );
 }
+

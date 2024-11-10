@@ -6,7 +6,7 @@ import {
   iconTopDown,
   iconChargePlus,
   emptySearch,
-  polygon
+  polygon,
 } from "../../components/Icons/icons";
 import Header from "../../components/Header/Header";
 import ModalFilter from "../../components/ModalFilter/ModalFilter";
@@ -18,16 +18,41 @@ import api from "../../services/api";
 import { useForm } from "react-hook-form";
 import React, { useState, useEffect } from "react";
 import { formatarCPF, formatarTelefone } from "../../utils/formatting";
+import { exibirSucesso } from "../../utils/toast";
 
 export default function Client() {
-  const { register, handleSubmit, watch } = useForm();
+  const { register, watch } = useForm();
   const [clients, setClients] = useState([]);
   const [allClients, setAllClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const clientsPerPage = 9;
+  const searchTerm = watch("searchTerm");
 
-  const fetchClients = async (searchTerm = "") => {
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  useEffect(() => {
+    const message = localStorage.getItem("successMessage");
+    if (message) {
+      exibirSucesso(message);
+
+      setTimeout(() => {
+        localStorage.removeItem("successMessage");
+      }, 3000);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (searchTerm) {
+      fetchClients(searchTerm);
+    } else {
+      setClients(allClients);
+    }
+  }, [searchTerm]);
+
+ const fetchClients = async (searchTerm = "") => {
     try {
       const response = await api.get("/searchClients", {
         params: {
@@ -45,30 +70,20 @@ export default function Client() {
     }
   };
 
-  useEffect(() => {
-    fetchClients();
-  }, []);
-
-  const searchTerm = watch("searchTerm");
-  useEffect(() => {
-    if (searchTerm) {
-      fetchClients(searchTerm);
-    } else {
-      setClients(allClients);
-    }
-  }, [searchTerm]);
-
   const handleAddClient = (newClient) => {
     setClients((prevClients) => [newClient, ...prevClients]);
     setAllClients((prevAllClients) => [newClient, ...prevAllClients]);
+
+    setCurrentPage(1);
   };
 
   const handleFilterClients = (status) => {
     if (status) {
-      setFilteredClients(clients.filter(client => client.status === status));
+      setFilteredClients(clients.filter((client) => client.status === status));
     } else {
       setFilteredClients(clients);
     }
+    setCurrentPage(1);
   };
 
   const nextPage = () => {
@@ -80,7 +95,10 @@ export default function Client() {
   };
 
   const startIndex = (currentPage - 1) * clientsPerPage;
-  const currentClients = filteredClients.slice(startIndex, startIndex + clientsPerPage);
+  const currentClients = filteredClients.slice(
+    startIndex,
+    startIndex + clientsPerPage
+  );
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -97,7 +115,7 @@ export default function Client() {
     modalToolsRef,
     modalRef,
     modalClientRef,
-    modalTooltsOpen,
+    modalToolsOpen,
     modalSecondOpen,
     modalClientOpen,
     handleToggleToolsModal,
@@ -108,8 +126,12 @@ export default function Client() {
 
   return (
     <>
-      {modalTooltsOpen && (
-        <ModalFilter modalRef={modalToolsRef} onApplyFilter={handleFilterClients} onClose={onClose} />
+      {modalToolsOpen && (
+        <ModalFilter
+          modalRef={modalToolsRef}
+          onApplyFilter={handleFilterClients}
+          onClose={onClose}
+        />
       )}
       {modalSecondOpen && (
         <ModalChargeGeneric
@@ -122,10 +144,11 @@ export default function Client() {
       {modalClientOpen && (
         <ModalClientGeneric
           title="Cadastro do Cliente"
-          modalRef={modalClientRef}
+          modalClientRef={modalClientRef}
           onClose={onClose}
           handleToggleClientModal={handleToggleClientModal}
           onAddClient={handleAddClient}
+          fetchClients={fetchClients}
         />
       )}
       <div className="page__container">

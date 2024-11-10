@@ -50,7 +50,6 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
-  /* margin: 0px 0px 10px 0px; */
 }
 
 .modal__box-details-charge p {
@@ -154,6 +153,5 @@
   align-items: center;
   width: 100px;
   height: 19px;
-  /* font-weight: 600; */
   font-size: 14px;
 }

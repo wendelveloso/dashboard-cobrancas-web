@@ -1,8 +1,8 @@
 import React from "react";
 import "./ModalChargeGeneric.css";
-import { iconClose, iconEyes, iconPaper } from "../Icons/icons";
+import { iconClose, iconPaper } from "../Icons/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import chargeSchema from "../../validations/chargeSchema";
 import api from "../../services/api";
 

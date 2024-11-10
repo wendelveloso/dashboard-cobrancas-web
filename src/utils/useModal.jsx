@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 export const useModal = () => {
-  const [modalTooltsOpen, setModalTooltsOpen] = useState(false);
+  const [modalToolsOpen, setModalToolsOpen] = useState(false);
   const [modalSecondOpen, setModalSecondOpen] = useState(false);
   const [modalClientOpen, setModalClientOpen] = useState(false);
 
@@ -20,7 +20,7 @@ export const useModal = () => {
         modalToolsRef.current &&
         !modalToolsRef.current.contains(event.target)
       ) {
-        setModalTooltsOpen(false);
+        setModalToolsOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -33,7 +33,7 @@ export const useModal = () => {
   const modalClientRef = useRef(null);
 
   const handleToggleToolsModal = () => {
-    setModalTooltsOpen((prev) => !prev);
+    setModalToolsOpen((prev) => !prev);
   };
 
   const handleToggleSecondModal = () => {
@@ -44,14 +44,14 @@ export const useModal = () => {
   };
 
   const onClose = () => {
-    setModalTooltsOpen(false);
+    setModalToolsOpen(false);
     setModalSecondOpen(false);
     setModalClientOpen(false);
   };
 
   return {
     modalRef,
-    modalTooltsOpen,
+    modalToolsOpen,
     modalSecondOpen,
     handleToggleToolsModal,
     handleToggleSecondModal,

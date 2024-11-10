@@ -7,13 +7,12 @@ import {
   iconClientRed,
 } from "../../components/Icons/icons";
 import Header from "../../components/Header/Header";
-import ModalEditUser from "../../components/ModalEditUser/ModalEditUser";
 import calcularCobrancas from "../../utils/resumeCharge";
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import { formatarValor, formatarCPF, formatarData } from "../../utils/formatting"
 import ModalLoading from "../../components/ModalLoading/ModalLoading";
-// import { NavLink } from "react-router-dom";
+
 
 export default function Home() {
   const [carregando, setCarregando] = useState(true);

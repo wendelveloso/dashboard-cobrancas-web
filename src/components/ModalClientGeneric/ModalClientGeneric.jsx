@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ModalClientGeneric.css";
 import { iconClose, iconClient } from "../Icons/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import clientSchema from "../../validations/clientSchema";
 import api from "../../services/api";
+import { exibirErro, exibirSucesso } from "../../utils/toast";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
 
 export default function ModalClientGeneric({
   handleToggleClientModal,
@@ -12,23 +16,50 @@ export default function ModalClientGeneric({
   onClose,
   title,
   onAddClient,
+  clienteParaEditar,
+  modoEdicao,
+  fetchClients,
 }) {
   const {
     register,
     handleSubmit,
     reset,
     setError,
+    setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(clientSchema),
   });
 
-  const onSubmit = async (data) => {
-    try {
-      const response = await api.post("/registerClient", data);
+  useEffect(() => {
+    if (modoEdicao && clienteParaEditar) {
+      for (const [key, value] of Object.entries(clienteParaEditar)) {
+        setValue(key, value);
+      }
+    }
+  }, [modoEdicao, clienteParaEditar, setValue]);
+  const { clientId } = useParams();
 
-      onAddClient(response.data);
+  const onSubmit = async (data) => {
+    console.log(data);
+
+    try {
+      const response = modoEdicao;
+      delete data.usuario_id;
+      delete data.status
+        ? await api.put(`/updateClient/${clientId}`, data)
+        : await api.post("/registerClient", data);
+
+      const newClient = response.data;
+      onAddClient(newClient);
+      localStorage.setItem(
+        "successMessage",
+        modoEdicao
+          ? "Edições do cadastro concluídas com sucesso"
+          : "Cadastro concluído com sucesso"
+      );
       reset();
+      fetchClients();
       onClose();
     } catch (error) {
       if (error.response) {
@@ -42,14 +73,15 @@ export default function ModalClientGeneric({
             setError("cpf", { type: "manual", message: mensagemErro });
           }
         }
-      } else {
-        setError("form", {
-          type: "manual",
-          message: "Erro inesperado. Tente novamente mais tarde.",
-        });
+        if (error.response.status === 500) {
+          console.log(error);
+          
+          exibirErro("Erro inesperado. Tente novamente mais tarde.");
+        }
       }
     }
   };
+
   return (
     <div className="modal__container-client">
       <div className="modal__box-client" ref={modalClientRef}>
@@ -66,8 +98,8 @@ export default function ModalClientGeneric({
             <input
               type="text"
               {...register("nome")}
-              placeholder="Digite seu nome"
               className={errors.nome ? "error-border" : ""}
+              placeholder="Digite seu nome"
             />
           </div>
           {errors.nome && (
@@ -78,8 +110,8 @@ export default function ModalClientGeneric({
             <input
               type="email"
               {...register("email")}
-              placeholder="Digite o e-mail"
               className={errors.email ? "error-border" : ""}
+              placeholder="Digite o e-mail"
             />
           </div>
           {errors.email && (
@@ -91,8 +123,8 @@ export default function ModalClientGeneric({
               <input
                 type="text"
                 {...register("cpf")}
-                placeholder="Digite o CPF"
                 className={errors.cpf ? "error-border" : ""}
+                placeholder="Digite o CPF"
               />
               {errors.cpf && (
                 <p className="error-message">{errors.cpf.message}</p>
@@ -103,8 +135,8 @@ export default function ModalClientGeneric({
               <input
                 type="text"
                 {...register("telefone")}
-                placeholder="Digite o telefone"
                 className={errors.telefone ? "error-border" : ""}
+                placeholder="Digite o telefone"
               />
               {errors.telefone && (
                 <p className="error-message">{errors.telefone.message}</p>
@@ -113,34 +145,70 @@ export default function ModalClientGeneric({
           </div>
           <div className="input__container-client">
             <label htmlFor="name">Endereço</label>
-            <input type="text" placeholder="Digite o endereço" />
+            <input
+              {...register("endereco")}
+              type="text"
+              placeholder="Digite o endereço"
+            />
           </div>
           <div className="input__container-client">
             <label htmlFor="name">Complemento</label>
-            <input type="text" placeholder="Digite o complemento" />
+            <input
+              {...register("complemento")}
+              type="text"
+              placeholder="Digite o complemento"
+            />
           </div>
           <div className="input__container-client-extra-wrapper">
             <div className="input__container-client-extra">
               <label htmlFor="text">CEP:</label>
-              <input type="text" placeholder="Digite o CEP" />
+              <input
+                {...register("cep")}
+                type="text"
+                placeholder="Digite o CEP"
+              />
+               {errors.cep && (
+                <p className="error-message">{errors.cep.message}</p>
+              )}
             </div>
             <div className="input__container-client-extra">
               <label htmlFor="text">Bairro:</label>
-              <input type="text" placeholder="Digite o bairro" />
+              <input
+                {...register("bairro")}
+                type="text"
+                placeholder="Digite o bairro"
+              />
             </div>
           </div>
           <div className="input__container-client-extra-wrapper">
             <div className="input__container-client-extra input__city">
               <label htmlFor="text">Cidade</label>
-              <input type="text" placeholder="Digite a cidade" />
+              <input
+                {...register("cidade")}
+                type="text"
+                placeholder="Digite a cidade"
+              />
             </div>
             <div className="input__container-client-extra">
-              <label htmlFor="text">UF</label>
-              <input type="text" placeholder="Digite a UF" />
+              <label htmlFor="uf">UF</label>
+              <input
+                {...register("uf")}
+                type="text"
+                placeholder="Digite a UF"
+              />
+              {errors.uf && (
+                <p className="error-message">{errors.uf.message}</p>
+              )}
             </div>
           </div>
           <div className="btn_group-client">
-            <button className="btn__clean-client" onClick={onClose}>
+            <button
+              className="btn__clean-client"
+              onClick={(e) => {
+                e.preventDefault();
+                onClose();
+              }}
+            >
               Cancelar
             </button>
             <button className="btn__submit-client" type="submit">
@@ -149,6 +217,7 @@ export default function ModalClientGeneric({
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }

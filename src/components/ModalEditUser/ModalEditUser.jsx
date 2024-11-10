@@ -3,8 +3,9 @@ import "./ModalEditUser.css";
 import userSchema from "../../validations/userSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import api from "../../services/api.js";
 import { iconClose, iconEyes } from "../../components/Icons/icons";
+import api from "../../services/api.js";
+
 
 export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,9 +22,18 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
 
   const onSubmit = async (data) => {
     delete data.repetirSenha;
-    console.log(data);
+    if (!data.cpf) {
+      delete data.cpf;
+    }
+    if (!data.senha) {
+      delete data.senha;
+    }
+    if (!data.telefone) {
+      delete data.telefone;
+    }
     try {
       const response = await api.patch("/updateUser", data);
+      console.log(response.data);
 
       onAddUser(response.data);
       reset();
@@ -89,7 +99,7 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
             <div className="input__container-user-extra">
               <label htmlFor="number">CPF</label>
               <input
-                type="number"
+                type="text"
                 {...register("cpf")}
                 placeholder="Digite seu CPF"
                 className={errors.cpf ? "error-border" : ""}
@@ -119,7 +129,12 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
               {...register("senha")}
               className={errors.senha ? "error-border" : ""}
             />
-            <img onClick={() => setShowPassword(!showPassword)} src={iconEyes} alt="icon-eyes" className="eye-icon" />
+            <img
+              onClick={() => setShowPassword(!showPassword)}
+              src={iconEyes}
+              alt="icon-eyes"
+              className="eye-icon"
+            />
             {errors.senha && (
               <p className="error-message">{errors.senha.message}</p>
             )}
@@ -133,7 +148,12 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
               {...register("repetirSenha")}
               className={errors.repetirSenha ? "error-border" : ""}
             />
-            <img onClick={() => setShowPassword(!showPassword)} src={iconEyes} alt="icon-eyes" className="eye-icon" />
+            <img
+              onClick={() => setShowPassword(!showPassword)}
+              src={iconEyes}
+              alt="icon-eyes"
+              className="eye-icon"
+            />
             {errors.repetirSenha && (
               <p className="error-message">{errors.repetirSenha.message}</p>
             )}

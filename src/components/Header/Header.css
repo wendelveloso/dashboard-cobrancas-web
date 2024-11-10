@@ -40,7 +40,7 @@
   font-size: 26px;
   font-style: normal;
   font-weight: 600;
-  line-height: 130%; /* 33.8px */
+  line-height: 130%; 
 }
 .header__title--client {
   color: #0e8750;
@@ -48,7 +48,7 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 24px; /* 150% */
+  line-height: 24px; 
   margin: 45px 0px 0px 40px;
 }
 .header__title--charge {
@@ -57,7 +57,7 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 24px; /* 150% */
+  line-height: 24px; 
   margin: 45px 0px 0px 40px;
 }
 .header__subtitle {

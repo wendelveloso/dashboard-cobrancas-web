@@ -16,12 +16,23 @@ import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientG
 import { useModal } from "../../utils/useModal";
 import api from "../../services/api";
 import { useParams } from "react-router-dom";
-import { formatarValor, formatarCPF, formatarData } from "../../utils/formatting"
+import ModalLoading from "../../components/ModalLoading/ModalLoading";
+import {
+  formatarValor,
+  formatarCPF,
+  formatarData,
+  formatarTelefone,
+  formatarCEP
+} from "../../utils/formatting";
+import { exibirSucesso } from "../../utils/toast";
+import { ToastContainer } from "react-toastify";
 
 export default function ClientDetails() {
   const [carregando, setCarregando] = useState(true);
   const [cliente, setCliente] = useState(null);
   const [cobranca, setCobranca] = useState(null);
+  const [modoEdicao, setModoEdicao] = useState(false);
+  const [setClienteParaEditar] = useState(null);
   const { clientId } = useParams();
   const {
     modalToolsRef,
@@ -38,6 +49,7 @@ export default function ClientDetails() {
 
   useEffect(() => {
     const buscarDetalhesCliente = async () => {
+      setCarregando(true);
       try {
         const response = await api.get(`/clientDetails/${clientId}`);
         setCliente(response.data.client);
@@ -52,9 +64,22 @@ export default function ClientDetails() {
     buscarDetalhesCliente();
   }, [clientId]);
 
-  if (carregando) return <p>Carregando detalhes do cliente...</p>;
+  useEffect(() => {
+    const message = localStorage.getItem("successMessage");
+    if (message) {
+      exibirSucesso(message);
+      localStorage.removeItem("successMessage");
+    }
+  }, []);
 
-  
+  const handleToggleClientModalEdit = (isEdit = false) => {
+    setModoEdicao(isEdit);
+    if (isEdit && cliente) {
+      setClienteParaEditar(cliente);
+    } else {
+      setClienteParaEditar(null);
+    }
+  };
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -68,7 +93,7 @@ export default function ClientDetails() {
         return "";
     }
   };
-
+  if (carregando) return <ModalLoading />;
   return (
     <>
       {modalSecondOpen && (
@@ -90,9 +115,12 @@ export default function ClientDetails() {
       {modalClientOpen && (
         <ModalClientGeneric
           title="Editar Cliente"
-          modalRef={modalClientRef}
+          modalClientRef={modalClientRef}
           onClose={onClose}
           handleToggleClientModal={handleToggleClientModal}
+          handleToggleClientModalEdit={handleToggleClientModalEdit}
+          clienteParaEditar={modoEdicao ? cliente : null}
+          modoEdicao={modoEdicao}
         />
       )}
       <div className="page__container">
@@ -112,7 +140,13 @@ export default function ClientDetails() {
           <div className="clients_container-data">
             <div className="first__header-data">
               <h3>Dados do cliente</h3>
-              <button onClick={handleToggleClientModal} className="btn-data">
+              <button
+                onClick={() => {
+                  handleToggleClientModal(true);
+                  handleToggleClientModalEdit(true);
+                }}
+                className="btn-data"
+              >
                 Editar Cliente
               </button>
             </div>
@@ -124,8 +158,8 @@ export default function ClientDetails() {
               </div>
               <div className="clients__data">
                 <p>{cliente.email}</p>
-                <p>{cliente.telefone}</p>
-                <p>{cliente.cpf}</p>
+                <p>{formatarTelefone(cliente.telefone)}</p>
+                <p>{formatarCPF(cliente.cpf)}</p>
               </div>
             </div>
             <div className="clients__header_info-data2">
@@ -141,7 +175,7 @@ export default function ClientDetails() {
                 <p>{cliente.endereco}</p>
                 <p>{cliente.bairro}</p>
                 <p>{cliente.complemento}</p>
-                <p>{cliente.cep}</p>
+                <p>{formatarCEP(cliente.cep)}</p>
                 <p>{cliente.cidade}</p>
                 <p>{cliente.uf}</p>
               </div>
@@ -201,6 +235,7 @@ export default function ClientDetails() {
           </div>
         </main>
       </div>
+      <ToastContainer />
     </>
   );
 }

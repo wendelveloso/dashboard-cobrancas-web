@@ -33,9 +33,7 @@
   gap: 20px;
   transition: opacity 0.3s ease;
 }
-.modal__box.closing {
-  opacity: 0; /* Transição para opacidade zero */
-}
+
 .header__container-register {
   display: flex;
   width: 600px;
@@ -70,7 +68,6 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
-  /* margin: 0px 0px 10px 0px; */
 }
 .modal__box-register form {
   display: flex;
@@ -185,7 +182,6 @@
 }
 
 .select__container-register {
-  /* width: 100%; */
   width: 485px;
   color: #667085;
   font-family: Inter;
@@ -279,9 +275,9 @@ textarea::placeholder {
 }
 .eye-icon {
   position: absolute;
-  right: 10px; /* Ajuste a posição conforme necessário */
+  right: 10px;
   top: 37px;
-  cursor: pointer; /* Mostra que o ícone é clicável */
+  cursor: pointer; 
 }
 
 input[type="number"]::-webkit-outer-spin-button,

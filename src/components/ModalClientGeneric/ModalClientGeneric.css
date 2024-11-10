@@ -35,9 +35,7 @@
   height: auto;
   padding-bottom: 50px;
 }
-.modal__box.closing {
-  opacity: 0; /* Transição para opacidade zero */
-}
+
 .header__container-client {
   display: flex;
   width: 600px;
@@ -73,7 +71,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 130%;
-  /* margin: 0px 0px 10px 0px; */
+
 }
 .modal__box-client form {
   display: flex;
@@ -164,7 +162,6 @@
   padding: 10px 35px 10px 14px;
   resize: none;
   overflow-wrap: break-word;
-  /* overflow: hidden; */
 }
 .input__desc-client::-webkit-scrollbar {
   width: 4px; 
@@ -205,7 +202,6 @@
   height: 44px;
 }
 .input__container-client-extra {
-  /* position: relative; */
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -283,9 +279,9 @@ textarea::placeholder {
 }
 .eye-icon {
   position: absolute;
-  right: 10px; /* Ajuste a posição conforme necessário */
+  right: 10px; 
   top: 37px;
-  cursor: pointer; /* Mostra que o ícone é clicável */
+  cursor: pointer; 
 }
 
 input[type="number"]::-webkit-outer-spin-button,
