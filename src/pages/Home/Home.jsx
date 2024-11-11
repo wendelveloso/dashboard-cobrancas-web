@@ -10,9 +10,13 @@ import Header from "../../components/Header/Header";
 import calcularCobrancas from "../../utils/resumeCharge";
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
-import { formatarValor, formatarCPF, formatarData } from "../../utils/formatting"
+import {
+  formatarValor,
+  formatarCPF,
+  formatarData,
+} from "../../utils/formatting";
 import ModalLoading from "../../components/ModalLoading/ModalLoading";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [carregando, setCarregando] = useState(true);
@@ -21,6 +25,15 @@ export default function Home() {
   const [cobrancasPendentes, setCobrancasPendentes] = useState([]);
   const [clientesInadimplentes, setclientesInadimplentes] = useState([]);
   const [clientesEmDia, setclientesEmDia] = useState([]);
+
+  const navigate = useNavigate();
+
+  const handleViewAllClients = (status) => {
+    navigate("/clientes", { state: { status } });
+  };
+  const handleViewAllCharges = (status) => {
+    navigate("/cobrancas", { state: { status } });
+  };
 
   useEffect(() => {
     const buscarTodasCobrancas = async () => {
@@ -54,8 +67,8 @@ export default function Home() {
     buscarTodasCobrancas();
   }, []);
 
-  if (carregando) return <ModalLoading/>;
-  
+  if (carregando) return <ModalLoading />;
+
   const {
     valorTotalPagas,
     valorTotalVencidas,
@@ -64,13 +77,13 @@ export default function Home() {
     primeirasCobrancasVencidas,
     primeirasCobrancasPagas,
     primeirosClientesInadimplentes,
-    primeirosClientesEmDia
+    primeirosClientesEmDia,
   } = calcularCobrancas({
     pagas: cobrancasPagas,
     vencidas: cobrancasVencidas,
     pendentes: cobrancasPendentes,
     inadimplentes: clientesInadimplentes,
-    emDia: clientesEmDia
+    emDia: clientesEmDia,
   });
   return (
     <div className="page__container">
@@ -127,7 +140,9 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <a href="#">Ver todos</a>
+            <button className="btn-viewall" onClick={() => handleViewAllCharges("Paga")}>
+              Ver todos
+            </button>
           </div>
           <div className="details__expired">
             <div className="details__header ">
@@ -150,7 +165,9 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <a href="#">Ver todos</a>
+            <button className="btn-viewall" onClick={() => handleViewAllCharges("Vencida")}>
+              Ver todos
+            </button>
           </div>
           <div className="details__expired">
             <div className="details__header">
@@ -173,7 +190,9 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <a href="#">Ver todos</a>
+            <button className="btn-viewall" onClick={() => handleViewAllCharges("Pendente")}>
+              Ver todos
+            </button>
           </div>
         </section>
         <section className="client__value">
@@ -181,7 +200,9 @@ export default function Home() {
             <div className="client__header">
               <img src={iconClientRed} alt="icon-client-red" />
               <h3>Clientes Inadimplentes</h3>
-              <p className="details_p-red">{String(clientesInadimplentes.length).padStart(2, "0")}</p>
+              <p className="details_p-red">
+                {String(clientesInadimplentes.length).padStart(2, "0")}
+              </p>
             </div>
             <div className="client__header_info">
               <p>Clientes</p>
@@ -197,13 +218,17 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <a href="#">Ver todos</a>
+            <button className="btn-viewall" onClick={() => handleViewAllClients("Inadimplente")}>
+              Ver todos
+            </button>
           </div>
           <div className="client__green">
             <div className="client__header">
               <img src={iconClientGreen} alt="icon-client-green" />
               <h3>Clientes em dia</h3>
-              <p className="details_p-green">{String(clientesEmDia.length).padStart(2, "0")}</p>
+              <p className="details_p-green">
+                {String(clientesEmDia.length).padStart(2, "0")}
+              </p>
             </div>
             <div className="client__header_info">
               <p>Clientes</p>
@@ -219,7 +244,9 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <a href="#">Ver todos</a>
+            <button className="btn-viewall" onClick={() => handleViewAllClients("Em dia")}>
+              Ver todos
+            </button>
           </div>
         </section>
       </main>

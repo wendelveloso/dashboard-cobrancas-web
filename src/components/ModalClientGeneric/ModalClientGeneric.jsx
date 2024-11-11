@@ -41,17 +41,28 @@ export default function ModalClientGeneric({
   const { clientId } = useParams();
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     try {
-      const response = modoEdicao;
-      delete data.usuario_id;
-      delete data.status
-        ? await api.put(`/updateClient/${clientId}`, data)
-        : await api.post("/registerClient", data);
+      let response;
+
+      if (modoEdicao) {
+        delete data.usuario_id;
+        delete data.status;
+        response = await api.put(`/updateClient/${clientId}`, data);
+        localStorage.setItem(
+          "successMessage",
+          "Edições do cadastro concluídas com sucesso"
+        );
+      } else {
+        response = await api.post("/registerClient", data);
+        localStorage.setItem(
+          "successMessage",
+          "Cadastro concluído com sucesso"
+        );
+      }
 
       const newClient = response.data;
       onAddClient(newClient);
+
       localStorage.setItem(
         "successMessage",
         modoEdicao
@@ -74,8 +85,6 @@ export default function ModalClientGeneric({
           }
         }
         if (error.response.status === 500) {
-          console.log(error);
-          
           exibirErro("Erro inesperado. Tente novamente mais tarde.");
         }
       }
@@ -167,7 +176,7 @@ export default function ModalClientGeneric({
                 type="text"
                 placeholder="Digite o CEP"
               />
-               {errors.cep && (
+              {errors.cep && (
                 <p className="error-message">{errors.cep.message}</p>
               )}
             </div>

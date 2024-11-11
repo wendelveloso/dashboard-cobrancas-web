@@ -6,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { iconClose, iconEyes } from "../../components/Icons/icons";
 import api from "../../services/api.js";
 
-
 export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -33,7 +32,6 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
     }
     try {
       const response = await api.patch("/updateUser", data);
-      console.log(response.data);
 
       onAddUser(response.data);
       reset();
@@ -42,7 +40,6 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
       if (error.response) {
         if (error.response.status === 400) {
           const mensagemErro = error.response.data.mensagem;
-          console.log(error.response);
           if (mensagemErro.includes("Email")) {
             setError("email", { type: "manual", message: mensagemErro });
           }

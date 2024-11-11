@@ -13,7 +13,7 @@ import ModalFilter from "../../components/ModalFilter/ModalFilter";
 import { useModal } from "../../utils/useModal";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientGeneric";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import api from "../../services/api";
 import { useForm } from "react-hook-form";
 import React, { useState, useEffect } from "react";
@@ -28,10 +28,8 @@ export default function Client() {
   const [currentPage, setCurrentPage] = useState(1);
   const clientsPerPage = 9;
   const searchTerm = watch("searchTerm");
-
-  useEffect(() => {
-    fetchClients();
-  }, []);
+  const location = useLocation();
+  const status = location.state?.status;
 
   useEffect(() => {
     const message = localStorage.getItem("successMessage");
@@ -69,6 +67,10 @@ export default function Client() {
       console.error("Erro ao buscar clientes:", error);
     }
   };
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
 
   const handleAddClient = (newClient) => {
     setClients((prevClients) => [newClient, ...prevClients]);
@@ -85,6 +87,14 @@ export default function Client() {
     }
     setCurrentPage(1);
   };
+  useEffect(() => {
+    if (status) {
+      setFilteredClients(clients.filter((client) => client.status === status));
+    } else {
+      setFilteredClients(clients); 
+    }
+    setCurrentPage(1);
+  }, [status, clients]);
 
   const nextPage = () => {
     setCurrentPage((prev) => prev + 1);

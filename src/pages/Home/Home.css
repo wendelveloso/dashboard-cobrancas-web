@@ -154,8 +154,8 @@
   border-bottom: solid 1px #eff0f6;
 }
 
-.details__expired a {
-  margin-top: 20px;
+.btn-viewall {
+  margin-top: 15px;
   color: #da0175;
   font-family: Nunito;
   font-size: 18px;
@@ -163,6 +163,8 @@
   font-weight: 400;
   line-height: 130%;
   text-decoration-line: underline;
+  border: none;
+  background: none;
 }
 
 .client__value {
@@ -267,18 +269,6 @@
   width: 556px;
   flex-direction: column;
   gap: 10px;
-}
-
-.client__red a,
-.client__green a {
-  margin-top: 10px;
-  color: #da0175;
-  font-family: Nunito;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 130%;
-  text-decoration-line: underline;
 }
 
 .home__name_size-bottom {

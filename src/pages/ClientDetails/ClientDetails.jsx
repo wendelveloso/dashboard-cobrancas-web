@@ -22,7 +22,7 @@ import {
   formatarCPF,
   formatarData,
   formatarTelefone,
-  formatarCEP
+  formatarCEP,
 } from "../../utils/formatting";
 import { exibirSucesso } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
@@ -48,28 +48,30 @@ export default function ClientDetails() {
   } = useModal();
 
   useEffect(() => {
-    const buscarDetalhesCliente = async () => {
-      setCarregando(true);
-      try {
-        const response = await api.get(`/clientDetails/${clientId}`);
-        setCliente(response.data.client);
-        setCobranca(response.data.charges);
-      } catch (error) {
-        console.error("Erro ao buscar detalhes do cliente:", error);
-      } finally {
-        setCarregando(false);
-      }
-    };
-
-    buscarDetalhesCliente();
-  }, [clientId]);
-
-  useEffect(() => {
     const message = localStorage.getItem("successMessage");
     if (message) {
       exibirSucesso(message);
-      localStorage.removeItem("successMessage");
+
+      setTimeout(() => {
+        localStorage.removeItem("successMessage");
+      }, 3000);
     }
+  }, []);
+
+  const fetchClientDetails = async () => {
+    setCarregando(true);
+    try {
+      const response = await api.get(`/clientDetails/${clientId}`);
+      setCliente(response.data.client);
+      setCobranca(response.data.charges);
+    } catch (error) {
+      console.error("Erro ao buscar detalhes do cliente:", error);
+    } finally {
+      setCarregando(false);
+    }
+  };
+  useEffect(() => {
+    fetchClientDetails();
   }, []);
 
   const handleToggleClientModalEdit = (isEdit = false) => {

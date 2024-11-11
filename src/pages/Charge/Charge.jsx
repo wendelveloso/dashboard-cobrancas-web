@@ -21,6 +21,7 @@ import api from "../../services/api";
 import { useForm } from "react-hook-form";
 import { formatarValor, formatarData } from "../../utils/formatting";
 import { exibirErro, exibirSucesso } from "../../utils/toast";
+import { useLocation } from "react-router-dom";
 
 export default function Charge() {
   const { register, watch } = useForm();
@@ -29,6 +30,8 @@ export default function Charge() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCharge, setSelectedCharge] = useState(null);
   const [filteredCharges, setFilteredCharges] = useState([]);
+  const location = useLocation();
+  const status = location.state?.status;
 
   const chargesPerPage = 9;
   const {
@@ -102,6 +105,15 @@ export default function Charge() {
     }
     setCurrentPage(1);
   };
+
+  useEffect(() => {
+    if (status) {
+      setFilteredCharges(charges.filter((charge) => charge.status === status));
+    } else {
+      setFilteredCharges(charges); 
+    }
+    setCurrentPage(1);
+  }, [status, charges]);
 
   const nextPage = () => {
     setCurrentPage((prev) => prev + 1);
