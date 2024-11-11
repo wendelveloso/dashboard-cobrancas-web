@@ -42,36 +42,28 @@ export default function ModalClientGeneric({
 
   const onSubmit = async (data) => {
     try {
-      let response;
-
+      
       if (modoEdicao) {
         delete data.usuario_id;
         delete data.status;
-        response = await api.put(`/updateClient/${clientId}`, data);
-        localStorage.setItem(
-          "successMessage",
-          "Edições do cadastro concluídas com sucesso"
-        );
+        const response = await api.put(`/updateClient/${clientId}`, data);
+        const updatedClient = response.data;
+        onAddClient(updatedClient);
+        reset();
+        fetchClients();
+        onClose();
+        localStorage.setItem("successMessage", "Edições do cadastro concluídas com sucesso");
       } else {
-        response = await api.post("/registerClient", data);
-        localStorage.setItem(
-          "successMessage",
-          "Cadastro concluído com sucesso"
-        );
+        const response = await api.post("/registerClient", data);
+        const newClient = response.data;
+        onAddClient(newClient);
+        reset();
+        fetchClients();
+        onClose();
+        localStorage.setItem("successMessage", "Cadastro concluído com sucesso");
       }
 
-      const newClient = response.data;
-      onAddClient(newClient);
-
-      localStorage.setItem(
-        "successMessage",
-        modoEdicao
-          ? "Edições do cadastro concluídas com sucesso"
-          : "Cadastro concluído com sucesso"
-      );
-      reset();
-      fetchClients();
-      onClose();
+    
     } catch (error) {
       if (error.response) {
         if (error.response.status === 400) {

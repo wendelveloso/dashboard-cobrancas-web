@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./ClientDetails.css";
 import {
-  iconTools,
-  iconGlass,
   iconClient,
   iconTopDown,
-  iconChargePlus,
   iconEdit,
   iconDelete,
 } from "../../components/Icons/icons";
 import Header from "../../components/Header/Header";
-import ModalFilter from "../../components/ModalFilter/ModalFilter";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientGeneric";
 import { useModal } from "../../utils/useModal";
@@ -26,6 +22,7 @@ import {
 } from "../../utils/formatting";
 import { exibirSucesso } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function ClientDetails() {
   const [carregando, setCarregando] = useState(true);
@@ -58,6 +55,7 @@ export default function ClientDetails() {
     }
   }, []);
 
+ 
   const fetchClientDetails = async () => {
     setCarregando(true);
     try {
@@ -73,6 +71,7 @@ export default function ClientDetails() {
   useEffect(() => {
     fetchClientDetails();
   }, []);
+  
 
   const handleToggleClientModalEdit = (isEdit = false) => {
     setModoEdicao(isEdit);

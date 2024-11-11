@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import React, { useState, useEffect } from "react";
 import { formatarCPF, formatarTelefone } from "../../utils/formatting";
 import { exibirSucesso } from "../../utils/toast";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Client() {
   const { register, watch } = useForm();
@@ -42,15 +43,7 @@ export default function Client() {
     }
   }, []);
 
-  useEffect(() => {
-    if (searchTerm) {
-      fetchClients(searchTerm);
-    } else {
-      setClients(allClients);
-    }
-  }, [searchTerm]);
-
- const fetchClients = async (searchTerm = "") => {
+  const fetchClients = async (searchTerm = "") => {
     try {
       const response = await api.get("/searchClients", {
         params: {
@@ -67,10 +60,18 @@ export default function Client() {
       console.error("Erro ao buscar clientes:", error);
     }
   };
+
   useEffect(() => {
     fetchClients();
   }, []);
 
+  useEffect(() => {
+    if (searchTerm) {
+      fetchClients(searchTerm);
+    } else {
+      setClients(allClients);
+    }
+  }, [searchTerm]);
 
   const handleAddClient = (newClient) => {
     setClients((prevClients) => [newClient, ...prevClients]);
@@ -87,13 +88,9 @@ export default function Client() {
     }
     setCurrentPage(1);
   };
+  
   useEffect(() => {
-    if (status) {
-      setFilteredClients(clients.filter((client) => client.status === status));
-    } else {
-      setFilteredClients(clients); 
-    }
-    setCurrentPage(1);
+    handleFilterClients(status);
   }, [status, clients]);
 
   const nextPage = () => {
