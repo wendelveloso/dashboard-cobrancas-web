@@ -301,3 +301,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .error-border{
   outline: 1px solid #E70000;
 }
+
+input[disabled] {
+  background-color: #f0f0f5; 
+  color: #34405473; 
+  cursor: not-allowed; 
+}

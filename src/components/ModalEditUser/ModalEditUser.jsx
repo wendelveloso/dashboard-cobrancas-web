@@ -33,9 +33,9 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
     try {
       const response = await api.patch("/updateUser", data);
 
-      onAddUser(response.data);
+      onClose();      
+      onAddUser(response.data.usuario.nome);
       reset();
-      onClose();
     } catch (error) {
       if (error.response) {
         if (error.response.status === 400) {

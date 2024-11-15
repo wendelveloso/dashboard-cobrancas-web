@@ -18,7 +18,6 @@ export default function ModalClientGeneric({
   onAddClient,
   clienteParaEditar,
   modoEdicao,
-  fetchClients,
 }) {
   const {
     register,
@@ -42,28 +41,29 @@ export default function ModalClientGeneric({
 
   const onSubmit = async (data) => {
     try {
-      
       if (modoEdicao) {
         delete data.usuario_id;
         delete data.status;
         const response = await api.put(`/updateClient/${clientId}`, data);
         const updatedClient = response.data;
+        onClose();
         onAddClient(updatedClient);
         reset();
-        fetchClients();
-        onClose();
-        localStorage.setItem("successMessage", "Edições do cadastro concluídas com sucesso");
+        localStorage.setItem(
+          "successMessage",
+          "Edições do cadastro concluídas com sucesso"
+        );
       } else {
         const response = await api.post("/registerClient", data);
         const newClient = response.data;
+        onClose();
         onAddClient(newClient);
         reset();
-        fetchClients();
-        onClose();
-        localStorage.setItem("successMessage", "Cadastro concluído com sucesso");
+        localStorage.setItem(
+          "successMessage",
+          "Cadastro concluído com sucesso"
+        );
       }
-
-    
     } catch (error) {
       if (error.response) {
         if (error.response.status === 400) {

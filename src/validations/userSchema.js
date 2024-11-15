@@ -8,8 +8,8 @@ const userSchema = Yup.object().shape({
   telefone: Yup.string().optional(),
   cpf: Yup.string().optional(),
   senha: Yup.string()
-    .optional()
-    .min(6, "A senha deve ter no mínimo 6 caracteres"),
+  .nullable()
+  .min(6, 'A senha deve ter pelo menos 6 caracteres'),
   repetirSenha: Yup.string()
     .optional()
     .oneOf([Yup.ref("senha"), null], "As senhas devem ser iguais"),

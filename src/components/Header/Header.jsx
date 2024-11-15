@@ -4,7 +4,7 @@ import {
   iconEdit,
   iconExit,
 } from "../../components/Icons/icons";
-import { getItem } from "../../utils/storage";
+import { getItem, setItem } from "../../utils/storage";
 import { formatUserName } from "../../utils/nameUser";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,11 @@ export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
     onClose,
   } = useModal();
 
+  const handleAddUser = (updatedUser) => {
+    setFullName(updatedUser.nome); 
+    setItem("userName", updatedUser);
+  };
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -47,6 +52,7 @@ export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
         <ModalEditUser
           modalRef={modalRef}
           onClose={onClose}
+          onAddUser={handleAddUser}
         />
       )}
       <header className="header__container">

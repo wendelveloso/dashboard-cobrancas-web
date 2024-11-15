@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import chargeSchema from "../../validations/chargeSchema";
 import api from "../../services/api";
-
+import { useParams } from "react-router-dom";
 
 export default function ModalChargeGeneric({
   handleToggleSecondModal,
@@ -13,6 +13,7 @@ export default function ModalChargeGeneric({
   onClose,
   title,
   onAddCharge,
+  nomeCliente,
 }) {
   const {
     register,
@@ -24,14 +25,18 @@ export default function ModalChargeGeneric({
     resolver: yupResolver(chargeSchema),
   });
 
+  const { clientId } = useParams();
   const onSubmit = async (data) => {
     try {
-      const response = await api.post("/addCharge", data);
-
-      onAddCharge(response.data);
-      reset();
+      delete data.nome;
+      const requestData = {
+        ...data,
+        cliente_id: clientId,
+      };
+      const response = await api.post("/addCharge", requestData);
       onClose();
-      
+      onAddCharge(response.requestData);
+      reset();
     } catch (error) {
       if (error.response) {
         if (error.response.status === 400) {
@@ -53,7 +58,6 @@ export default function ModalChargeGeneric({
     }
   };
 
-  
   return (
     <div className="modal__container-register">
       <div className="modal__box-register" ref={modalRef}>
@@ -69,12 +73,14 @@ export default function ModalChargeGeneric({
         </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="input__container-register">
-            <label htmlFor="name">Nome*</label>
+            <label htmlFor="nome">Nome*</label>
             <input
               type="text"
-              {...register("name")}
+              value={nomeCliente}
+              disabled
+              {...register("nome")}
               placeholder="Digite seu nome"
-              className={errors.name ? "error-border" : ""}
+              className={errors.nome ? "error-border" : ""}
             />
             {errors.name && (
               <p className="error-message">{errors.name.message}</p>
@@ -99,9 +105,9 @@ export default function ModalChargeGeneric({
               <label htmlFor="date">Vencimento*</label>
               <input
                 type="date"
-                {...register("vencimento")}
+                {...register("data_venc")}
                 placeholder="Digite o valor"
-                className={errors.vencimento ? "error-border" : ""}
+                className={errors.data_venc ? "error-border" : ""}
               />
               {errors.vencimento && (
                 <p className="error-message">{errors.vencimento.message}</p>
@@ -123,12 +129,12 @@ export default function ModalChargeGeneric({
           <div className="input__container-register">
             <label htmlFor="opcoes">Status*</label>
             <label className="label__radio-register-charge">
-              <input type="radio" {...register("status")} value="1" />
+              <input type="radio" {...register("status")} value="Paga" />
               <span className="checkmark"></span>
               Cobrança Paga
             </label>
             <label className="label__radio-register-charge">
-              <input type="radio" {...register("status")} value="2" />
+              <input type="radio" {...register("status")} value="Pendente" />
               <span className="checkmark"></span>
               Cobrança Pendente
             </label>

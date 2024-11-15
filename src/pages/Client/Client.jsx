@@ -54,7 +54,7 @@ export default function Client() {
       });
       setClients(response.data);
       setFilteredClients(response.data);
-
+      handleFilterClients();
       if (!searchTerm) setAllClients(response.data);
     } catch (error) {
       console.error("Erro ao buscar clientes:", error);
@@ -81,14 +81,17 @@ export default function Client() {
   };
 
   const handleFilterClients = (status) => {
-    if (status) {
-      setFilteredClients(clients.filter((client) => client.status === status));
-    } else {
-      setFilteredClients(clients);
+    if (clients.length > 0) {
+      if (status) {
+        setFilteredClients(
+          clients.filter((client) => client.status === status)
+        );
+      } else {
+        setFilteredClients(clients);
+      }
+      setCurrentPage(1);
     }
-    setCurrentPage(1);
   };
-  
   useEffect(() => {
     handleFilterClients(status);
   }, [status, clients]);
@@ -155,7 +158,6 @@ export default function Client() {
           onClose={onClose}
           handleToggleClientModal={handleToggleClientModal}
           onAddClient={handleAddClient}
-          fetchClients={fetchClients}
         />
       )}
       <div className="page__container">
@@ -203,7 +205,7 @@ export default function Client() {
               <p>Criar Cobrança</p>
             </div>
             <div className="clients__info_container">
-              {currentClients.length > 0 ? (
+              {clients.length > 0 ? (
                 currentClients.map((cliente, index) => (
                   <NavLink
                     key={index}

@@ -23,6 +23,7 @@ import iconClose from "../../assets/close.svg";
 import iconEyes from "../../assets/EyeHiddenPass.png";
 import emptySearch from "../../assets/group-empty-search.svg";
 import polygon from "../../assets/polygon.svg";
+import alert from "../../assets/alert-orange.svg";
 
 
 export {
@@ -50,5 +51,6 @@ export {
   iconClose,
   iconEyes,
   emptySearch,
-  polygon
+  polygon,
+  alert
 };

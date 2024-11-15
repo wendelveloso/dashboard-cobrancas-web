@@ -7,12 +7,13 @@ const clientSchema = Yup.object().shape({
   email: Yup.string().required("Email é obrigatório").email("Email inválido"),
   cpf: Yup.string()
     .required("CPF é obrigatório")
-    .length(11, "Insira apenas números"),
+    .max(11, "Insira apenas números"),
   uf: Yup.string().length(2, "Apenas duas letras"),
   cep: Yup.string().length(8, "Insira apenas números"),
   telefone: Yup.string()
     .required("Telefone é obrigatório")
-    .length(11, "Insira apenas números (DDD + número)"),
+    .min(10, "Insira apenas números (DDD + número)")
+    .max(11, "Insira apenas números (DDD + número)"),
 });
 
 export default clientSchema;

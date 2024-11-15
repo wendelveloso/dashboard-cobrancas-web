@@ -1,0 +1,72 @@
+.modal-overlay {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #919a964d;
+  position: fixed;
+  z-index: 3;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content {
+  
+  background-color: white;
+  padding: 50px 20px 20px 20px;
+  border-radius: 30px;
+  width: 600px;
+  height: 400px;
+  color: #cc7800;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 130%;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.confirm-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 22.588px;
+  background-color: #acd9c5;
+  color: #034a2a;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.cancel-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  width: 100px;
+  height: 22.588px;
+  background-color: #F2D6D0;
+  color: #AE1100;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: Nunito;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

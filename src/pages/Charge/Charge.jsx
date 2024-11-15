@@ -15,6 +15,7 @@ import Header from "../../components/Header/Header";
 import { useModal } from "../../utils/useModal";
 import ModalFilterCharge from "../../components/ModalFilterCharge/ModalFilterCharge";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
+import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete";
 import ModalDetailsCharge from "../../components/ModalDetailsCharge/ModalDetailsCharge";
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
@@ -30,6 +31,9 @@ export default function Charge() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCharge, setSelectedCharge] = useState(null);
   const [filteredCharges, setFilteredCharges] = useState([]);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  // const [actionConfirmed, setActionConfirmed] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
   const location = useLocation();
   const status = location.state?.status;
 
@@ -47,20 +51,25 @@ export default function Charge() {
     modalClientOpen,
   } = useModal();
 
-  const handleDelete = async (idCharge) => {
-    try {
-      const confirmDelete = window.confirm(
-        "Tem certeza que deseja excluir esta cobrança?"
-      );
+  const handleDelete = (idCharge) => {
+    setIdToDelete(idCharge);
+    setShowConfirmModal(true);
+  };
 
-      if (confirmDelete) {
-        await api.delete(`/deleteCharge/${idCharge}`);
-        exibirSucesso("Cobrança excluída com sucesso!");
-        fetchCharges();
-      }
+  const handleConfirm = async () => {
+    // setActionConfirmed(true);
+    setShowConfirmModal(false);
+    try {
+      await api.delete(`/deleteCharge/${idToDelete}`);
+      exibirSucesso("Cobrança excluída com sucesso!");
+      fetchClientDetails();
     } catch (error) {
       exibirErro("Esta cobrança não pode ser excluída!");
     }
+  };
+
+  const handleClose = () => {
+    setShowConfirmModal(false);
   };
 
   const fetchCharges = async (searchTerm = "") => {
@@ -110,7 +119,7 @@ export default function Charge() {
     if (status) {
       setFilteredCharges(charges.filter((charge) => charge.status === status));
     } else {
-      setFilteredCharges(charges); 
+      setFilteredCharges(charges);
     }
     setCurrentPage(1);
   }, [status, charges]);
@@ -131,6 +140,12 @@ export default function Charge() {
 
   return (
     <>
+      <ModalConfirmDelete
+        show={showConfirmModal}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+        message="Tem certeza que deseja excluir esta cobrança?"
+      />
       {modalToolsOpen && (
         <ModalFilterCharge
           onClose={onClose}

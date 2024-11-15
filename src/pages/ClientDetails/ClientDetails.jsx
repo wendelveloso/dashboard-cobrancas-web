@@ -9,6 +9,7 @@ import {
 import Header from "../../components/Header/Header";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientGeneric";
+import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete";
 import { useModal } from "../../utils/useModal";
 import api from "../../services/api";
 import { useParams } from "react-router-dom";
@@ -20,7 +21,7 @@ import {
   formatarTelefone,
   formatarCEP,
 } from "../../utils/formatting";
-import { exibirSucesso } from "../../utils/toast";
+import { exibirErro, exibirSucesso } from "../../utils/toast";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -30,6 +31,9 @@ export default function ClientDetails() {
   const [cobranca, setCobranca] = useState(null);
   const [modoEdicao, setModoEdicao] = useState(false);
   const [setClienteParaEditar] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [actionConfirmed, setActionConfirmed] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
   const { clientId } = useParams();
   const {
     modalToolsRef,
@@ -44,18 +48,27 @@ export default function ClientDetails() {
     onClose,
   } = useModal();
 
-  useEffect(() => {
-    const message = localStorage.getItem("successMessage");
-    if (message) {
-      exibirSucesso(message);
+  const handleDelete = (idCharge) => {
+    setIdToDelete(idCharge);
+    setShowConfirmModal(true);
+  };
 
-      setTimeout(() => {
-        localStorage.removeItem("successMessage");
-      }, 3000);
+  const handleConfirm = async () => {
+    setActionConfirmed(true);
+    setShowConfirmModal(false);
+    try {
+      await api.delete(`/deleteCharge/${idToDelete}`);
+      exibirSucesso("Cobrança excluída com sucesso!");
+      fetchClientDetails();
+    } catch (error) {
+      exibirErro("Esta cobrança não pode ser excluída!");
     }
-  }, []);
+  };
 
- 
+  const handleClose = () => {
+    setShowConfirmModal(false);
+  };
+
   const fetchClientDetails = async () => {
     setCarregando(true);
     try {
@@ -68,10 +81,21 @@ export default function ClientDetails() {
       setCarregando(false);
     }
   };
+
+  useEffect(() => {
+    const message = localStorage.getItem("successMessage");
+    if (message) {
+      exibirSucesso(message);
+
+      setTimeout(() => {
+        localStorage.removeItem("successMessage");
+      }, 3000);
+    }
+  }, []);
+
   useEffect(() => {
     fetchClientDetails();
   }, []);
-  
 
   const handleToggleClientModalEdit = (isEdit = false) => {
     setModoEdicao(isEdit);
@@ -97,12 +121,19 @@ export default function ClientDetails() {
   if (carregando) return <ModalLoading />;
   return (
     <>
+      <ModalConfirmDelete
+        show={showConfirmModal}
+        onClose={handleClose}
+        onConfirm={handleConfirm}
+        message="Tem certeza que deseja excluir esta cobrança?"
+      />
       {modalSecondOpen && (
         <ModalChargeGeneric
           title="Cadastro de Cobrança"
           modalRef={modalRef}
           onClose={onClose}
           handleToggleSecondModal={handleToggleSecondModal}
+          nomeCliente={cliente.nome}
         />
       )}
       {modalTooltsOpen && (
@@ -111,6 +142,7 @@ export default function ClientDetails() {
           modalRef={modalToolsRef}
           onClose={onClose}
           handleToggleSecondModal={handleToggleToolsModal}
+          nomeCliente={cliente.nome}
         />
       )}
       {modalClientOpen && (
@@ -225,9 +257,13 @@ export default function ClientDetails() {
                     />
                     <img
                       className="btn-zoom"
+                      type="button"
                       src={iconDelete}
                       alt="icon-delete"
-                      onClick={() => handleDeleteCobranca(cobranca.id_cob)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(cobranca.id_cob);
+                      }}
                     />
                   </div>
                 </div>
