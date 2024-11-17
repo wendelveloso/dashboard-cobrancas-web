@@ -1,4 +1,5 @@
 import React from "react";
+import { format } from "date-fns";
 import "./ModalChargeGeneric.css";
 import { iconClose, iconPaper } from "../Icons/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,9 +12,10 @@ export default function ModalChargeGeneric({
   handleToggleSecondModal,
   modalRef,
   onClose,
+  charge,
   title,
-  onAddCharge,
-  nomeCliente,
+  selectedClientNome,
+  selectedClientId,
 }) {
   const {
     register,
@@ -23,21 +25,44 @@ export default function ModalChargeGeneric({
     formState: { errors },
   } = useForm({
     resolver: yupResolver(chargeSchema),
+    defaultValues: {
+      nome: charge?.nome || selectedClientNome || "",
+      valor: charge?.valor || "",
+      data_venc: charge?.data_venc
+        ? format(new Date(charge?.data_venc), "yyyy-MM-dd")
+        : "",
+      status: charge?.status || "",
+      descricao: charge?.descricao || "",
+    },
   });
+
 
   const { clientId } = useParams();
   const onSubmit = async (data) => {
     try {
-      delete data.nome;
-      const requestData = {
-        ...data,
-        cliente_id: clientId,
-      };
-      const response = await api.post("/addCharge", requestData);
+      if (!charge) {
+        delete data.nome;
+        const requestData = {
+          ...data,
+          cliente_id: selectedClientId || clientId || charge.id,
+        };
+        await api.post("/addCharge", requestData);
+      } else {
+        delete data.nome;
+        const requestData = {
+          ...data,
+          cliente_id: clientId || selectedClientId || charge.id,
+          id_cob: charge.id_cob,
+        };
+        console.log(requestData);
+
+        await api.put("/updateCharge", requestData);
+      }
       onClose();
-      onAddCharge(response.requestData);
       reset();
     } catch (error) {
+      console.log(error);
+
       if (error.response) {
         if (error.response.status === 400) {
           const mensagemErro = error.response.data.mensagem;
@@ -76,7 +101,6 @@ export default function ModalChargeGeneric({
             <label htmlFor="nome">Nome*</label>
             <input
               type="text"
-              value={nomeCliente}
               disabled
               {...register("nome")}
               placeholder="Digite seu nome"

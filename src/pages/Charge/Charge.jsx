@@ -32,7 +32,6 @@ export default function Charge() {
   const [selectedCharge, setSelectedCharge] = useState(null);
   const [filteredCharges, setFilteredCharges] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  // const [actionConfirmed, setActionConfirmed] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const location = useLocation();
   const status = location.state?.status;
@@ -51,18 +50,22 @@ export default function Charge() {
     modalClientOpen,
   } = useModal();
 
+
+  const handleEditCharge = (cobranca) => {
+    setSelectedCharge(cobranca);
+    handleToggleSecondModal();
+  };
   const handleDelete = (idCharge) => {
     setIdToDelete(idCharge);
     setShowConfirmModal(true);
   };
 
   const handleConfirm = async () => {
-    // setActionConfirmed(true);
     setShowConfirmModal(false);
     try {
       await api.delete(`/deleteCharge/${idToDelete}`);
       exibirSucesso("Cobrança excluída com sucesso!");
-      fetchClientDetails();
+      fetchCharges();
     } catch (error) {
       exibirErro("Esta cobrança não pode ser excluída!");
     }
@@ -155,10 +158,11 @@ export default function Charge() {
       )}
       {modalSecondOpen && (
         <ModalChargeGeneric
-          title="Edição de Cobrança"
+          title={selectedCharge ? "Edição de Cobrança" : "Cadastro de Cobrança"}
           modalRef={modalRef}
           onClose={onClose}
           handleToggleSecondModal={handleToggleSecondModal}
+          charge={selectedCharge}
         />
       )}
       {modalClientOpen && selectedCharge && (
@@ -236,7 +240,7 @@ export default function Charge() {
                       <img
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleToggleSecondModal();
+                          handleEditCharge(cobranca);
                         }}
                         className="btn-zoom"
                         src={iconEdit}

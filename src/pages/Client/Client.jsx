@@ -24,6 +24,8 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Client() {
   const { register, watch } = useForm();
   const [clients, setClients] = useState([]);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedClientId, setSelectedClientId] = useState(null);
   const [allClients, setAllClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -149,6 +151,9 @@ export default function Client() {
           modalRef={modalRef}
           onClose={onClose}
           handleToggleSecondModal={handleToggleSecondModal}
+          selectedClientNome={selectedClient}
+          selectedClientId={selectedClientId}
+      
         />
       )}
       {modalClientOpen && (
@@ -225,6 +230,8 @@ export default function Client() {
                       alt="icon-page-charge-plus"
                       onClick={(e) => {
                         e.preventDefault();
+                        setSelectedClient(cliente.nome)
+                        setSelectedClientId(cliente.id)
                         handleToggleSecondModal();
                       }}
                     />
@@ -244,7 +251,7 @@ export default function Client() {
               <img
                 onClick={nextPage}
                 className={`polygon2 ${
-                  startIndex + currentClients >= clients.length
+                  startIndex + clientsPerPage >= clients.length
                     ? "disabled"
                     : ""
                 }`}

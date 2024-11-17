@@ -28,21 +28,18 @@ import "react-toastify/dist/ReactToastify.css";
 export default function ClientDetails() {
   const [carregando, setCarregando] = useState(true);
   const [cliente, setCliente] = useState(null);
-  const [cobranca, setCobranca] = useState(null);
+  const [charges, setCharges] = useState([]);
+  const [selectedCharge, setSelectedCharge] = useState(null);
   const [modoEdicao, setModoEdicao] = useState(false);
   const [setClienteParaEditar] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [actionConfirmed, setActionConfirmed] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const { clientId } = useParams();
   const {
-    modalToolsRef,
     modalRef,
     modalClientRef,
-    modalTooltsOpen,
     modalSecondOpen,
     modalClientOpen,
-    handleToggleToolsModal,
     handleToggleSecondModal,
     handleToggleClientModal,
     onClose,
@@ -54,7 +51,6 @@ export default function ClientDetails() {
   };
 
   const handleConfirm = async () => {
-    setActionConfirmed(true);
     setShowConfirmModal(false);
     try {
       await api.delete(`/deleteCharge/${idToDelete}`);
@@ -74,7 +70,7 @@ export default function ClientDetails() {
     try {
       const response = await api.get(`/clientDetails/${clientId}`);
       setCliente(response.data.client);
-      setCobranca(response.data.charges);
+      setCharges(response.data.charges);
     } catch (error) {
       console.error("Erro ao buscar detalhes do cliente:", error);
     } finally {
@@ -118,6 +114,7 @@ export default function ClientDetails() {
         return "";
     }
   };
+
   if (carregando) return <ModalLoading />;
   return (
     <>
@@ -129,20 +126,12 @@ export default function ClientDetails() {
       />
       {modalSecondOpen && (
         <ModalChargeGeneric
-          title="Cadastro de Cobrança"
+          title={selectedCharge ? "Edição de Cobrança" : "Cadastro de Cobrança"}
           modalRef={modalRef}
           onClose={onClose}
           handleToggleSecondModal={handleToggleSecondModal}
-          nomeCliente={cliente.nome}
-        />
-      )}
-      {modalTooltsOpen && (
-        <ModalChargeGeneric
-          title="Edição de Cobrança"
-          modalRef={modalToolsRef}
-          onClose={onClose}
-          handleToggleSecondModal={handleToggleToolsModal}
-          nomeCliente={cliente.nome}
+          selectedClientNome={cliente.nome}
+          charge={selectedCharge}
         />
       )}
       {modalClientOpen && (
@@ -217,7 +206,13 @@ export default function ClientDetails() {
           <div className="clients_container-details">
             <div className="first__header-details">
               <h3>Cobranças do Cliente</h3>
-              <button onClick={handleToggleSecondModal} className="btn-details">
+              <button
+                onClick={() => {
+                  setSelectedCharge(null); 
+                  handleToggleSecondModal();
+                }}
+                className="btn-details"
+              >
                 + Nova cobrança
               </button>
             </div>
@@ -235,25 +230,29 @@ export default function ClientDetails() {
               <p>Descrição</p>
             </div>
             <div className="clients__info_container-details">
-              {cobranca.map((cobranca, index) => (
-                <div key={cobranca.id_cob} className="clients__info-details">
-                  <p className="client__name_size-details">{cobranca.id_cob}</p>
-                  <p>{formatarData(cobranca.data_venc)}</p>
+              {charges.map((charges, index) => (
+                <div key={charges.id_cob} className="clients__info-details">
+                  <p className="client__name_size-details">{charges.id_cob}</p>
+                  <p>{formatarData(charges.data_venc)}</p>
                   <p className="client__name_size-details">
-                    R$ {formatarValor(cobranca.valor)}
+                    R$ {formatarValor(charges.valor)}
                   </p>
-                  <p className={getStatusClass(cobranca.status)}>
-                    {cobranca.status}
+                  <p className={getStatusClass(charges.status)}>
+                    {charges.status}
                   </p>
                   <p className="clients__desc_size-details">
-                    {cobranca.descricao}
+                    {charges.descricao}
                   </p>
                   <div className="icon_container-details">
                     <img
                       className="btn-zoom"
                       src={iconEdit}
                       alt="icon-edit"
-                      onClick={() => handleToggleToolsModal(cobranca.id_cob)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedCharge(charges);
+                        handleToggleSecondModal(charges.id_cob);
+                      }}
                     />
                     <img
                       className="btn-zoom"
@@ -262,7 +261,7 @@ export default function ClientDetails() {
                       alt="icon-delete"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDelete(cobranca.id_cob);
+                        handleDelete(charges.id_cob);
                       }}
                     />
                   </div>
