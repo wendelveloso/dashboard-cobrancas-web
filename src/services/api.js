@@ -2,7 +2,7 @@ import axios from "axios";
 import {getItem} from "../utils/storage"
 
 const api = axios.create({
-  baseURL: "http://localhost:3001",
+  baseURL: "http://localhost:3000",
   headers: {
     "Access-Control-Allow-Origin": "*",
     "X-Requested-With": "XMLHttpRequest",
@@ -12,3 +12,4 @@ const api = axios.create({
 });
 
 export default api;
+ 

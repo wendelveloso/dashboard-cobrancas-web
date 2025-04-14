@@ -111,7 +111,9 @@ export function SignUpContextProvider({ children }) {
         email: colectUserInfos.email,
         senha: colectUserInfos.password,
       };
+    
       const response = await api.post("/signUp", { ...body });
+ 
 
       nextStepWithButtonPassword(colectUserInfos);
       setColectUserInfos({
@@ -122,16 +124,18 @@ export function SignUpContextProvider({ children }) {
       });
       setErrors({});
     } catch (error) {
-      if (
-        error.response.data.mensagem ===
-        "O preenchimento da senha é obrigatório"
-      ) {
-        return;
-      } else if (error.response.data.mensagem === "Email já cadastrado") {
+      const mensagem = error?.response?.data?.mensagem;
+    
+      if (mensagem === "O preenchimento da senha é obrigatório") {
+        setErrors({ password: mensagem });
+      } else if (mensagem === "Email já cadastrado") {
         handleClickStep("one");
-        setErrors({ userEmail: "Email já cadastrado" });
-      }
+        setErrors({ userEmail: mensagem });
+      } else if (mensagem) {
+        setErrors({ password: mensagem }); 
+      } 
     }
+    
   }
 
   return (
