@@ -1,8 +1,6 @@
-# Nome do Projeto
+# Dashboard Gestão de Cobranças
 
-Descrição curta do projeto. Exemplo:
-
-Uma aplicação frontend desenvolvida com [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), que permite aos usuários visualizar e gerenciar seus clientes e cobranças.
+Uma aplicação frontend desenvolvida com [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/), que permite ao usuário visualizar e gerenciar seus clientes e cobranças.
 
 ## 🖼️ Preview
 
@@ -16,5 +14,6 @@ Uma aplicação frontend desenvolvida com [React](https://reactjs.org/), [TypeSc
 - React Router DOM
 - React Hook Form
 - Axios
+- React Toastify
 
 
