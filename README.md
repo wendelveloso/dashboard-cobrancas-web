@@ -10,7 +10,6 @@ Uma aplicação frontend desenvolvida com [React](https://reactjs.org/), [TypeSc
 
 - Vite
 - React
-- TypeScript
 - React Router DOM
 - React Hook Form
 - Axios
