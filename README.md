@@ -10,10 +10,17 @@ Uma aplicação frontend desenvolvida com [React](https://reactjs.org/), [TypeSc
 
 - Vite
 - React
-- TypeScript
 - React Router DOM
 - React Hook Form
 - Axios
 - React Toastify
 
+<br>
 
+## 🌐 Repositório do Backend
+
+O backend deste projeto pode ser encontrado no link abaixo:
+
+👉 [Acesse o repositório do backend aqui](https://github.com/wendelveloso/dashboard-cobrancas-api)
+
+> Certifique-se de executar o backend juntamente com o frontend para garantir o funcionamento completo da aplicação.
