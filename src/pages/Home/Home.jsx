@@ -7,16 +7,13 @@ import {
   iconClientRed,
 } from "../../components/Icons/icons";
 import Header from "../../components/Header/Header";
-import calcularCobrancas from "../../utils/resumeCharge";
-import React, { useState, useEffect } from "react";
 import api from "../../services/api";
-import {
-  formatarValor,
-  formatarCPF,
-  formatarData,
-} from "../../utils/formatting";
+import calcularCobrancas from "../../utils/resumeCharge";
 import ModalLoading from "../../components/ModalLoading/ModalLoading";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { formatarValor, formatarCPF } from "../../utils/formatting";
+import { exibirErro } from "../../utils/toast";
 
 export default function Home() {
   const [carregando, setCarregando] = useState(true);
@@ -58,7 +55,7 @@ export default function Home() {
         setclientesInadimplentes(clientesInadimplentes.data);
         setclientesEmDia(clientesEmDia.data);
       } catch (error) {
-        console.error("Erro ao buscar detalhes das cobranças:", error);
+        exibirErro("Erro ao carregar dados. Por favor, tente novamente.");
       } finally {
         setCarregando(false);
       }
@@ -140,7 +137,10 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <button className="btn-viewall" onClick={() => handleViewAllCharges("Paga")}>
+            <button
+              className="btn-viewall"
+              onClick={() => handleViewAllCharges("Paga")}
+            >
               Ver todos
             </button>
           </div>
@@ -165,7 +165,10 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <button className="btn-viewall" onClick={() => handleViewAllCharges("Vencida")}>
+            <button
+              className="btn-viewall"
+              onClick={() => handleViewAllCharges("Vencida")}
+            >
               Ver todos
             </button>
           </div>
@@ -190,7 +193,10 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <button className="btn-viewall" onClick={() => handleViewAllCharges("Pendente")}>
+            <button
+              className="btn-viewall"
+              onClick={() => handleViewAllCharges("Pendente")}
+            >
               Ver todos
             </button>
           </div>
@@ -218,7 +224,10 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <button className="btn-viewall" onClick={() => handleViewAllClients("Inadimplente")}>
+            <button
+              className="btn-viewall"
+              onClick={() => handleViewAllClients("Inadimplente")}
+            >
               Ver todos
             </button>
           </div>
@@ -244,7 +253,10 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <button className="btn-viewall" onClick={() => handleViewAllClients("Em dia")}>
+            <button
+              className="btn-viewall"
+              onClick={() => handleViewAllClients("Em dia")}
+            >
               Ver todos
             </button>
           </div>

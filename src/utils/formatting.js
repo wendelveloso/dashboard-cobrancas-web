@@ -22,21 +22,21 @@ const formatarData = (dataString) => {
 };
 
 function formatarTelefone(numero) {
-    const numeroLimpo = numero.replace(/\D/g, "");
+  const numeroLimpo = numero.replace(/\D/g, "");
 
-    if (numeroLimpo.length === 11) {
-        return numeroLimpo.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-    } else if (numeroLimpo.length === 10) {
-        return numeroLimpo.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
-    } else {
-        return numero;
-    }
+  if (numeroLimpo.length === 11) {
+    return numeroLimpo.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+  } else if (numeroLimpo.length === 10) {
+    return numeroLimpo.replace(/(\d{2})(\d{4})(\d{4})/, "($1) $2-$3");
+  } else {
+    return numero;
+  }
 }
 function formatarCEP(cep) {
   return cep
-    .replace(/\D/g, "") 
+    .replace(/\D/g, "")
     .replace(/^(\d{5})(\d)/, "$1-$2")
-    .substring(0, 9); 
+    .substring(0, 9);
 }
 
 export {
@@ -44,5 +44,5 @@ export {
   formatarCPF,
   formatarData,
   formatarTelefone,
-  formatarCEP
+  formatarCEP,
 };

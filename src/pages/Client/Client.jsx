@@ -8,18 +8,18 @@ import {
   emptySearch,
   polygon,
 } from "../../components/Icons/icons";
+import api from "../../services/api";
 import Header from "../../components/Header/Header";
 import ModalFilter from "../../components/ModalFilter/ModalFilter";
-import { useModal } from "../../utils/useModal";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientGeneric";
-import { NavLink, useLocation } from "react-router-dom";
-import api from "../../services/api";
-import { useForm } from "react-hook-form";
-import React, { useState, useEffect } from "react";
-import { formatarCPF, formatarTelefone } from "../../utils/formatting";
-import { exibirSucesso } from "../../utils/toast";
 import "react-toastify/dist/ReactToastify.css";
+import { useModal } from "../../utils/useModal";
+import { NavLink, useLocation } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { formatarCPF, formatarTelefone } from "../../utils/formatting";
+import { exibirErro } from "../../utils/toast";
 
 export default function Client() {
   const { register, watch } = useForm();
@@ -29,21 +29,12 @@ export default function Client() {
   const [allClients, setAllClients] = useState([]);
   const [filteredClients, setFilteredClients] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [orderDirection, setOrderDirection] = useState("asc");
+
   const clientsPerPage = 9;
   const searchTerm = watch("searchTerm");
   const location = useLocation();
   const status = location.state?.status;
-
-  useEffect(() => {
-    const message = localStorage.getItem("successMessage");
-    if (message) {
-      exibirSucesso(message);
-
-      setTimeout(() => {
-        localStorage.removeItem("successMessage");
-      }, 3000);
-    }
-  }, []);
 
   const fetchClients = async (searchTerm = "") => {
     try {
@@ -54,12 +45,13 @@ export default function Client() {
           typeOrderBy: "asc",
         },
       });
+
       setClients(response.data);
       setFilteredClients(response.data);
       handleFilterClients();
       if (!searchTerm) setAllClients(response.data);
     } catch (error) {
-      console.error("Erro ao buscar clientes:", error);
+      exibirErro("Não foi possível carregar os clientes. Tente novamente.");
     }
   };
 
@@ -76,10 +68,11 @@ export default function Client() {
   }, [searchTerm]);
 
   const handleAddClient = (newClient) => {
-    setClients((prevClients) => [newClient, ...prevClients]);
-    setAllClients((prevAllClients) => [newClient, ...prevAllClients]);
-
-    setCurrentPage(1);
+    if (newClient && newClient.cpf && newClient.nome) {
+      setClients((prevClients) => [newClient, ...prevClients]);
+      setAllClients((prevAllClients) => [newClient, ...prevAllClients]);
+      setCurrentPage(1);
+    }
   };
 
   const handleFilterClients = (status) => {
@@ -122,7 +115,19 @@ export default function Client() {
         return "";
     }
   };
+  const handleSortByClient = () => {
+    const novaDirecao = orderDirection === "asc" ? "desc" : "asc";
+    setOrderDirection(novaDirecao);
 
+    const chargesOrdenadas = [...filteredClients].sort((a, b) => {
+      if (a.nome < b.nome) return novaDirecao === "asc" ? -1 : 1;
+      if (a.nome > b.nome) return novaDirecao === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    setFilteredClients(chargesOrdenadas);
+    setCurrentPage(1);
+  };
   const {
     modalToolsRef,
     modalRef,
@@ -153,7 +158,6 @@ export default function Client() {
           handleToggleSecondModal={handleToggleSecondModal}
           selectedClientNome={selectedClient}
           selectedClientId={selectedClientId}
-      
         />
       )}
       {modalClientOpen && (
@@ -163,6 +167,7 @@ export default function Client() {
           onClose={onClose}
           handleToggleClientModal={handleToggleClientModal}
           onAddClient={handleAddClient}
+          onSuccess={fetchClients}
         />
       )}
       <div className="page__container">
@@ -199,7 +204,11 @@ export default function Client() {
           </div>
           <div className="clients_container">
             <div className="clients__header_info">
-              <div className="client_order">
+              <div
+                className="client_order"
+                onClick={handleSortByClient}
+                style={{ cursor: "pointer" }}
+              >
                 <img src={iconTopDown} alt="arrow-top-down" />
                 <p>Cliente</p>
               </div>
@@ -230,8 +239,8 @@ export default function Client() {
                       alt="icon-page-charge-plus"
                       onClick={(e) => {
                         e.preventDefault();
-                        setSelectedClient(cliente.nome)
-                        setSelectedClientId(cliente.id)
+                        setSelectedClient(cliente.nome);
+                        setSelectedClientId(cliente.id);
                         handleToggleSecondModal();
                       }}
                     />

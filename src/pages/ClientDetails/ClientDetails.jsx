@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./ClientDetails.css";
 import {
   iconClient,
@@ -6,14 +6,16 @@ import {
   iconEdit,
   iconDelete,
 } from "../../components/Icons/icons";
+import "react-toastify/dist/ReactToastify.css";
+import api from "../../services/api";
 import Header from "../../components/Header/Header";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalClientGeneric from "../../components/ModalClientGeneric/ModalClientGeneric";
 import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete";
-import { useModal } from "../../utils/useModal";
-import api from "../../services/api";
-import { useParams } from "react-router-dom";
 import ModalLoading from "../../components/ModalLoading/ModalLoading";
+import { useModal } from "../../utils/useModal";
+import { useParams } from "react-router-dom";
+import { exibirErro, exibirSucesso } from "../../utils/toast";
 import {
   formatarValor,
   formatarCPF,
@@ -21,9 +23,6 @@ import {
   formatarTelefone,
   formatarCEP,
 } from "../../utils/formatting";
-import { exibirErro, exibirSucesso } from "../../utils/toast";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export default function ClientDetails() {
   const [carregando, setCarregando] = useState(true);
@@ -57,7 +56,7 @@ export default function ClientDetails() {
       exibirSucesso("Cobrança excluída com sucesso!");
       fetchClientDetails();
     } catch (error) {
-      exibirErro("Esta cobrança não pode ser excluída!");
+      exibirErro("Apenas cobranças pendentes podem ser excluídas!");
     }
   };
 
@@ -72,22 +71,11 @@ export default function ClientDetails() {
       setCliente(response.data.client);
       setCharges(response.data.charges);
     } catch (error) {
-      console.error("Erro ao buscar detalhes do cliente:", error);
+      exibirErro("Não foi possível carregar os detalhes do cliente. Tente novamente.");
     } finally {
       setCarregando(false);
     }
   };
-
-  useEffect(() => {
-    const message = localStorage.getItem("successMessage");
-    if (message) {
-      exibirSucesso(message);
-
-      setTimeout(() => {
-        localStorage.removeItem("successMessage");
-      }, 3000);
-    }
-  }, []);
 
   useEffect(() => {
     fetchClientDetails();
@@ -132,6 +120,7 @@ export default function ClientDetails() {
           handleToggleSecondModal={handleToggleSecondModal}
           selectedClientNome={cliente.nome}
           charge={selectedCharge}
+          onSuccess={fetchClientDetails}
         />
       )}
       {modalClientOpen && (
@@ -143,6 +132,7 @@ export default function ClientDetails() {
           handleToggleClientModalEdit={handleToggleClientModalEdit}
           clienteParaEditar={modoEdicao ? cliente : null}
           modoEdicao={modoEdicao}
+          onSuccess={fetchClientDetails}
         />
       )}
       <div className="page__container">
@@ -199,7 +189,7 @@ export default function ClientDetails() {
                 <p>{cliente.complemento}</p>
                 <p>{formatarCEP(cliente.cep)}</p>
                 <p>{cliente.cidade}</p>
-                <p>{cliente.uf}</p>
+                <p>{cliente.uf.toUpperCase()}</p>
               </div>
             </div>
           </div>
@@ -208,7 +198,7 @@ export default function ClientDetails() {
               <h3>Cobranças do Cliente</h3>
               <button
                 onClick={() => {
-                  setSelectedCharge(null); 
+                  setSelectedCharge(null);
                   handleToggleSecondModal();
                 }}
                 className="btn-details"
@@ -271,7 +261,6 @@ export default function ClientDetails() {
           </div>
         </main>
       </div>
-      <ToastContainer />
     </>
   );
 }

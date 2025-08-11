@@ -1,12 +1,12 @@
-import React from "react";
-import { format } from "date-fns";
 import "./ModalChargeGeneric.css";
+import api from "../../services/api";
+import chargeSchema from "../../validations/chargeSchema";
+import { format } from "date-fns";
 import { iconClose, iconPaper } from "../Icons/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import chargeSchema from "../../validations/chargeSchema";
-import api from "../../services/api";
 import { useParams } from "react-router-dom";
+import { exibirSucesso, exibirErro  } from "../../utils/toast";
 
 export default function ModalChargeGeneric({
   handleToggleSecondModal,
@@ -16,6 +16,7 @@ export default function ModalChargeGeneric({
   title,
   selectedClientNome,
   selectedClientId,
+  onSuccess,
 }) {
   const {
     register,
@@ -36,7 +37,6 @@ export default function ModalChargeGeneric({
     },
   });
 
-
   const { clientId } = useParams();
   const onSubmit = async (data) => {
     try {
@@ -47,6 +47,7 @@ export default function ModalChargeGeneric({
           cliente_id: selectedClientId || clientId || charge.id,
         };
         await api.post("/addCharge", requestData);
+        exibirSucesso("Cobrança adicionada com sucesso!");
       } else {
         delete data.nome;
         const requestData = {
@@ -54,14 +55,18 @@ export default function ModalChargeGeneric({
           cliente_id: clientId || selectedClientId || charge.id,
           id_cob: charge.id_cob,
         };
-        console.log(requestData);
 
         await api.put("/updateCharge", requestData);
+        exibirSucesso("Cobrança atualizada com sucesso!");
+      }
+
+      if (onSuccess) {
+        await onSuccess();
       }
       onClose();
       reset();
     } catch (error) {
-      console.log(error);
+      exibirErro("Não foi possível salvar a cobrança. Por favor, tente novamente.");
 
       if (error.response) {
         if (error.response.status === 400) {

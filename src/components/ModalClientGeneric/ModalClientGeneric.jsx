@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
 import "./ModalClientGeneric.css";
+import api from "../../services/api";
+import clientSchema from "../../validations/clientSchema";
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import { iconClose, iconClient } from "../Icons/icons";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import clientSchema from "../../validations/clientSchema";
-import api from "../../services/api";
 import { exibirErro, exibirSucesso } from "../../utils/toast";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useParams } from "react-router-dom";
 
 export default function ModalClientGeneric({
   handleToggleClientModal,
@@ -18,6 +18,7 @@ export default function ModalClientGeneric({
   onAddClient,
   clienteParaEditar,
   modoEdicao,
+  onSuccess,
 }) {
   const {
     register,
@@ -41,28 +42,31 @@ export default function ModalClientGeneric({
 
   const onSubmit = async (data) => {
     try {
+      if (data.uf) {
+        data.uf = data.uf.toUpperCase();
+      }
       if (modoEdicao) {
         delete data.usuario_id;
         delete data.status;
         const response = await api.put(`/updateClient/${clientId}`, data);
+        exibirSucesso("Cliente atualizado com sucesso!");
         const updatedClient = response.data;
+        if (onSuccess) {
+          await onSuccess();
+        }
         onClose();
         onAddClient(updatedClient);
         reset();
-        localStorage.setItem(
-          "successMessage",
-          "Edições do cadastro concluídas com sucesso"
-        );
       } else {
         const response = await api.post("/registerClient", data);
+        exibirSucesso("Cliente adicionado com sucesso!");
         const newClient = response.data;
+        if (onSuccess) {
+          await onSuccess();
+        }
         onClose();
         onAddClient(newClient);
         reset();
-        localStorage.setItem(
-          "successMessage",
-          "Cadastro concluído com sucesso"
-        );
       }
     } catch (error) {
       if (error.response) {
@@ -123,10 +127,15 @@ export default function ModalClientGeneric({
               <label htmlFor="cpf">CPF:*</label>
               <input
                 type="text"
-                {...register("cpf")}
+                {...register("cpf", {
+                  onChange: (e) => {
+                    e.target.value = e.target.value.replace(/[.,;:\-_]/g, "");
+                  },
+                })}
                 className={errors.cpf ? "error-border" : ""}
                 placeholder="Digite o CPF"
               />
+
               {errors.cpf && (
                 <p className="error-message">{errors.cpf.message}</p>
               )}
@@ -135,10 +144,15 @@ export default function ModalClientGeneric({
               <label htmlFor="text">Telefone:*</label>
               <input
                 type="text"
-                {...register("telefone")}
+                {...register("telefone", {
+                  onChange: (e) => {
+                    e.target.value = e.target.value.replace(/[.,;:\-_]/g, "");
+                  },
+                })}
                 className={errors.telefone ? "error-border" : ""}
-                placeholder="Digite o telefone"
+                placeholder="Digite o Telefone"
               />
+
               {errors.telefone && (
                 <p className="error-message">{errors.telefone.message}</p>
               )}
@@ -164,10 +178,16 @@ export default function ModalClientGeneric({
             <div className="input__container-client-extra">
               <label htmlFor="text">CEP:</label>
               <input
-                {...register("cep")}
                 type="text"
+                {...register("cep", {
+                  onChange: (e) => {
+                    e.target.value = e.target.value.replace(/[.,;:\-_]/g, "");
+                  },
+                })}
+                className={errors.cep ? "error-border" : ""}
                 placeholder="Digite o CEP"
               />
+
               {errors.cep && (
                 <p className="error-message">{errors.cep.message}</p>
               )}

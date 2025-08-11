@@ -262,7 +262,6 @@ textarea::placeholder {
   gap: 23px;
   margin-top: 580px;
   position: absolute;
-  /* width: 100%; */
 }
 
 .icon_close {

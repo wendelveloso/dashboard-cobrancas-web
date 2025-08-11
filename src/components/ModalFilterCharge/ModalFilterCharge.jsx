@@ -1,25 +1,38 @@
 import "./ModalFilterCharge.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ModalFilterCharge({
   modalToolsRef,
   onApplyFilter,
   onClose,
+  currentFilter,
 }) {
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  useEffect(() => {
+    setSelectedStatus(currentFilter?.status || "");
+    setStartDate(currentFilter?.startDate || "");
+    setEndDate(currentFilter?.endDate || "");
+  }, [currentFilter]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    onApplyFilter(selectedOption);
+    onApplyFilter({
+      status: selectedStatus || null,
+      startDate: startDate || null,
+      endDate: endDate || null,
+    });
+
     onClose();
-  };
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
   };
 
   const handleClear = () => {
-    setSelectedOption("");
+    setSelectedStatus("");
+    setStartDate("");
+    setEndDate("");
     onApplyFilter(null);
     onClose();
   };
@@ -30,52 +43,38 @@ export default function ModalFilterCharge({
       <form onSubmit={handleSubmit}>
         <p className="label__status">Status</p>
 
-        <label className="label__radio">
-          <input
-            type="radio"
-            name="status"
-            value="Vencida"
-            checked={selectedOption === "Vencida"}
-            onChange={handleOptionChange}
-          />
-          <span className="checkmark"></span>
-          Vencidas
-        </label>
-
-        <label className="label__radio">
-          <input
-            type="radio"
-            name="status"
-            value="Pendente"
-            checked={selectedOption === "Pendente"}
-            onChange={handleOptionChange}
-          />
-          <span className="checkmark"></span>
-          Pendentes
-        </label>
-
-        <label className="label__radio">
-          <input
-            type="radio"
-            name="status"
-            value="Paga"
-            checked={selectedOption === "Paga"}
-            onChange={handleOptionChange}
-          />
-          <span className="checkmark"></span>
-          Pagas
-        </label>
+        {["Vencida", "Pendente", "Paga"].map((status) => (
+          <label key={status} className="label__radio">
+            <input
+              type="radio"
+              name="status"
+              value={status}
+              checked={selectedStatus === status}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            />
+            <span className="checkmark"></span>
+            {status}s
+          </label>
+        ))}
 
         <label className="label__date">Data de Início</label>
-        <input type="date" />
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
 
         <label className="label__date">Data de Fim</label>
-        <input type="date" />
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
 
         <button
           className="btnSubmit-charge"
           type="submit"
-          disabled={!selectedOption}
+          disabled={!selectedStatus && !startDate && !endDate}
         >
           Aplicar
         </button>

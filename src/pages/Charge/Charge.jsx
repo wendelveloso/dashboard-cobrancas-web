@@ -9,16 +9,16 @@ import {
   emptySearch,
   polygon,
 } from "../../components/Icons/icons";
-import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../../components/Header/Header";
-import { useModal } from "../../utils/useModal";
 import ModalFilterCharge from "../../components/ModalFilterCharge/ModalFilterCharge";
 import ModalChargeGeneric from "../../components/ModalChargeGeneric/ModalChargeGeneric";
 import ModalConfirmDelete from "../../components/ModalConfirmDelete/ModalConfirmDelete";
 import ModalDetailsCharge from "../../components/ModalDetailsCharge/ModalDetailsCharge";
-import React, { useState, useEffect } from "react";
 import api from "../../services/api";
+import { useModal } from "../../utils/useModal";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { formatarValor, formatarData } from "../../utils/formatting";
 import { exibirErro, exibirSucesso } from "../../utils/toast";
@@ -33,8 +33,12 @@ export default function Charge() {
   const [filteredCharges, setFilteredCharges] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
+  const [currentFilter, setCurrentFilter] = useState(null);
+  const [orderDirection, setOrderDirection] = useState("asc");
+  const [sortDueDateAsc, setSortDueDateAsc] = useState(true);
+
   const location = useLocation();
-  const status = location.state?.status;
+  const statusFromRoute = location.state?.status;
 
   const chargesPerPage = 9;
   const {
@@ -50,6 +54,34 @@ export default function Charge() {
     modalClientOpen,
   } = useModal();
 
+  const fetchCharges = async (searchTerm = "") => {
+    try {
+      const response = await api.get("/searchCharges", {
+        params: {
+          searchTerm,
+        },
+      });
+      setCharges(response.data);
+      setAllCharges(response.data);
+      setFilteredCharges(response.data);
+    } catch (error) {
+      exibirErro("Não foi possível carregar as cobranças. Tente novamente.");
+    }
+  };
+
+  useEffect(() => {
+    fetchCharges();
+  }, []);
+
+  const searchTerm = watch("searchTerm");
+  useEffect(() => {
+    if (searchTerm) {
+      fetchCharges(searchTerm);
+    } else {
+      setCharges(allCharges);
+      setFilteredCharges(allCharges);
+    }
+  }, [searchTerm]);
 
   const handleEditCharge = (cobranca) => {
     setSelectedCharge(cobranca);
@@ -67,7 +99,7 @@ export default function Charge() {
       exibirSucesso("Cobrança excluída com sucesso!");
       fetchCharges();
     } catch (error) {
-      exibirErro("Esta cobrança não pode ser excluída!");
+      exibirErro("Apenas cobranças pendentes podem ser excluídas!");
     }
   };
 
@@ -75,72 +107,89 @@ export default function Charge() {
     setShowConfirmModal(false);
   };
 
-  const fetchCharges = async (searchTerm = "") => {
-    try {
-      const response = await api.get("/searchCharges", {
-        params: {
-          searchTerm,
-        },
-      });
-      setCharges(response.data);
-      setFilteredCharges(response.data);
-      if (!searchTerm) setAllCharges(response.data);
-    } catch (error) {
-      console.error("Erro ao buscar cobranças:", error);
+  const handleFilterCharges = (filter) => {
+    if (!filter) {
+      setFilteredCharges(charges);
+      setCurrentFilter(null);
+      setCurrentPage(1);
+      return;
     }
-  };
 
-  const searchTerm = watch("searchTerm");
-  useEffect(() => {
-    fetchCharges();
-  }, []);
+    let filtered = charges;
 
-  useEffect(() => {
-    if (searchTerm) {
-      fetchCharges(searchTerm);
-    } else {
-      setCharges(allCharges);
+    if (filter.status) {
+      filtered = filtered.filter((charge) => charge.status === filter.status);
     }
-  }, [searchTerm]);
-
-  const handleOpenDetailsModal = (cobranca) => {
-    setSelectedCharge(cobranca);
-    handleToggleClientModal();
-  };
-  const handleFilterCharges = (status) => {
-    if (status) {
-      setFilteredCharges(
-        charges.filter((charges) => charges.status === status)
+    if (filter.startDate) {
+      filtered = filtered.filter(
+        (charge) => new Date(charge.data_venc) >= new Date(filter.startDate)
       );
-    } else {
-      setFilteredCharges(charges);
     }
+    if (filter.endDate) {
+      filtered = filtered.filter(
+        (charge) => new Date(charge.data_venc) <= new Date(filter.endDate)
+      );
+    }
+
+    setFilteredCharges(filtered);
+    setCurrentFilter(filter);
     setCurrentPage(1);
   };
 
   useEffect(() => {
-    if (status) {
-      setFilteredCharges(charges.filter((charge) => charge.status === status));
+    if (statusFromRoute) {
+      handleFilterCharges({ status: statusFromRoute });
     } else {
       setFilteredCharges(charges);
     }
-    setCurrentPage(1);
-  }, [status, charges]);
+  }, [statusFromRoute, charges]);
 
   const nextPage = () => {
     setCurrentPage((prev) => prev + 1);
   };
-
   const prevPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
   };
-
   const startIndex = (currentPage - 1) * chargesPerPage;
   const currentCharges = filteredCharges.slice(
     startIndex,
     startIndex + chargesPerPage
   );
 
+  const handleOpenDetailsModal = (cobranca) => {
+    setSelectedCharge(cobranca);
+    handleToggleClientModal();
+  };
+
+  const handleSortByClient = () => {
+    const novaDirecao = orderDirection === "asc" ? "desc" : "asc";
+    setOrderDirection(novaDirecao);
+
+    const chargesOrdenadas = [...filteredCharges].sort((a, b) => {
+      if (a.nome < b.nome) return novaDirecao === "asc" ? -1 : 1;
+      if (a.nome > b.nome) return novaDirecao === "asc" ? 1 : -1;
+      return 0;
+    });
+
+    setFilteredCharges(chargesOrdenadas);
+    setCurrentPage(1);
+  };
+  const handleSortByDueDate = () => {
+    const sorted = [...filteredCharges].sort((a, b) => {
+      const dateA = new Date(a.data_venc);
+      const dateB = new Date(b.data_venc);
+
+      if (sortDueDateAsc) {
+        return dateA - dateB;
+      } else {
+        return dateB - dateA;
+      }
+    });
+
+    setFilteredCharges(sorted);
+    setSortDueDateAsc(!sortDueDateAsc);
+    setCurrentPage(1);
+  };
   return (
     <>
       <ModalConfirmDelete
@@ -154,6 +203,7 @@ export default function Charge() {
           onClose={onClose}
           onApplyFilter={handleFilterCharges}
           modalToolsRef={modalToolsRef}
+          currentFilter={currentFilter}
         />
       )}
       {modalSecondOpen && (
@@ -163,6 +213,7 @@ export default function Charge() {
           onClose={onClose}
           handleToggleSecondModal={handleToggleSecondModal}
           charge={selectedCharge}
+          onSuccess={fetchCharges}
         />
       )}
       {modalClientOpen && selectedCharge && (
@@ -205,16 +256,25 @@ export default function Charge() {
           </div>
           <div className="charges_container">
             <div className="charges__header_info">
-              <div className="client_order">
+              <div
+                className="charges__client_order"
+                onClick={handleSortByClient}
+                style={{ cursor: "pointer" }}
+              >
                 <img src={iconTopDown} alt="arrow-top-down" />
                 <p>Cliente</p>
               </div>
-              <div className="ID_order">
-                <img src={iconTopDown} alt="arrow-top-down" />
-                <p>ID Cob.</p>
-              </div>
+              <p>ID Cob.</p>
               <p>Valor</p>
-              <p>Data de venc.</p>
+              <div
+                className="ID_order"
+                onClick={handleSortByDueDate}
+                style={{ cursor: "pointer" }}
+              >
+                <img src={iconTopDown} alt="arrow-top-down" />
+                <p>Data de venc.</p>
+              </div>
+
               <p>Status</p>
               <p>Descrição</p>
             </div>
@@ -272,7 +332,7 @@ export default function Charge() {
               <img
                 onClick={nextPage}
                 className={`polygon2 ${
-                  startIndex + chargesPerPage >= charges.length
+                  startIndex + chargesPerPage >= filteredCharges.length
                     ? "disabled"
                     : ""
                 }`}
@@ -283,7 +343,6 @@ export default function Charge() {
           </div>
         </main>
       </div>
-      <ToastContainer />
     </>
   );
 }
