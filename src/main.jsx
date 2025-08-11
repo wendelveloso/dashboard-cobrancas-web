@@ -16,8 +16,8 @@ import { SignUpContextProvider } from "./context/SignUpContext.jsx";
 import { MenuSideBarColorProvider } from "./context/MenuSideBarColorContext.jsx";
 import { AddClientContextProvider } from "./context/AddClienteContext.jsx";
 import { ChargesContextProvider } from "./context/ChargesContext.jsx";
+import { UnPrivateRoutes } from "./routes/UnPrivateRoutes";
 import { PrivateRoutes } from "./routes/PrivateRoutes";
-import { UnPrivateRoutes } from "./routes/UnPrivateRoutes.jsx";
 
 const router = createBrowserRouter([
   {
