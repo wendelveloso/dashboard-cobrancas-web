@@ -18,22 +18,20 @@ import { AddClientContextProvider } from "./context/AddClienteContext.jsx";
 import { ChargesContextProvider } from "./context/ChargesContext.jsx";
 import { UnPrivateRoutes } from "./routes/UnPrivateRoutes";
 import { PrivateRoutes } from "./routes/PrivateRoutes";
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      
-      { path: "/", element: <UnPrivateRoutes><Login /></UnPrivateRoutes> },
-      { path: "/signUp", element: <UnPrivateRoutes><SignUp /></UnPrivateRoutes> },
+      { path: "login", element: <UnPrivateRoutes><Login /></UnPrivateRoutes> },
+      { path: "signUp", element: <UnPrivateRoutes><SignUp /></UnPrivateRoutes> },
 
-      { path: "/home", element: <PrivateRoutes><><Navbar /><Home /></></PrivateRoutes> },
-      { path: "/clientes", element: <PrivateRoutes><><Navbar /><Client /></></PrivateRoutes> },
-      { path: "/clientes/detalhes/:clientId", element: <PrivateRoutes><><Navbar /><ClientDetails /></></PrivateRoutes> },
-      { path: "/cobrancas", element: <PrivateRoutes><><Navbar /><Charge /></></PrivateRoutes> },
+      { path: "home", element: <PrivateRoutes><><Navbar /><Home /></></PrivateRoutes> },
+      { path: "clientes", element: <PrivateRoutes><><Navbar /><Client /></></PrivateRoutes> },
+      { path: "clientes/detalhes/:clientId", element: <PrivateRoutes><><Navbar /><ClientDetails /></></PrivateRoutes> },
+      { path: "cobrancas", element: <PrivateRoutes><><Navbar /><Charge /></></PrivateRoutes> },
 
-      { path: "/unauthorized", element: <Unauthorized /> },
+      { path: "unauthorized", element: <Unauthorized /> },
       { path: "*", element: <NotFound /> },
     ],
   },

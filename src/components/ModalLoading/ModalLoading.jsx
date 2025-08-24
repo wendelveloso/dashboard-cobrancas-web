@@ -1,6 +1,12 @@
+import React from "react";
+import { useLoading } from "../../context/LoadingContext";
 import "./ModalLoading.css";
 
-const LoadingModal = () => {
+const ModalLoadingGlobal = () => {
+  const { loading } = useLoading();
+
+  if (!loading) return null;
+
   return (
     <div className="loading-modal">
       <div className="loading-spinner"></div>
@@ -8,4 +14,4 @@ const LoadingModal = () => {
   );
 };
 
-export default LoadingModal;
+export default ModalLoadingGlobal;

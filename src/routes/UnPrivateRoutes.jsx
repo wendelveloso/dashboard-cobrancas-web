@@ -3,5 +3,10 @@ import { getItem } from "../utils/storage";
 
 export function UnPrivateRoutes({ children }) {
   const token = getItem("token");
-  return !token ? children : <Navigate to="/home" />;
+
+  if (token) {
+    return <Navigate to="/home" replace />;
+  }
+
+  return children;
 }

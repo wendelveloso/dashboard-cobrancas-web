@@ -100,7 +100,12 @@ export function SignUpContextProvider({ children }) {
   }
 
   async function handleSucessSignup() {
-    setErrors(validatePass(colectUserInfos));
+    const validationErrors = validatePass(colectUserInfos);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
 
     try {
       if (colectUserInfos.confirmPass != colectUserInfos.password) {
@@ -111,9 +116,8 @@ export function SignUpContextProvider({ children }) {
         email: colectUserInfos.email,
         senha: colectUserInfos.password,
       };
-    
+
       const response = await api.post("/signUp", { ...body });
- 
 
       nextStepWithButtonPassword(colectUserInfos);
       setColectUserInfos({
@@ -125,17 +129,16 @@ export function SignUpContextProvider({ children }) {
       setErrors({});
     } catch (error) {
       const mensagem = error?.response?.data?.mensagem;
-    
+
       if (mensagem === "O preenchimento da senha é obrigatório") {
         setErrors({ password: mensagem });
       } else if (mensagem === "Email já cadastrado") {
         handleClickStep("one");
         setErrors({ userEmail: mensagem });
       } else if (mensagem) {
-        setErrors({ password: mensagem }); 
-      } 
+        setErrors({ password: mensagem });
+      }
     }
-    
   }
 
   return (

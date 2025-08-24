@@ -9,42 +9,49 @@ import { formatUserName } from "../../utils/nameUser";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { clear } from "../../utils/storage";
-import { useModal } from "../../utils/useModal"; 
+import { useModal } from "../../utils/useModal";
 import ModalEditUser from "../ModalEditUser/ModalEditUser";
+import { useChargesContext } from "../../context/ChargesContext";
 
 export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
   const [fullName, setFullName] = useState("");
   const { nameFormated, initials } = formatUserName(fullName);
   const [optionsOn, setOptionsOn] = useState(false);
-
+  const { clearChargesContext } = useChargesContext();
+  const navigate = useNavigate();
   useEffect(() => {
-    const storedName = getItem("userName");
-    if (storedName) {
-      setFullName(storedName);
-    }
+    const storedName = getItem("userName") || "";
+    setFullName(storedName);
+
+    const handleStorageChange = () => {
+      const stored = getItem("userName") || "";
+      setFullName(stored);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
-  const {
-    modalRef,
-    modalSecondOpen,
-    handleToggleSecondModal,
-    onClose,
-  } = useModal();
+
+  const { modalRef, modalSecondOpen, handleToggleSecondModal, onClose } =
+    useModal();
 
   const handleAddUser = (updatedUser) => {
-    setFullName(updatedUser.nome); 
-    setItem("userName", updatedUser);
+    const nome = updatedUser.nome || updatedUser;
+    setFullName(nome);
+    setItem("userName", nome);
   };
-
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     clear();
-    navigate("/");
+    clearChargesContext();
+    navigate("/login", { replace: true });
   };
+
   const toggleOptionsDisplay = () => {
     setOptionsOn(!optionsOn);
   };
-
 
   return (
     <>
@@ -83,4 +90,3 @@ export default function Header({ title, titleStyle, subTitle, titleStyle2 }) {
     </>
   );
 }
-

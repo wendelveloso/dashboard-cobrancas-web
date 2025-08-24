@@ -1,13 +1,25 @@
 import { toast } from "react-toastify";
+
 function exibirSucesso(mensagem) {
   toast.success(mensagem, {
     position: "bottom-right",
     autoClose: 3000,
     hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: false,
     style: {
-      backgroundColor: "#C3D4FE",
-      color: "#243F80",
-      width: "354px",
+      backgroundColor: "#E9F7EF",
+      color: "#1E4620",
+      fontSize: "14px",
+      fontWeight: 500,
+      padding: "12px 16px",
+      borderRadius: "12px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+      width: "360px",
+    },
+    progressStyle: {
+      background: "#27AE60",
     },
   });
 }
@@ -17,10 +29,21 @@ function exibirErro(mensagem) {
     position: "bottom-right",
     autoClose: 3000,
     hideProgressBar: true,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: false,
     style: {
-      backgroundColor: "#F2D6D0",
-      color: "#AE1100",
-      width: "354px",
+      backgroundColor: "#FDEDEC",
+      color: "#641E16",
+      fontSize: "14px",
+      fontWeight: 500,
+      padding: "12px 16px",
+      borderRadius: "12px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+      width: "360px",
+    },
+    progressStyle: {
+      background: "#C0392B",
     },
   });
 }

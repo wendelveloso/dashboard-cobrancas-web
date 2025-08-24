@@ -16,7 +16,6 @@ import { formatarValor, formatarCPF } from "../../utils/formatting";
 import { exibirErro } from "../../utils/toast";
 
 export default function Home() {
-  const [carregando, setCarregando] = useState(true);
   const [cobrancasPagas, setCobrancasPagas] = useState([]);
   const [cobrancasVencidas, setCobrancasVencidas] = useState([]);
   const [cobrancasPendentes, setCobrancasPendentes] = useState([]);
@@ -34,7 +33,6 @@ export default function Home() {
 
   useEffect(() => {
     const buscarTodasCobrancas = async () => {
-      setCarregando(true);
       try {
         const [
           cobrancasPagas,
@@ -57,14 +55,11 @@ export default function Home() {
       } catch (error) {
         exibirErro("Erro ao carregar dados. Por favor, tente novamente.");
       } finally {
-        setCarregando(false);
       }
     };
 
     buscarTodasCobrancas();
   }, []);
-
-  if (carregando) return <ModalLoading />;
 
   const {
     valorTotalPagas,

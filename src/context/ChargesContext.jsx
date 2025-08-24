@@ -489,6 +489,32 @@ export function ChargesContextProvider({ children }) {
       console.error(error);
     }
   }
+  function clearChargesContext() {
+    setUserCharges([]);
+    setClientCharges([]);
+    setColectModalChargesInfos({
+      cliente_id: "",
+      descricao: "",
+      data_venc: "",
+      valor: "",
+      status: "Paga",
+      formattedValue: "",
+    });
+    setOrderCharges([]);
+    setOrderDataFilter([]);
+    setColectChargesViewInfos({});
+    setColectModalEditCharges({});
+    setOpenModalCharges(false);
+    setOpenModalEditCharges(false);
+    setOpenModalInfoCharges(false);
+    setOpenConfirmDeletChargeModal(false);
+    setModalChargeErrors({});
+    setFilterType(undefined);
+    setClientDataDetails({});
+    setShowDetails(false);
+    setDataFilter([]);
+    setClients([]);
+  }
 
   return (
     <ChargesContext.Provider
@@ -532,6 +558,7 @@ export function ChargesContextProvider({ children }) {
         setOrderDataFilter,
         filterType,
         setFilterType,
+        clearChargesContext,
       }}
     >
       {children}

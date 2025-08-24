@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ModalEditUser.css";
 import userSchema from "../../validations/userSchema";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { iconClose, iconEyes } from "../../components/Icons/icons";
 import api from "../../services/api.js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { exibirSucesso } from "../../utils/toast";
 
 export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,6 +22,26 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
     resolver: yupResolver(userSchema),
   });
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) return;
+
+        const response = await api.get(`/userDetails/${userId}`);
+        console.log(response);
+
+        const { nome, email, cpf, telefone } = response.data.user;
+
+        reset({ nome, email, cpf, telefone });
+      } catch (error) {
+        console.log("Erro ao buscar dados do usuário:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [reset]);
+
   const onSubmit = async (data) => {
     delete data.repetirSenha;
     if (!data.cpf) {
@@ -32,15 +55,18 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
     }
     try {
       const response = await api.patch("/updateUser", data);
-
-      onClose();      
+      const novoNome = response.data.usuario.nome;
+      localStorage.setItem("userName", novoNome);
+      onClose();
       onAddUser(response.data.usuario.nome);
       reset();
+      exibirSucesso("Usuário atualizado com sucesso!");
     } catch (error) {
+      console.log(error);
       if (error.response) {
         if (error.response.status === 400) {
           const mensagemErro = error.response.data.mensagem;
-          if (mensagemErro.includes("Email")) {
+          if (mensagemErro.includes("e-mail")) {
             setError("email", { type: "manual", message: mensagemErro });
           }
 
@@ -161,6 +187,7 @@ export default function ModalEditUser({ onClose, modalRef, onAddUser }) {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }

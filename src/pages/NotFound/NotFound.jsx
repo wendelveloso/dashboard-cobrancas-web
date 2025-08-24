@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import "./NotFound.css";
+import { getItem } from "../../utils/storage";
 
 export default function NotFound() {
+  const token = getItem("token");
+
   return (
     <div className="error-page-notfound">
       <h1>404</h1>
       <p>Página não encontrada</p>
-      <Link className="error-link-notfound" to="/home">
-        Voltar para a página inicial
-      </Link>
+      <Link to={token ? "/home" : "/login"}>Voltar para uma página válida</Link>
     </div>
   );
 }

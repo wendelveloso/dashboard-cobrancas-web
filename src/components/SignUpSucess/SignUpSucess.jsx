@@ -11,7 +11,11 @@ export default function SignUpSucess() {
         <img src={SignUpSucessCheked} alt="" />
         <h1>Cadastro realizado com Sucesso!</h1>
       </div>
-      <Link className="goToLogin" onClick={() => handleClickStep("one")} to="/">
+      <Link
+        className="goToLogin"
+        onClick={() => handleClickStep("one")}
+        to="/login"
+      >
         Ir para Login
       </Link>
     </div>
