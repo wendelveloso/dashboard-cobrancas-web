@@ -71,7 +71,9 @@ export default function ClientDetails() {
       setCliente(response.data.client);
       setCharges(response.data.charges);
     } catch (error) {
-      exibirErro("Não foi possível carregar os detalhes do cliente. Tente novamente.");
+      exibirErro(
+        "Não foi possível carregar os detalhes do cliente. Tente novamente."
+      );
     } finally {
       setCarregando(false);
     }
@@ -146,7 +148,7 @@ export default function ClientDetails() {
           <div className="list__clients-details">
             <div className="container1">
               <img src={iconClient} alt="icon-client" />
-              <h2>{cliente.nome}</h2>
+              <h2>{cliente?.nome}</h2>
             </div>
           </div>
           <div className="clients_container-data">
@@ -169,9 +171,11 @@ export default function ClientDetails() {
                 <p>CPF</p>
               </div>
               <div className="clients__data">
-                <p>{cliente.email}</p>
-                <p>{formatarTelefone(cliente.telefone)}</p>
-                <p>{formatarCPF(cliente.cpf)}</p>
+                <p>{cliente?.email}</p>
+                <p>
+                  {cliente?.telefone ? formatarTelefone(cliente.telefone) : ""}
+                </p>
+                <p>{cliente?.cpf ? formatarCPF(cliente.cpf) : ""}</p>
               </div>
             </div>
             <div className="clients__header_info-data2">
@@ -184,12 +188,12 @@ export default function ClientDetails() {
                 <p>UF</p>
               </div>
               <div className="clients__data2">
-                <p>{cliente.endereco}</p>
-                <p>{cliente.bairro}</p>
-                <p>{cliente.complemento}</p>
-                <p>{formatarCEP(cliente.cep)}</p>
-                <p>{cliente.cidade}</p>
-                <p>{cliente.uf.toUpperCase()}</p>
+                <p>{cliente?.endereco}</p>
+                <p>{cliente?.bairro}</p>
+                <p>{cliente?.complemento}</p>
+                <p>{cliente?.cep ? formatarCEP(cliente.cep) : ""}</p>
+                <p>{cliente?.cidade}</p>
+                <p>{cliente?.uf.toUpperCase()}</p>
               </div>
             </div>
           </div>

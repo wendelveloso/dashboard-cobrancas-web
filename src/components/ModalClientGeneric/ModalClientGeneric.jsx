@@ -81,6 +81,7 @@ export default function ModalClientGeneric({
           }
         }
         if (error.response.status === 500) {
+          console.log(error);
           exibirErro("Erro inesperado. Tente novamente mais tarde.");
         }
       }
