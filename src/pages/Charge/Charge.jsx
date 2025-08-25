@@ -54,20 +54,20 @@ export default function Charge() {
     modalClientOpen,
   } = useModal();
 
-  const fetchCharges = async (searchTerm = "") => {
-    try {
-      const response = await api.get("/searchCharges", {
-        params: {
-          searchTerm,
-        },
-      });
-      setCharges(response.data);
-      setAllCharges(response.data);
-      setFilteredCharges(response.data);
-    } catch (error) {
-      exibirErro("Não foi possível carregar as cobranças. Tente novamente.");
-    }
-  };
+const fetchCharges = async (searchTerm = "", options = {}) => {
+  try {
+    const response = await api.get("/searchCharges", {
+      params: { searchTerm },
+      ...options
+    });
+    setCharges(response.data);
+    setAllCharges(response.data);
+    setFilteredCharges(response.data);
+  } catch (error) {
+    exibirErro("Não foi possível carregar as cobranças. Tente novamente.");
+  }
+};
+
 
   useEffect(() => {
     fetchCharges();
@@ -76,7 +76,7 @@ export default function Charge() {
   const searchTerm = watch("searchTerm");
   useEffect(() => {
     if (searchTerm) {
-      fetchCharges(searchTerm);
+      fetchCharges(searchTerm, { skipLoading: true });
     } else {
       setCharges(allCharges);
       setFilteredCharges(allCharges);

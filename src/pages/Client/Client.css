@@ -216,7 +216,6 @@
   max-width: 800px;
 }
 
-
 .pagination-buttons {
   position: fixed;
   z-index: 2;
@@ -249,15 +248,14 @@
 .polygon2.disabled,
 .polygon1.disabled {
   opacity: 0;
-  pointer-events: none; 
+  pointer-events: none;
   cursor: not-allowed;
 }
-
 
 .img_empty-search {
   opacity: 0;
   animation: fadeIn 1s ease forwards;
-  animation-delay: 0.5s;  
+  animation-delay: 2s;
 }
 
 @keyframes fadeIn {

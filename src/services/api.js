@@ -23,7 +23,10 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
     }
 
-    if (globalLoadingSetter) globalLoadingSetter(true);
+    if (globalLoadingSetter && !config.skipLoading) {
+      globalLoadingSetter(true);
+    }
+
     return config;
   },
   (error) => {
@@ -34,11 +37,15 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-    if (globalLoadingSetter) globalLoadingSetter(false);
+    if (globalLoadingSetter && !response.config.skipLoading) {
+      globalLoadingSetter(false);
+    }
     return response;
   },
   (error) => {
-    if (globalLoadingSetter) globalLoadingSetter(false);
+    if (globalLoadingSetter && !error.config?.skipLoading) {
+      globalLoadingSetter(false);
+    }
     return Promise.reject(error);
   }
 );

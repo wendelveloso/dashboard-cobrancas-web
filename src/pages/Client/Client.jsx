@@ -36,7 +36,7 @@ export default function Client() {
   const location = useLocation();
   const status = location.state?.status;
 
-  const fetchClients = async (searchTerm = "") => {
+  const fetchClients = async (searchTerm = "", options = {}) => {
     try {
       const response = await api.get("/searchClients", {
         params: {
@@ -44,6 +44,7 @@ export default function Client() {
           orderBy: "nome",
           typeOrderBy: "asc",
         },
+        ...options,
       });
 
       setClients(response.data);
@@ -61,7 +62,7 @@ export default function Client() {
 
   useEffect(() => {
     if (searchTerm) {
-      fetchClients(searchTerm);
+      fetchClients(searchTerm, { skipLoading: true });
     } else {
       setClients(allClients);
     }
